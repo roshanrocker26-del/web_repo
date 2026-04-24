@@ -1,0 +1,563 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard - SAMSEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/super_admin.css' %}">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <div class="logo-icon">S</div>
+                <span class="brand-text">SAMSEL</span> <span class="brand-secondary">ADMIN</span>
+            </div>
+            <button class="toggle-btn" id="toggleBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="menu-item">
+                <a href="#" class="menu-link active" data-section="overview">
+                    <i class="fas fa-th-large"></i>
+                    <span>Overview</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="series">
+                    <i class="fas fa-book"></i>
+                    <span>Book Series</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="schools">
+                    <i class="fas fa-school"></i>
+                    <span>School Info</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="purchases">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Purchases Management</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer" style="padding: 20px; border-top: 1px solid var(--glass-border);">
+            <a href="{% url 'super_admin_logout' %}" class="menu-link" style="color: var(--danger-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="header-section">
+            <div class="welcome-text">
+                <h1 id="section-title">Dashboard Overview</h1>
+                <p>Welcome back, Super Admin! Management console is ready.</p>
+            </div>
+            <div class="action-header">
+                <button class="btn btn-primary" id="global-add-btn">
+                    <i class="fas fa-plus"></i>
+                    <span>Add New</span>
+                </button>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <span>{{ message }}</span>
+                <i class="fas fa-times" onclick="this.parentElement.style.display='none'"></i>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- OVERVIEW SECTION -->
+        <div id="overview" class="dashboard-section active">
+            <div class="section-header">
+                <h2>Quick Statistics</h2>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
+                <div
+                    style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                    <p style="color: #636e72; font-size: 14px; margin-bottom: 10px;">Total Series</p>
+                    <h3 style="font-size: 28px;">{{ series|length }}</h3>
+                </div>
+                <div
+                    style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                    <p style="color: #636e72; font-size: 14px; margin-bottom: 10px;">Registered Schools</p>
+                    <h3 style="font-size: 28px;">{{ schools|length }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOK SERIES SECTION -->
+        <div id="series" class="dashboard-section">
+            <div class="section-header">
+                <h2>Book Series List</h2>
+                <div class="actions" style="display: flex; gap: 15px; align-items: center;">
+                    <div style="position: relative;">
+                        <i class="fas fa-search"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0;"></i>
+                        <input type="text" id="search-series" placeholder="Search Books..."
+                            onkeyup="filterTable('search-series', 'table-series')"
+                            style="padding: 10px 15px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; width: 250px;">
+                    </div>
+                    <button class="btn btn-primary btn-sm" style="padding: 8px 16px;"
+                        onclick="openModal('bookModal')">
+                        <i class="fas fa-plus"></i> Add Series
+                    </button>                </div>
+            </div>
+            <div class="table-container">
+                <table id="table-series">
+                    <thead>
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Series Name</th>
+                            <th>Class</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr>
+                            <td>{{ book.book_id }}</td>
+                            <td>{{ book.series_name }}</td>
+                            <td>{{ book.class_field }}</td>
+                            <td><span class="status-badge status-active">Live</span></td>
+                            <td class="actions">
+                                <button class="btn-icon btn-edit" title="Edit"
+                                    onclick="editBook('{{ book.book_id }}', '{{ book.series_name }}', '{{ book.class_field }}')"><i
+                                        class="fas fa-edit"></i></button>
+                                <a href="{% url 'delete_book' book.book_id %}" class="btn-icon btn-delete"
+                                    title="Delete" onclick="return confirm('Are you sure?')"><i
+                                        class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: #636e72;">No books
+                                found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TEACHER DIRECTORY SECTION REMOVED -->
+
+        <!-- SCHOOL INFO SECTION -->
+        <div id="schools" class="dashboard-section">
+            <div class="section-header">
+                <h2>Registered Schools</h2>
+                <div class="actions" style="display: flex; gap: 15px; align-items: center;">
+                    <div style="position: relative;">
+                        <i class="fas fa-search"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0;"></i>
+                        <input type="text" id="search-schools" placeholder="Search Schools..."
+                            onkeyup="filterTable('search-schools', 'table-schools')"
+                            style="padding: 10px 15px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; width: 250px;">
+                    </div>
+                    <button class="btn btn-primary btn-sm" style="padding: 8px 16px;"
+                        onclick="openModal('schoolModal')">
+                        <i class="fas fa-plus-circle"></i> Register School
+                    </button>                </div>
+            </div>
+            <div class="table-container">
+                <table id="table-schools">
+                    <thead>
+                        <tr>
+                            <th>School ID</th>
+                            <th>School Name</th>
+                            <th>Branch</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for school in schools %}
+                        <tr>
+                            <td>{{ school.school_id }}</td>
+                            <td>{{ school.school_name }}</td>
+                            <td>{{ school.branch|default:"-" }}</td>
+                            <td>{{ school.contact|default:"-" }}</td>
+                            <td><span class="status-badge status-active">Premium</span></td>
+                            <td class="actions">
+                                <button class="btn-icon btn-edit"
+                                    onclick="editSchool('{{ school.school_id }}', '{{ school.school_name }}', '{{ school.contact|escapejs }}', '{{ school.branch|escapejs }}')"><i
+                                        class="fas fa-edit"></i></button>
+                                <a href="{% url 'delete_school' school.school_id %}" class="btn-icon btn-delete"
+                                    onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: #636e72;">No schools
+                                registered.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PURCHASES MANAGEMENT SECTION -->
+        <div id="purchases" class="dashboard-section">
+            <div class="section-header">
+                <h2>Purchases Management</h2>
+                <div class="actions" style="display: flex; gap: 15px; align-items: center;">
+                    <div style="position: relative;">
+                        <i class="fas fa-search"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0;"></i>
+                        <input type="text" id="search-purchases" placeholder="Search Purchases..."
+                            onkeyup="filterTable('search-purchases', 'table-purchases')"
+                            style="padding: 10px 15px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; width: 250px;">
+                    </div>
+                    <!-- Reuse the assign books from teacher panel or link to it -->
+                    <button class="btn btn-primary btn-sm" style="padding: 8px 16px;"
+                        onclick="openModal('assignBookModal')">
+                        <i class="fas fa-plus"></i> Assign New Books
+                    </button>                </div>
+            </div>
+            <div class="table-container">
+                <table id="table-purchases">
+                    <thead>
+                        <tr>
+                            <th>Purchase ID</th>
+                            <th>School Name</th>
+                            <th>Books Purchased</th>
+                            <th>Validity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for purchase in purchases %}
+                        <tr>
+                            <td>{{ purchase.purchase.purchase_id }}</td>
+                            {% if purchase.purchase.school.school_name %}
+                            <td>{{ purchase.purchase.school.school_name }}</td>
+                            {% else %}
+                            <td>{{ purchase.purchase.school.school_id }}</td>
+                            {% endif %}
+                            <td>{{ purchase.book.book_id }}</td>
+                            <td>{{ purchase.valid_upto|date:"Y-m-d"|default:"-" }}</td>
+                            <td class="actions">
+                                <a href="javascript:void(0);"
+                                    onclick="alert('Raw Data Modification locked. Delete and Re-Assign from Teachers menu.')"
+                                    class="btn-icon btn-edit"><i class="fas fa-edit"></i></a>
+                                <a href="{% url 'delete_purchase_super' purchase.id %}" class="btn-icon btn-delete"
+                                    onclick="return confirm('WARNING: This will revoke access for this school to this series. Are you sure?')"><i
+                                        class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px; color: #636e72;">No purchase
+                                records found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODALS -->
+    <!-- School Modal -->
+    <div class="modal-overlay" id="schoolModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="schoolModalTitle">Add New School</h2>
+                <button class="close-modal" onclick="closeModal('schoolModal')">&times;</button>
+            </div>
+            <form id="schoolForm" action="{% url 'add_school' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>School ID</label>
+                    <input type="text" name="school_id" class="form-input" placeholder="e.g. S001" required>
+                </div>
+                <div class="form-group">
+                    <label>School Name</label>
+                    <input type="text" name="school_name" class="form-input" placeholder="School Name" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text" name="contact" class="form-input" placeholder="Contact Details">
+                </div>
+                <div class="form-group">
+                    <label>Branch</label>
+                    <input type="text" name="branch" class="form-input" placeholder="Branch Name">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" name="password_hash" class="form-input" placeholder="Set Password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('schoolModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save School</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TEACHER MODAL REMOVED -->
+
+    <!-- Book Modal -->
+    <div class="modal-overlay" id="bookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="bookModalTitle">Add New Book</h2>
+                <button class="close-modal" onclick="closeModal('bookModal')">&times;</button>
+            </div>
+            <form id="bookForm" action="{% url 'add_book' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Book ID</label>
+                    <input type="text" name="book_id" class="form-input" placeholder="e.g. B001" required>
+                </div>
+                <div class="form-group">
+                    <label>Series Name</label>
+                    <input type="text" name="series_name" class="form-input" placeholder="e.g. Science" required>
+                </div>
+                <div class="form-group">
+                    <label>Class</label>
+                    <input type="text" name="class_field" class="form-input" placeholder="e.g. 10th" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('bookModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Assign Book Modal for Purchase Management -->
+    <div class="modal-overlay" id="assignBookModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="assignBookModalTitle">Assign Book to School (Purchase)</h2>
+                <button class="close-modal" onclick="closeModal('assignBookModal')">&times;</button>
+            </div>
+            <form id="assignBookForm" action="{% url 'assign_purchase_super' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Purchase ID</label>
+                    <input type="text" name="purchase_id" class="form-input" placeholder="e.g. P1001" required>
+                </div>
+                <div class="form-group">
+                    <label>School ID</label>
+                    <input type="text" name="school_id" class="form-input" placeholder="e.g. S001" required>
+                </div>
+                <div class="form-group">
+                    <label>Book ID</label>
+                    <input type="text" name="book_id" class="form-input" placeholder="e.g. ismart1" required>
+                </div>
+                <div class="form-group">
+                    <label>Validity Upto</label>
+                    <input type="date" name="valid_upto" class="form-input" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('assignBookModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Assign Book</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const menuLinks = document.querySelectorAll('.menu-link[data-section]');
+        const sections = document.querySelectorAll('.dashboard-section');
+        const sectionTitle = document.getElementById('section-title');
+        const globalAddBtnText = document.querySelector('#global-add-btn span');
+
+        // Toggle Sidebar
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+
+        // Global Add Button Logic
+        const globalAddBtn = document.getElementById('global-add-btn');
+        globalAddBtn.addEventListener('click', () => {
+            const activeLink = document.querySelector('.menu-link.active');
+            const section = activeLink.getAttribute('data-section');
+
+            if (section === 'schools') openModal('schoolModal');
+            else if (section === 'series') openModal('bookModal');
+            else if (section === 'purchases') openModal('assignBookModal');
+            else alert('Select a section (Book Series or Schools) to add items.');
+        });
+
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            // Reset forms when opening for "Add"
+            if (!modalId.includes('Edit')) {
+                const form = document.getElementById(modalId).querySelector('form');
+                form.reset();
+                if (modalId === 'schoolModal') {
+                    document.getElementById('schoolModalTitle').innerText = "Add New School";
+                    form.action = "{% url 'add_school' %}";
+                    form.querySelector('input[name="school_id"]').readOnly = false;
+                }
+                if (modalId === 'bookModal') {
+                    document.getElementById('bookModalTitle').innerText = "Add New Book";
+                    form.action = "{% url 'add_book' %}";
+                    form.querySelector('input[name="book_id"]').readOnly = false;
+                }
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Edit Functions
+        function editSchool(id, name, contact, branch) {
+            const form = document.getElementById('schoolForm');
+            document.getElementById('schoolModalTitle').innerText = "Edit School: " + id;
+            form.action = "/super-admin/school/edit/" + id + "/";
+
+            form.querySelector('input[name="school_id"]').value = id;
+            form.querySelector('input[name="school_id"]').readOnly = true;
+            form.querySelector('input[name="school_name"]').value = name;
+            form.querySelector('input[name="contact"]').value = contact;
+            form.querySelector('input[name="branch"]').value = branch || '';
+
+            openModal('schoolModal');
+        }
+
+        function editBook(id, series, cl) {
+            const form = document.getElementById('bookForm');
+            document.getElementById('bookModalTitle').innerText = "Edit Book: " + id;
+            form.action = "/super-admin/book/edit/" + id + "/";
+
+            form.querySelector('input[name="book_id"]').value = id;
+            form.querySelector('input[name="book_id"]').readOnly = true;
+            form.querySelector('input[name="series_name"]').value = series;
+            form.querySelector('input[name="class_field"]').value = cl;
+
+            openModal('bookModal');
+        }
+
+        // Switch Sections
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Update active link
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                // Show target section
+                const targetId = link.getAttribute('data-section');
+                sections.forEach(sec => {
+                    sec.classList.remove('active');
+                    if (sec.id === targetId) {
+                        sec.classList.add('active');
+                    }
+                });
+
+                // Update UI titles based on section
+                updateHeaderText(targetId);
+
+                // On mobile, close sidebar after click
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('mobile-active');
+                }
+            });
+        });
+
+        function updateHeaderText(section) {
+            switch (section) {
+                case 'overview':
+                    sectionTitle.innerText = "Dashboard Overview";
+                    globalAddBtnText.innerText = "Add New";
+                    break;
+                case 'series':
+                    sectionTitle.innerText = "Book Series Management";
+                    globalAddBtnText.innerText = "Add Series";
+                    break;
+                case 'schools':
+                    sectionTitle.innerText = "School Information";
+                    globalAddBtnText.innerText = "Add School";
+                    break;
+                case 'purchases':
+                    sectionTitle.innerText = "Purchases Management";
+                    globalAddBtnText.innerText = "Assign Books";
+                    break;
+                default:
+                    sectionTitle.innerText = "Super Admin Console";
+            }
+        }
+
+        // Mobile responsive toggle (via hamburger if needed)
+        // Add basic touch support
+        let touchStartX = 0;
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        document.addEventListener('touchend', e => {
+            let touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX - touchStartX > 100) {
+                sidebar.classList.add('mobile-active');
+            } else if (touchStartX - touchEndX > 100) {
+                sidebar.classList.remove('mobile-active');
+            }
+        }, false);
+
+        // Universal Search Filter Functionality
+        function filterTable(inputId, tableId) {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById(inputId);
+            filter = input.value.toUpperCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 1; i < tr.length; i++) { // Start from 1 to skip header row
+                tr[i].style.display = "none"; // Hide by default
+                let rowHasMatch = false;
+
+                // Only consider table data cells (td) in the row
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            rowHasMatch = true;
+                            break; // Stop checking columns if a match is found in this row
+                        }
+                    }
+                }
+
+                if (rowHasMatch) {
+                    tr[i].style.display = ""; // Show row
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

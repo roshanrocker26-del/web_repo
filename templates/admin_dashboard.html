@@ -1,0 +1,852 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | SAMSEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/super_admin.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-card {
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        .pulse-badge {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(33, 150, 243, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <div class="logo-icon" style="background: linear-gradient(135deg, #2196F3, #1565C0);">A</div>
+                <span class="brand-text">SAMSEL</span> <span class="brand-secondary">ADMIN</span>
+            </div>
+            <button class="toggle-btn" id="toggleBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="menu-item">
+                <a href="#" class="menu-link active" data-section="overview">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Executive Overview</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="books">
+                    <i class="fas fa-book-open"></i>
+                    <span>School Book Selection</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="profile">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin Profile</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="purchases">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Purchase Information</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer" style="padding: 20px; border-top: 1px solid var(--glass-border);">
+            <a href="{% url 'admin_logout' %}" class="menu-link" style="color: var(--danger-color);">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="header-section">
+            <div class="welcome-text">
+                <h1 id="section-title">Executive Overview</h1>
+                <p>Welcome back, Admin! Management console is ready.</p>
+            </div>
+            <div class="action-header">
+                <span class="pulse-badge"
+                    style="background: rgba(33, 150, 243, 0.1); color: #2196f3; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 14px; border: 1px solid rgba(33, 150, 243, 0.3);">
+                    <i class="fas fa-sync-alt fa-spin" style="margin-right: 5px;"></i> Live DB Sync
+                </span>
+            </div>
+        </div>
+
+        <!-- OVERVIEW SECTION -->
+        <div id="overview" class="dashboard-section active">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px;">
+                <div class="animate-card delay-1"
+                    style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 20px; border-left: 5px solid #4CAF50;">
+                    <div
+                        style="background: rgba(76, 175, 80, 0.1); width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #4CAF50;">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div>
+                        <p style="color: #636e72; font-size: 14px; margin: 0 0 5px 0;">Registered Schools</p>
+                        <h3 style="font-size: 28px; margin: 0; color: #2d3436;">{{ total_schools }}</h3>
+                    </div>
+                </div>
+
+                <div class="animate-card delay-2"
+                    style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 20px; border-left: 5px solid #2196F3;">
+                    <div
+                        style="background: rgba(33, 150, 243, 0.1); width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #2196F3;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <p style="color: #636e72; font-size: 14px; margin: 0 0 5px 0;">Total E-Books Distributed</p>
+                        <h3 style="font-size: 28px; margin: 0; color: #2d3436;">{{ total_books_assigned }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px;">
+                <div class="animate-card delay-3"
+                    style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                    <h3 style="margin-top: 0; color: #333; margin-bottom: 20px; font-weight: 600;">Assignment Trends
+                    </h3>
+                    <div style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="animate-card delay-4"
+                    style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column;">
+                    <h3 style="margin-top: 0; color: #333; margin-bottom: 20px; font-weight: 600;">Popular Series</h3>
+                    <div style="position: relative; height: 260px; width: 100%; margin: auto;">
+                        <canvas id="popularSeriesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOKS SECTION -->
+        <div id="books" class="dashboard-section">
+            <div
+                style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <form id="book-selection-form" onsubmit="handleBookSubmit(event)">
+                    {% csrf_token %}
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                        <div class="form-group" style="margin-bottom: 0; position: relative;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">School
+                                Name</label>
+                            <input type="text" name="school_name" id="school_name_input" required
+                                placeholder="Enter School Name" autocomplete="off" spellcheck="false"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.3s;"
+                                onfocus="this.style.borderColor='#2196F3'"
+                                onblur="setTimeout(() => hideAutocomplete('name'), 200)"
+                                oninput="handleAutocompleteInput(this, 'name')">
+                            <div id="autocomplete_name_list"
+                                style="position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); z-index: 1000; display: none; max-height: 200px; overflow-y: auto;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0; position: relative;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">School
+                                ID</label>
+                            <input type="text" name="school_id" id="school_id_input" required
+                                placeholder="Enter School ID" autocomplete="off" spellcheck="false"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.3s;"
+                                onfocus="this.style.borderColor='#2196F3'"
+                                onblur="setTimeout(() => hideAutocomplete('id'), 200)"
+                                oninput="handleAutocompleteInput(this, 'id')">
+                            <div id="autocomplete_id_list"
+                                style="position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); z-index: 1000; display: none; max-height: 200px; overflow-y: auto;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW BRANCH FIELD -->
+                    <div style="margin-bottom: 30px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Branch</label>
+                            <input type="text" name="branch" id="branch_input" readonly
+                                placeholder="Select a school to see branch"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; background: #f8fafc; color: #64748b; cursor: not-allowed;">
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
+                        <label
+                            style="font-size: 16px; margin-bottom: 12px; display: block; font-weight: 600; color: #2d3748;">Select
+                            Book Series</label>
+                        <div style="display: flex; gap: 15px;">
+                            <select id="series-dropdown"
+                                style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 15px; outline: none;">
+                                <option value="">-- Select Series --</option>
+                                <option value="Series 1">I-Smart Series</option>
+                                <option value="Series 2">I-Whizz Series</option>
+                                <option value="Series 3">Application 2007 Series</option>
+                                <option value="Series 4">I-Bot Series</option>
+                                <option value="Series 5">Young Wizard Series</option>
+                                <option value="Series 6">Application 2016 Series</option>
+                                <option value="Series 7">Right-Click Series</option>
+                                <option value="Series 8">Programming Series</option>
+                                <option value="Series 9">My Computer Series</option>
+                                <option value="Series 10">Little Wizard Series</option>
+                            </select>
+                            <button type="button" onclick="addSeries()" class="btn btn-primary"
+                                style="padding: 12px 25px; border-radius: 8px; font-weight: 600;">
+                                <i class="fas fa-plus"></i> Add Series
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="selected-series-container"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                        <!-- Dynamic series blocks -->
+                    </div>
+
+                    <div
+                        style="margin-top: 30px; padding: 25px; background: #e0f2fe; border-radius: 12px; border-left: 5px solid #0ea5e9;">
+                        <h3 style="margin-top: 0; color: #0369a1; font-size: 18px; margin-bottom: 15px;">Order Summary
+                        </h3>
+                        <ul id="total-summary-list"
+                            style="list-style: none; padding-left: 0; margin: 0; color: #0c4a6e;">
+                            <li>No books selected yet.</li>
+                        </ul>
+                    </div>
+
+                    <button type="submit"
+                        style="margin-top: 30px; width: 100%; padding: 18px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);"
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(37, 99, 235, 0.4)'"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(37, 99, 235, 0.3)'">
+                        <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Send To School
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PROFILE SECTION -->
+        <div id="profile" class="dashboard-section">
+            <div
+                style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); text-align: center; max-width: 600px; margin: 0 auto;">
+                <div
+                    style="width: 120px; height: 120px; background: linear-gradient(135deg, #e2e8f0, #cbd5e1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 48px; color: #64748b;">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2 style="margin: 0 0 10px 0; color: #1e293b;">Administrator Hub</h2>
+                <p style="color: #64748b; margin-bottom: 30px;">Manage schools, distribute e-books, and monitor the
+                    ecosystem.</p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
+                    <div style="padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px;">
+                        <label
+                            style="font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Role</label>
+                        <div style="font-weight: 600; color: #334155; margin-top: 5px;">Head Administrator</div>
+                    </div>
+                    <div style="padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px;">
+                        <label
+                            style="font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Status</label>
+                        <div style="font-weight: 600; color: #10b981; margin-top: 5px;"><i
+                                class="fas fa-check-circle"></i> Active</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PURCHASE INFO SECTION -->
+        <div id="purchases" class="dashboard-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; font-size: 20px; color: #1e293b;">Purchase Records</h2>
+                <form method="GET" action="{% url 'admin_dashboard' %}" style="display: flex; gap: 10px; align-items: center;">
+                    <div style="position: relative;">
+                        <i class="fas fa-search"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0;"></i>
+                        <input type="text" name="search" id="search-purchases-real" value="{{ request.GET.search }}"
+                            placeholder="Search schools or series..."
+                            onkeyup="filterTable('search-purchases-real', 'table-purchases-real')"
+                            style="padding: 10px 15px 10px 35px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; width: 300px; outline: none; transition: border-color 0.3s;"
+                            onfocus="this.style.borderColor='#2196F3'">
+                    </div>
+                    {% if request.GET.search %}
+                    <a href="{% url 'admin_dashboard' %}" class="btn"
+                        style="padding: 10px 15px; border: 1px solid #cbd5e1; color: #64748b; border-radius: 8px; text-decoration: none; font-size: 14px;">Clear
+                        Search</a>
+                    {% endif %}
+                </form>
+            </div>
+
+            <div class="table-container"
+                style="background: white; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); overflow: hidden;">
+                <table id="table-purchases-real" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                            <th
+                                style="padding: 16px 20px; text-align: left; color: #64748b; font-weight: 600; font-size: 14px; width: 20%;">
+                                School Name</th>
+                            <th
+                                style="padding: 16px 20px; text-align: left; color: #64748b; font-weight: 600; font-size: 14px; width: 15%;">
+                                School ID</th>
+                            <th
+                                style="padding: 16px 20px; text-align: left; color: #64748b; font-weight: 600; font-size: 14px; width: 50%;">
+                                Purchased Books</th>
+                            <th
+                                style="padding: 16px 20px; text-align: center; color: #64748b; font-weight: 600; font-size: 14px; width: 15%;">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in page_obj %}
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;"
+                            onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
+                            <td style="padding: 16px 20px; color: #334155; font-weight: 500;">
+                                {% if item.school_name %}{{ item.school_name }}{% else %}-{% endif %}
+                            </td>
+                            <td style="padding: 16px 20px; color: #64748b;">{{ item.school_id }}</td>
+                            <td style="padding: 16px 20px;">
+                                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                    {% for sname, classes in item.series.items %}
+                                    <div style="background: #f8fafc; padding: 6px 16px; border-radius: 50px; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; gap: 12px;">
+                                        <span style="font-weight: 700; color: #475569; font-size: 14px;">{{sname}}</span>
+                                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                            {% for cls in classes %}
+                                            <span style="background: #2563eb; color: white; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 700;">Class {{cls}}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td style="padding: 16px 20px; text-align: center;">
+                                <button onclick="confirmRevoke('{{ item.school_id }}')"
+                                    style="background: #fff1f2; color: #e11d48; border: 1px solid #fda4af; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;"
+                                    onmouseover="this.style.background='#ffe4e6'; this.style.transform='translateY(-1px)';"
+                                    onmouseout="this.style.background='#fff1f2'; this.style.transform='translateY(0)';">
+                                    <i class="fas fa-hand-paper"></i> Revoke Access
+                                </button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" style="padding: 40px; text-align: center; color: #94a3b8;">
+                                <i class="fas fa-folder-open" style="font-size: 24px; margin-bottom: 10px;"></i>
+                                <p style="margin: 0;">No purchase records found.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Pagination Controls -->
+                {% if page_obj.has_other_pages %}
+                <div
+                    style="padding: 20px; display: flex; justify-content: center; align-items: center; gap: 15px; border-top: 1px solid #f1f5f9; background: #fafafa;">
+                    {% if page_obj.has_previous %}
+                    <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        style="padding: 8px 12px; background: white; border: 1px solid #cbd5e1; border-radius: 6px; color: #475569; text-decoration: none; font-size: 14px; font-weight: 500;">&laquo;
+                        First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        style="padding: 8px 12px; background: white; border: 1px solid #cbd5e1; border-radius: 6px; color: #475569; text-decoration: none; font-size: 14px; font-weight: 500;">Previous</a>
+                    {% endif %}
+
+                    <span style="font-size: 14px; color: #64748b; font-weight: 500;">Page {{ page_obj.number }} of {{
+                        page_obj.paginator.num_pages }}</span>
+
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        style="padding: 8px 12px; background: white; border: 1px solid #cbd5e1; border-radius: 6px; color: #475569; text-decoration: none; font-size: 14px; font-weight: 500;">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        style="padding: 8px 12px; background: white; border: 1px solid #cbd5e1; border-radius: 6px; color: #475569; text-decoration: none; font-size: 14px; font-weight: 500;">Last
+                        &raquo;</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+
+
+    </main>
+
+    <script>
+        // --- AUTOCOMPLETE LOGIC ---
+        const ALL_SCHOOLS = JSON.parse('{{ schools_autocomplete|escapejs }}' || '[]');
+
+        function handleAutocompleteInput(input, type) {
+            const val = input.value.trim().toLowerCase();
+            const list = document.getElementById(`autocomplete_${type}_list`);
+            list.innerHTML = '';
+
+            if (val.length < 1) {
+                list.style.display = 'none';
+                return;
+            }
+
+            const matches = ALL_SCHOOLS.filter(s => {
+                const searchVal = (type === 'name') ? s.school_name : s.school_id;
+                return searchVal.toLowerCase().includes(val);
+            });
+
+            if (matches.length > 0) {
+                list.style.display = 'block';
+                matches.forEach(s => {
+                    const div = document.createElement('div');
+                    div.style.padding = '12px 15px';
+                    div.style.cursor = 'pointer';
+                    div.style.borderBottom = '1px solid #f1f5f9';
+                    div.style.userSelect = 'none';
+                    div.innerHTML = `<strong>${s.school_name}</strong> <span style="color: #94a3b8; font-size: 12px;">(${s.school_id})</span>`;
+
+                    div.onmouseover = () => div.style.background = '#f8fafc';
+                    div.onmouseout = () => div.style.background = 'white';
+
+                    // Use mousedown to prevent input from losing focus before the selection is made
+                    div.onmousedown = (e) => {
+                        e.preventDefault();
+                    };
+
+                    div.onclick = () => {
+                        document.getElementById('school_name_input').value = s.school_name;
+                        document.getElementById('school_id_input').value = s.school_id;
+                        document.getElementById('branch_input').value = s.branch || 'N/A';
+                        list.style.display = 'none';
+                    };
+                    list.appendChild(div);
+                });
+            } else {
+                list.style.display = 'none';
+            }
+        }
+
+        function hideAutocomplete(type) {
+            const list = document.getElementById(`autocomplete_${type}_list`);
+            if (list) list.style.display = 'none';
+        }
+
+
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const menuLinks = document.querySelectorAll('.menu-link[data-section]');
+        const sections = document.querySelectorAll('.dashboard-section');
+        const sectionTitle = document.getElementById('section-title');
+
+        // Check URL params for search or page to auto-open purchases section
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('search') || urlParams.has('page')) {
+                const purchasesLink = document.querySelector('.menu-link[data-section="purchases"]');
+                if (purchasesLink) {
+                    purchasesLink.click();
+                }
+            }
+        });
+
+        // Toggle Sidebar
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+
+        // Switch Sections
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Update active link
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                // Show target section
+                const targetId = link.getAttribute('data-section');
+                sections.forEach(sec => {
+                    sec.classList.remove('active');
+                    if (sec.id === targetId) {
+                        sec.classList.add('active');
+                    }
+                });
+
+                // Update UI titles based on section
+                updateHeaderText(targetId);
+            });
+        });
+
+        function updateHeaderText(section) {
+            switch (section) {
+                case 'overview':
+                    sectionTitle.innerText = "Executive Overview";
+                    break;
+                case 'books':
+                    sectionTitle.innerText = "School Book Selection";
+                    break;
+                case 'profile':
+                    sectionTitle.innerText = "Admin Profile";
+                    break;
+                case 'purchases':
+                    sectionTitle.innerText = "Purchase Information";
+                    break;
+            }
+        }
+
+        // --- DASHBOARD CHART.JS INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', function () {
+            // Parse Django Context JSON
+            const trendLabels = JSON.parse('{{ trend_labels|escapejs }}' || '[]');
+            const trendData = JSON.parse('{{ trend_data|escapejs }}' || '[]');
+            const seriesLabels = JSON.parse('{{ series_labels|escapejs }}' || '[]');
+            const seriesData = JSON.parse('{{ series_data|escapejs }}' || '[]');
+
+            // Set global font settings
+            Chart.defaults.font.family = "'Inter', 'Segoe UI', sans-serif";
+            Chart.defaults.color = '#718096';
+
+            // 1. Line Chart (Assignment Trends)
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            let gradient = trendCtx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(33, 150, 243, 0.4)');
+            gradient.addColorStop(1, 'rgba(33, 150, 243, 0.0)');
+
+            new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: trendLabels.length ? trendLabels : ['No Data'],
+                    datasets: [{
+                        label: 'Books Assigned',
+                        data: trendData.length ? trendData : [0],
+                        borderColor: '#2196F3',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#2196F3',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 12, titleFont: { size: 13, weight: 'bold' }, bodyFont: { size: 14 } }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { borderDash: [5, 5], color: '#e2e8f0', drawBorder: false }, ticks: { precision: 0 } },
+                        x: { grid: { display: false, drawBorder: false } }
+                    }
+                }
+            });
+
+            // 2. Doughnut Chart (Popular Series)
+            const seriesCtx = document.getElementById('popularSeriesChart').getContext('2d');
+            new Chart(seriesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: seriesLabels.length ? seriesLabels : ['No Data'],
+                    datasets: [{
+                        data: seriesData.length ? seriesData : [1],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true, pointStyle: 'circle' } }
+                    }
+                }
+            });
+        });
+
+        // Books Logic
+        const addedSeries = new Set();
+
+        function addSeries() {
+            const dropdown = document.getElementById('series-dropdown');
+            if (!dropdown.value) return alert("Please select a series");
+            const seriesName = dropdown.options[dropdown.selectedIndex].text.trim();
+
+            if (!seriesName) return alert("Please select a series");
+            if (addedSeries.has(seriesName)) return alert("Series already added");
+
+            addedSeries.add(seriesName);
+
+            const summaryList = document.getElementById('total-summary-list');
+            if (summaryList.innerText.includes("No books selected yet.")) {
+                summaryList.innerHTML = '';
+            }
+
+            const seriesConfig = {
+                "I-Smart Series": [
+                    { id: "ismart1", label: "Standard 1" }, { id: "ismart2", label: "Standard 2" }, { id: "ismart3", label: "Standard 3" },
+                    { id: "ismart4", label: "Standard 4" }, { id: "ismart5", label: "Standard 5" }, { id: "ismart6", label: "Standard 6" },
+                    { id: "ismart7", label: "Standard 7" }, { id: "ismart8", label: "Standard 8" }, { id: "ismart9", label: "Standard 9" }
+                ],
+                "I-Whizz Series": [
+                    { id: "iwhizz1", label: "Standard 1" }, { id: "iwhizz2", label: "Standard 2" }, { id: "iwhizz3", label: "Standard 3" },
+                    { id: "iwhizz4", label: "Standard 4" }, { id: "iwhizz5", label: "Standard 5" }, { id: "iwhizz6", label: "Standard 6" },
+                    { id: "iwhizz7", label: "Standard 7" }, { id: "iwhizz8", label: "Standard 8" }, { id: "iwhizz9", label: "Standard 9" }
+                ],
+                "I-Bot Series": [
+                    { id: "ibot1", label: "Standard 1" }, { id: "ibot2", label: "Standard 2" }, { id: "ibot3", label: "Standard 3" },
+                    { id: "ibot4", label: "Standard 4" }, { id: "ibot5", label: "Standard 5" }, { id: "ibot6", label: "Standard 6" },
+                    { id: "ibot7", label: "Standard 7" }, { id: "ibot8", label: "Standard 8" }, { id: "ibot9", label: "Standard 9" }
+                ],
+                "Application 2007 Series": [
+                    { id: "app2007_office", label: "MS-Office 2007" }, { id: "app2007_word", label: "MS-Word 2007" },
+                    { id: "app2007_excel", label: "MS-Excel 2007" }, { id: "app2007_ppt", label: "MS-PowerPoint 2007" },
+                    { id: "app2007_access", label: "MS-Access 2007" }
+                ],
+                "Young Wizard Series": [
+                    { id: "yw1", label: "Level 1" }, { id: "yw2", label: "Level 2" }, { id: "yw3", label: "Level 3" },
+                    { id: "yw4", label: "Level 4" }, { id: "yw5", label: "Level 5" }
+                ],
+                "Application 2016 Series": [
+                    { id: "app2016_word", label: "MS-Word 2016" }, { id: "app2016_excel", label: "MS-Excel 2016" },
+                    { id: "app2016_ppt", label: "MS-PowerPoint 2016" }
+                ],
+                "Right-Click Series": [
+                    { id: "rc6", label: "Right-Click Standard 6" }, { id: "rc7", label: "Right-Click Standard 7" }, { id: "rc8", label: "Right-Click Standard 8" }, { id: "rc9", label: "Right-Click Standard 9" }
+                ],
+                "Programming Series": [
+                    { id: "prog_cpp", label: "C++ Programming" }, { id: "prog_c", label: "C Programming" },
+                    { id: "prog_multi", label: "Multimedia Flash" }, { id: "prog_html", label: "Learning HTML" }
+                ],
+                "My Computer Series": [
+                    { id: "mc1", label: "Grade 1" }, { id: "mc2", label: "Grade 2" }, { id: "mc3", label: "Grade 3" },
+                    { id: "mc4", label: "Grade 4" }, { id: "mc5", label: "Grade 5" }
+                ],
+                "Little Wizard Series": [
+                    { id: "lwA", label: "Book A" }, { id: "lwB", label: "Book B" }
+                ]
+            };
+
+            const books = seriesConfig[seriesName] || [];
+
+            const container = document.getElementById('selected-series-container');
+            const seriesBlock = document.createElement('div');
+            seriesBlock.className = 'series-card';
+            seriesBlock.style.background = "#fff";
+            seriesBlock.style.padding = "20px";
+            seriesBlock.style.borderRadius = "16px";
+            seriesBlock.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
+            seriesBlock.style.border = "1px solid #e2e8f0";
+
+            seriesBlock.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+                <h3 style="margin: 0; color: #334155; font-size: 18px; font-weight: 600;">${seriesName}</h3>
+                <button type="button" onclick="removeSeries('${seriesName}', this)" style="background: #fee2e2; color: #ef4444; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#fecaca'" onmouseout="this.style.background='#fee2e2'">✕ Remove</button>
+            </div>
+            <div class="checkbox-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px;">
+                ${books.map(book => `
+                    <label class="checkbox-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 4px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                        <input type="checkbox" onchange="updateTotals()" value="${book.id}" class="book-checkbox" data-series="${seriesName}" style="accent-color: #3b82f6; width: 16px; height: 16px;"> 
+                        <span style="font-size: 14px; color: #475569;">${book.label}</span>
+                    </label>
+                `).join('')}
+            </div>
+            <div style="margin-top: 15px; font-size: 13px; color: #64748b; text-align: right; font-weight: 500;">
+                <span class="series-total">Selected: 0</span>
+            </div>
+            `;
+            container.appendChild(seriesBlock);
+            dropdown.value = "";
+        }
+
+        function removeSeries(seriesName, btn) {
+            addedSeries.delete(seriesName);
+            btn.parentElement.parentElement.remove();
+            updateTotals();
+            if (addedSeries.size === 0) {
+                document.getElementById('total-summary-list').innerHTML = '<li>No books selected yet.</li>';
+            }
+        }
+
+        function updateTotals() {
+            const summaryList = document.getElementById('total-summary-list');
+            summaryList.innerHTML = '';
+            const seriesCards = document.querySelectorAll('.series-card');
+            let hasSelection = false;
+
+            seriesCards.forEach(card => {
+                const seriesName = card.querySelector('h3').innerText;
+                const checkboxes = card.querySelectorAll('input[type="checkbox"]:checked');
+                const count = checkboxes.length;
+
+                card.querySelector('.series-total').innerText = `Selected: ${count}`;
+
+                if (count > 0) {
+                    hasSelection = true;
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle" style="color: #10b981; margin-right: 8px;"></i> ${seriesName}: <strong>${count} Books</strong>`;
+                    li.style.marginBottom = "8px";
+                    summaryList.appendChild(li);
+                }
+            });
+
+            if (!hasSelection && addedSeries.size > 0) {
+                summaryList.innerHTML = '<li>No books checked yet.</li>';
+            } else if (addedSeries.size === 0) {
+                summaryList.innerHTML = '<li>No books selected yet.</li>';
+            }
+        }
+
+        function handleBookSubmit(e) {
+            e.preventDefault();
+
+            const schoolId = document.querySelector('input[name="school_id"]').value.trim();
+            const schoolName = document.querySelector('input[name="school_name"]').value.trim();
+
+            if (!schoolId) {
+                alert("Please enter a School ID");
+                return;
+            }
+
+            const bookIds = [];
+            document.querySelectorAll('.series-card').forEach(card => {
+                card.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                    if (cb.value) {
+                        bookIds.push(cb.value);
+                    }
+                });
+            });
+
+            if (bookIds.length === 0) {
+                alert("Please select at least one valid book.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('school_id', schoolId);
+            bookIds.forEach(id => formData.append('book_ids', id));
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch('/admin/assign-books/', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrfToken },
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        document.getElementById('book-selection-form').reset();
+                        document.getElementById('selected-series-container').innerHTML = '';
+                        document.getElementById('total-summary-list').innerHTML = '<li>No books selected yet.</li>';
+                        addedSeries.clear();
+                    } else {
+                        alert("Error: " + data.error);
+                    }
+                })
+                .catch(err => {
+                    alert("Network error. Please try again.");
+                    console.error(err);
+                });
+        }
+
+        function confirmRevoke(schoolId) {
+            if (confirm("Are you sure you want to revoke e-book access for ALL books for this school? (This will NOT delete the subscription record)")) {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                fetch(`/admin/delete-school-purchases/${schoolId}/`, {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': csrfToken }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert("Error: " + data.error);
+                        }
+                    })
+                    .catch(err => {
+                        alert("Network error. Please try again.");
+                        console.error(err);
+                    });
+            }
+        }
+
+        // Universal Search Filter Functionality for current page
+        function filterTable(inputId, tableId) {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById(inputId);
+            filter = input.value.toUpperCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows (skipping header)
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                let rowHasMatch = false;
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            rowHasMatch = true;
+                            break;
+                        }
+                    }
+                }
+                if (rowHasMatch) {
+                    tr[i].style.display = "";
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SAMSEL PUBLICATIONS</title>
+    <link rel="stylesheet" href="{% static 'css/loginpages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+    <div class="floating-icon">
+    <img src="{% static 'images/icon18.gif' %}" alt="Teacher Icon">
+</div>
+
+<!-- NAVBAR -->
+<header>
+  <nav class="navbar">
+    <div class="nav-container">
+
+        <!-- LOGO (LEFT) -->
+        <div class="logo">
+            <a href="/">
+                <div class="logo-text-group">
+                    <span class="logo-main">SAMSEL</span>
+                    <span class="logo-sub">Publications</span>
+                </div>
+                <div class="logo-tagline">Shaping Digital Minds since 2001</div>
+            </a>
+        </div>
+
+        <!-- MENU (RIGHT) -->
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'products' %}">Products</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+
+            <li class="dropdown">
+                <a href="#">Login <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'school_login' %}">School Login</a></li>
+                    <li><a href="{% url 'student_login' %}">Student Login</a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+
+</header>
+<section class="login-section">
+    <div class="login-box">
+        <h2>Student Login</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <input type="text" placeholder="Student ID" required>
+            <input type="password" placeholder="Password" required>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+</section>
+
+    <!-- EDUCATION BOARDS SLIDER -->
+    <section class="boards-slider-container">
+        <div class="boards-track">
+            <!-- Set 1 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 2 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-links-grid">
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#counter-section">Our Heritage</a></li>
+                        <li><a href="{% url 'home' %}#india-presence">Digital Presence</a></li>
+                        <li><a href="{% url 'home' %}#sl-pillars">Digital Vision</a></li>
+                        <li><a href="{% url 'home' %}#featured-series">Innovative Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="{% url 'request_demo' %}">Request Demo</a></li>
+                        <li><a href="{% url 'contact' %}">Executive Query</a></li>
+                        <li><a href="{% url 'our_story' %}">The <span class="brand-text">SAMSEL</span> Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Growth & Impact</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#showcase-section">Educational Impact</a></li>
+                        <li><a href="{% url 'home' %}#trusted-schools">Premier Partners</a></li>
+                        <li><a href="{% url 'home' %}#boards-section">Academic Boards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ecosystem</h4>
+                    <ul>
+                        <li><a href="{% url 'school_login' %}">Institutional Access</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="footer-logo">
+                <span class="brand-text">SAMSEL</span>
+                <span class="brand-secondary">PUBLICATIONS</span>
+            </h3>
+            <p class="footer-copyright">&copy; 2026 <span class="brand-text">SAMSEL</span> Publications. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+</body>
+</html>

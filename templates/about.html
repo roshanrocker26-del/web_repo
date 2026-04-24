@@ -1,0 +1,1198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About Us | SAMSEL PUBLICATIONS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Using the global UI framework -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <!-- Swiper.js for premium slider -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        /* PREMIUM TESTIMONIALS STYLES */
+        .reviews-section {
+            padding: 120px 0;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reviews-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .reviews-header {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8rem;
+            font-weight: 800;
+            color: rgba(13, 59, 102, 0.03);
+            /* Primary blue with low opacity */
+            white-space: nowrap;
+            z-index: 1;
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+        }
+
+        .reviews-header h2 {
+            position: relative;
+            z-index: 2;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #0d3b66;
+            /* Matching website primary deep blue */
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .reviews-subtitle {
+            position: relative;
+            z-index: 2;
+            color: #e91e63;
+            /* Matching brand pink/magenta */
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Swiper Customization */
+        .swiper-testimonials {
+            padding: 50px 0 100px !important;
+        }
+
+        .swiper-slide {
+            width: 500px;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+            filter: blur(15px);
+            transform: scale(0.6);
+            pointer-events: none;
+            cursor: pointer;
+        }
+
+        /* Allow pointer events for slides near the active one to enable "clicking to pop" */
+        .swiper-slide-next,
+        .swiper-slide-prev {
+            pointer-events: auto;
+            opacity: 0.05;
+            /* Barely visible but clickable */
+        }
+
+        .swiper-slide-active {
+            opacity: 1 !important;
+            filter: blur(0) !important;
+            transform: scale(1) !important;
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        /* Show a hint of the next/prev slides if they are near? No, user said "rest should not been seen" */
+
+        .review-card {
+            background: #ffffff;
+            padding: 60px 50px;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(13, 59, 102, 0.05);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .review-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            font-size: 8rem;
+            font-family: serif;
+            color: rgba(13, 59, 102, 0.05);
+            line-height: 1;
+        }
+
+        .review-stars {
+            color: #ffc107;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+        }
+
+        .gender-icon {
+            display: none;
+            /* Removed from old position */
+        }
+
+        .reviewer-profile {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 25px;
+            position: relative;
+            border: 4px solid #fff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            /* Ensure image stays circular */
+        }
+
+        .reviewer-profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reviewer-info h4 {
+            font-size: 1.4rem;
+            color: #0d3b66;
+            margin: 0 0 5px;
+            font-weight: 700;
+        }
+
+        .reviewer-info p {
+            font-size: 0.9rem;
+            color: #888;
+            margin: 0 0 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .review-content {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.7;
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* Navigation & Pagination */
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #1a1a1a !important;
+            background: #fff;
+            width: 50px !important;
+            height: 50px !important;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .swiper-button-next:after,
+        .swiper-button-prev:after {
+            font-size: 1.2rem !important;
+            font-weight: 800;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            background: #e91e63;
+            color: #fff !important;
+        }
+
+        .swiper-pagination-bullet {
+            width: 10px !important;
+            height: 10px !important;
+            background: #ccc !important;
+            opacity: 1 !important;
+            margin: 0 6px !important;
+            transition: all 0.3s ease;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #e91e63 !important;
+            width: 30px !important;
+            border-radius: 5px !important;
+        }
+
+        @media (max-width: 768px) {
+            .bg-text {
+                font-size: 4rem;
+            }
+
+            .reviews-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .swiper-slide {
+                width: 300px;
+            }
+
+            .review-card {
+                padding: 40px 25px;
+            }
+
+
+            .review-content {
+                font-size: 1rem;
+            }
+        }
+
+        /* ---- WHAT SETS APART - BLOCKER STYLE ---- */
+        .samsel-apart-section {
+            padding: 60px 0 40px;
+            background: #ffffff;
+        }
+
+        .samsel-apart-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .samsel-apart-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.0rem;
+            font-weight: 700;
+            color: #0d3b66;
+            margin-bottom: 8px;
+            position: relative;
+            padding-bottom: 14px;
+        }
+
+        .samsel-apart-sub {
+            color: #555;
+            font-size: 1rem;
+            margin: 14px 0 28px;
+            line-height: 1.6;
+        }
+
+        .apart-blocks {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .apart-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: #f8fafc;
+            border-left: 4px solid #0d3b66;
+            border-radius: 8px;
+            padding: 16px 20px;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .apart-block:hover {
+            background: #eef4ff;
+            box-shadow: 0 4px 12px rgba(13, 59, 102, 0.08);
+        }
+
+        .apart-icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            background: #0d3b66;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 1px;
+        }
+
+        .apart-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .apart-text strong {
+            color: #0d3b66;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .apart-text span {
+            color: #555;
+            font-size: 0.93rem;
+            line-height: 1.5;
+        }
+
+        /* ---- PREMIUM ADD-ONS CARD GRID ---- */
+        .premium-addons-section {
+            padding: 60px 40px 50px;
+            background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
+        }
+
+        .premium-addons-title {
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #0d3b66;
+            margin-bottom: 44px;
+            letter-spacing: -0.5px;
+        }
+
+        .premium-addons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .addon-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 36px 24px 28px;
+            text-align: center;
+            box-shadow: 0 2px 14px rgba(13, 59, 102, 0.07);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .addon-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(13, 59, 102, 0.13);
+        }
+
+        .addon-icon-wrap {
+            width: 110px;
+            height: 110px;
+            background: #deeeff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px;
+            overflow: hidden;
+            padding: 14px;
+        }
+
+        .addon-icon-wrap svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .addon-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1a6399;
+            margin-bottom: 0;
+            line-height: 1.4;
+        }
+
+        .addon-divider {
+            width: 50px;
+            border: none;
+            border-top: 1.5px solid #d0dff0;
+            margin: 14px auto 12px;
+        }
+
+        .addon-desc {
+            font-size: 0.87rem;
+            color: #6b7280;
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .premium-addons-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .premium-addons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <!-- MAIN HEADER (From global UI) -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- LOGO (LEFT) -->
+            <div class="logo">
+                <a href="/">
+                    <div class="logo-text-group">
+                        <span class="logo-main">SAMSEL</span>
+                        <span class="logo-sub">Publications</span>
+                    </div>
+                    <div class="logo-tagline">Shaping Digital Minds since 2001</div>
+                </a>
+            </div>
+
+            <!-- BUTTON (RIGHT) -->
+            <div class="header-action" style="display: flex; gap: 15px;">
+                <a href="{% url 'contact' %}" class="inquiry-btn">
+                    WHAT'S YOUR QUERY <span class="icon"></span>
+                </a>
+                <a href="{% url 'request_demo' %}" class="demo-btn">
+                    REQUEST DEMO <span class="icon"></span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- TOP NAVBAR (Centered) -->
+    <nav class="top-navbar">
+        <ul class="top-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}" class="active">About Us</a></li>
+            <li class="dropdown">
+                <a href="{% url 'products' %}">Products <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu wide-dropdown">
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ibot-series' %}">I-Bot Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-1' %}">Class
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-2' %}">Class
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-3' %}">Class
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-4' %}">Class
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-5' %}">Class
+                                    5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-6' %}">Class
+                                    6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-7' %}">Class
+                                    7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-8' %}">Class
+                                    8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-9' %}">Class
+                                    9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ismart-series' %}">I-Smart Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-1' %}">Standard
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-2' %}">Standard
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-3' %}">Standard
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-4' %}">Standard
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-5' %}">Standard
+                                    5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-6' %}">Standard
+                                    6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-7' %}">Standard
+                                    7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-8' %}">Standard
+                                    8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-9' %}">Standard
+                                    9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='iwhizz-series' %}">I-Whizz Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-1' %}">Standard
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-2' %}">Standard
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-3' %}">Standard
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-4' %}">Standard
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-5' %}">Standard
+                                    5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-6' %}">Standard
+                                    6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-7' %}">Standard
+                                    7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-8' %}">Standard
+                                    8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-9' %}">Standard
+                                    9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='young-wizard-series' %}">Young Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-1' %}">Level
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-2' %}">Level
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-3' %}">Level
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-4' %}">Level
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-5' %}">Level
+                                    5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='little-wizard-series' %}">Little Wizard Series
+                            <span class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-1' %}">Kids
+                                    Level 1</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-2' %}">Kids
+                                    Level 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2016-series' %}">Application 2016 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='word' %}">MS-Word</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='excel' %}">MS-Excel</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='ppt' %}">MS-PowerPoint</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2007-series' %}">Application 2007 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='office-2007' %}">MS-Office
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='word-2007' %}">MS-Word
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='excel-2007' %}">MS-Excel
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='ppt-2007' %}">MS-PowerPoint
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='access-2007' %}">MS-Access
+                                    2007</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='programming-series' %}">Programming Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-1' %}">C++
+                                    Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-2' %}">C
+                                    Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-3' %}">Multimedia
+                                    Flash</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-4' %}">Learning
+                                    HTML</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='my-computer-series' %}">My Computer Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-1' %}">Grade
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-2' %}">Grade
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-3' %}">Grade
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-4' %}">Grade
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-5' %}">Grade
+                                    5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='right-click-series' %}">Right-Click Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-6' %}">ICT
+                                    Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-7' %}">ICT
+                                    Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-8' %}">ICT
+                                    Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-9' %}">ICT
+                                    Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}">English Cursive Writing
+                            <span class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='lkg' %}">LKG</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='ukg' %}">UKG</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-1' %}">Level
+                                    1</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-2' %}">Level
+                                    2</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-3' %}">Level
+                                    3</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-4' %}">Level
+                                    4</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-5' %}">Level
+                                    5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}">Tamil Copy Writing <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-1' %}">L.K.G</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-2' %}">U.K.G</a>
+                            </li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-3' %}">முதல்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-4' %}">இரண்டாம்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-5' %}">மூன்றாம்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-6' %}">நான்காம்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-7' %}">ஐந்தாம்
+                                    நிலை</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+
+            <li class="dropdown">
+                <a href="#">Login <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'school_login' %}">School Login</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="about-hero reveal-up">
+        <h1
+            style="font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;">
+            <span class="accent-word no-underline">Who We Are</span>
+        </h1>
+        <p class="about-hero-subtitle"
+            style="color: white; text-align: left; max-width: 800px; margin: 0 auto; font-size: 1.25rem;">
+            <span class="brand-text">SAMSEL</span> <span class="brand-secondary"
+                style="color: black !important; font-weight: 800;">Publications</span> has been a unit of
+            the USS (Unique Software Solutions) entity since 2001. We pioneer as
+            a leading academic e-learning enterprise, offering IT specific knowledge base for students across grades,
+            emphasizing digital excellence.
+        </p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="container" style="padding-top: 0;">
+
+        <div class="section-header" style="text-align: center; margin-bottom: 40px;">
+            <h2
+                style="position: relative; border-bottom: 4px solid var(--accent); display: inline-block; padding-bottom: 8px; font-size: 3.5rem; color: var(--primary);">
+                Our Insightful Experiences</h2>
+        </div>
+        <!-- SECTION 1: OUR MISSION -->
+        <section class="about-split-section reveal-up" style="margin-top: 0;">
+            <div class="about-image-wrapper">
+                <img src="{% static 'images/INSIG.jpeg' %}" alt="Samsel Publications Office">
+            </div>
+            <div class="about-text-content">
+                <p style="text-align: left;">
+                    We strongly believe that modern education should thrive and evolve with the latest technological
+                    advancements, guided by a practical frontier exposure towards every possible step we climb through.
+                </p>
+                <p style="text-align: left;">
+                    It’s our approachable, possible intent to bridge the gap between traditional academics and upgraded,
+                    digital-first, tech-savvy enhancements, equipping the students with the evolving tools required for
+                    their promising careers.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: OUR PREMIUM ADD-ONS (Card Grid) -->
+        <section class="premium-addons-section reveal-up">
+            <h2 class="premium-addons-title"
+                style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; left: 50%; transform: translateX(-50%); border-bottom: 4px solid var(--accent); width: fit-content; padding-bottom: 8px;">
+                Our Premium Add-Ons</h2>
+            <div class="premium-addons-grid">
+
+                <!-- Card 1 -->
+                <div class="addon-card">
+                    <div class="addon-icon-wrap">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="18" y="10" width="36" height="46" rx="4" fill="#deeeff" stroke="#3b82f6"
+                                stroke-width="2.5" />
+                            <line x1="26" y1="22" x2="46" y2="22" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                            <line x1="26" y1="30" x2="46" y2="30" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                            <line x1="26" y1="38" x2="38" y2="38" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                            <circle cx="54" cy="52" r="12" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5" />
+                            <line x1="50" y1="52" x2="58" y2="52" stroke="white" stroke-width="2.5"
+                                stroke-linecap="round" />
+                            <line x1="54" y1="48" x2="54" y2="56" stroke="white" stroke-width="2.5"
+                                stroke-linecap="round" />
+                        </svg>
+
+                    </div>
+                    <h3 class="addon-title">Curriculum-oriented<br>worksheets</h3>
+                    <hr class="addon-divider">
+                    <p class="addon-desc">Interactive user engagements through book-back practice exercises for primary
+                        grades</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="addon-card">
+                    <div class="addon-icon-wrap">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="12" y="14" width="46" height="36" rx="5" fill="#deeeff" stroke="#3b82f6"
+                                stroke-width="2.5" />
+                            <rect x="20" y="22" width="22" height="14" rx="2" fill="white" stroke="#3b82f6"
+                                stroke-width="1.5" />
+                            <rect x="22" y="24" width="10" height="4" rx="1" fill="#fbbf24" />
+                            <rect x="22" y="30" width="14" height="2" rx="1" fill="#93c5fd" />
+                            <path d="M48 30 Q60 28 58 42 Q56 50 48 52" stroke="#3b82f6" stroke-width="2" fill="none"
+                                stroke-linecap="round" />
+                            <circle cx="56" cy="46" r="4" fill="#f97316" opacity="0.8" />
+                            <path d="M54 46 L56 48 L59 43" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="addon-title">Interactive user<br>engagements</h3>
+                    <hr class="addon-divider">
+                    <p class="addon-desc">Through book-back practice exercises for primary grades</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="addon-card">
+                    <div class="addon-icon-wrap">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="14" y="34" width="38" height="24" rx="3" fill="#deeeff" stroke="#3b82f6"
+                                stroke-width="2.5" />
+                            <line x1="33" y1="58" x2="33" y2="64" stroke="#3b82f6" stroke-width="2.5"
+                                stroke-linecap="round" />
+                            <line x1="26" y1="64" x2="40" y2="64" stroke="#3b82f6" stroke-width="2.5"
+                                stroke-linecap="round" />
+                            <rect x="20" y="39" width="26" height="14" rx="2" fill="white" />
+                            <circle cx="50" cy="28" r="13" fill="#1e3a5f" />
+                            <path d="M44 28 L48 22 L56 28 L48 34 Z" fill="#fbbf24" />
+                            <circle cx="63" cy="38" r="8" fill="white" stroke="#3b82f6" stroke-width="2" />
+                            <path d="M60 38 L62 40 L66 35" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="addon-title">Enhanced online<br>examination</h3>
+                    <hr class="addon-divider">
+                    <p class="addon-desc">Software applications</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="addon-card">
+                    <div class="addon-icon-wrap">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 24 Q20 12 40 12 Q60 12 60 24 L60 60 Q60 66 54 66 L26 66 Q20 66 20 60 Z"
+                                fill="#deeeff" stroke="#3b82f6" stroke-width="2.5" />
+                            <path d="M20 24 Q40 30 60 24" stroke="#3b82f6" stroke-width="2" fill="none" />
+                            <circle cx="30" cy="48" r="8" fill="white" stroke="#3b82f6" stroke-width="1.5" />
+                            <polygon points="27,44 27,52 35,48" fill="#3b82f6" />
+                            <circle cx="56" cy="18" r="7" fill="#f97316" />
+                            <path d="M53 18 L55 20 L59 15" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3 class="addon-title">Voice-enabled<br>e-book</h3>
+                    <hr class="addon-divider">
+                    <p class="addon-desc">Software with video support</p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="addon-card">
+                    <div class="addon-icon-wrap">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="16" y="10" width="40" height="54" rx="4" fill="#deeeff" stroke="#3b82f6"
+                                stroke-width="2.5" />
+                            <line x1="24" y1="24" x2="48" y2="24" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                            <line x1="24" y1="32" x2="48" y2="32" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                            <rect x="22" y="40" width="8" height="8" rx="1" fill="white" stroke="#3b82f6"
+                                stroke-width="1.5" />
+                            <path d="M24 44 L25.5 45.5 L28 43" stroke="#3b82f6" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <line x1="34" y1="44" x2="46" y2="44" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                            <rect x="22" y="52" width="8" height="5" rx="1" fill="white" stroke="#3b82f6"
+                                stroke-width="1.5" />
+                            <line x1="34" y1="54" x2="42" y2="54" stroke="#3b82f6" stroke-width="2"
+                                stroke-linecap="round" />
+                            <circle cx="56" cy="18" r="9" fill="#fbbf24" />
+                            <text x="52" y="22" fill="white" font-size="10" font-weight="bold">?</text>
+                        </svg>
+                    </div>
+                    <h3 class="addon-title">Terminal<br>question papers</h3>
+                    <hr class="addon-divider">
+                    <p class="addon-desc"></p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="addon-card">
+                    <div class="addon-icon-wrap">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="16" y="12" width="40" height="56" rx="5" fill="#1e3a5f" />
+                            <rect x="20" y="16" width="32" height="48" rx="3" fill="#2563eb" />
+                            <circle cx="36" cy="36" r="10" fill="#fbbf24" />
+                            <circle cx="33" cy="33" r="3" fill="#1e3a5f" />
+                            <circle cx="39" cy="33" r="3" fill="#1e3a5f" />
+                            <path d="M31 40 Q36 44 41 40" stroke="#1e3a5f" stroke-width="2" fill="none"
+                                stroke-linecap="round" />
+                            <rect x="32" y="50" width="8" height="8" rx="1" fill="#fbbf24" />
+                            <line x1="36" y1="50" x2="36" y2="58" stroke="#1e3a5f" stroke-width="1" />
+                            <path d="M14 52 Q16 66 20 64" stroke="#e11d48" stroke-width="3" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h3 class="addon-title">Teacher's<br>key book</h3>
+                    <hr class="addon-divider">
+                    <p class="addon-desc"></p>
+                </div>
+
+            </div>
+        </section>
+
+
+
+
+        <!-- SECTION 3: WHAT SETS APART SAMSEL FROM THE REST -->
+        <section class="samsel-apart-section reveal-up">
+            <div class="samsel-apart-inner">
+                <h2 class="samsel-apart-title"
+                    style="position: relative; border-bottom: 4px solid var(--accent); display: inline-block; left: 50%; transform: translateX(-50%); padding-bottom: 8px;">
+                    What Sets Apart <span class="brand-text">SAMSEL</span> From The Rest</h2>
+                <p class="samsel-apart-sub" style="font-size: 1.3rem;"><span class="brand-text">SAMSEL</span> helps
+                    students prepare effectively
+                    for board exams through structured
+                    practice and instant insights.</p>
+
+                <div class="apart-blocks">
+                    <div class="apart-block">
+                        <span class="apart-icon">✓</span>
+                        <div class="apart-text">
+                            <strong>Curriculum-Aligned Questions:</strong>
+                            <span>Practice questions carefully mapped to the latest board syllabus.</span>
+                        </div>
+                    </div>
+                    <div class="apart-block">
+                        <span class="apart-icon">✓</span>
+                        <div class="apart-text">
+                            <strong>Personalized Practice Tests:</strong>
+                            <span>Adaptive tests that focus on each student's strengths and improvement areas.</span>
+                        </div>
+                    </div>
+                    <div class="apart-block">
+                        <span class="apart-icon">✓</span>
+                        <div class="apart-text">
+                            <strong>Instant Evaluation &amp; Feedback:</strong>
+                            <span>Get immediate results with insights to improve performance.</span>
+                        </div>
+                    </div>
+                    <div class="apart-block">
+                        <span class="apart-icon">✓</span>
+                        <div class="apart-text">
+                            <strong>Smart Performance Tracking:</strong>
+                            <span>Monitor progress and identify areas that need attention.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: BUILT FOR STUDENTS, TRUSTED BY EDUCATORS -->
+
+        <section class="approach-showcase reveal-up" style="padding-bottom: 0;">
+            <div class="container" style="position: relative; z-index: 2;">
+                <div class="approach-header">
+                    <h2>Built for Students, <span style="color: var(--accent);">Trusted by Educators</span></h2>
+                </div>
+                <div class="approach-grid">
+                    <div class="approach-item slide-left">
+                        <div class="approach-card">
+                            <div class="approach-icon">🎓</div>
+                            <p style="text-align: left;">
+                                <span class="brand-text">SAMSEL</span> combines expert-designed academic content with
+                                digital-first learning tools,
+                                enabling students to practice <strong>anytime, anywhere</strong>,
+                                while teachers gain sensibilities of meaningfulness over student performance.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="approach-item slide-right">
+                        <div class="approach-card">
+                            <div class="approach-icon">💡</div>
+                            <p style="text-align: left;">
+                                Our LMS platform supports students in building <strong>confidence, accuracy, and exam
+                                    readiness</strong>.
+                                Do not wait until the last minute. Join thousands of students preparing smarter with
+                                <span class="brand-text">SAMSEL</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: OUR RESULT-DRIVEN APPROACH -->
+        <section class="approach-showcase reveal-up" style="background: #ffffff; border-top: none; padding-top: 40px;">
+            <div class="container" style="position: relative; z-index: 2;">
+                <div class="approach-header">
+                    <h2>Our Result-Driven Approach</h2>
+                </div>
+                <div class="approach-grid">
+                    <div class="approach-item slide-left">
+                        <div class="approach-card">
+                            <div class="approach-icon">🎯</div>
+                            <p style="text-align: left;">Our greatness stems from a <strong>systematically designed
+                                    curriculum</strong> spanning
+                                over academic experience, thereby assessing students’ cognitive learning capabilities
+                                across diversified grades.</p>
+                        </div>
+                    </div>
+                    <div class="approach-item slide-right">
+                        <div class="approach-card">
+                            <div class="approach-icon">✨</div>
+                            <p style="text-align: left;">Backed by a <strong>committed, expert, and innovative
+                                    team</strong> of faculty and
+                                editorial board members, we deliver high-quality academic excellence over decades of
+                                continued service.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- EDUCATION BOARDS SLIDER -->
+    <section class="boards-slider-container">
+        <div class="boards-track">
+            <!-- Set 1 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 2 for infinite loop -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 3 for infinite loop fail-safe on wide screens -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-links-grid">
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#counter-section">Our Heritage</a></li>
+                        <li><a href="{% url 'home' %}#india-presence">Digital Presence</a></li>
+                        <li><a href="{% url 'home' %}#sl-pillars">Digital Vision</a></li>
+                        <li><a href="{% url 'home' %}#featured-series">Innovative Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="{% url 'request_demo' %}">Request Demo</a></li>
+                        <li><a href="{% url 'contact' %}">Executive Query</a></li>
+                        <li><a href="{% url 'our_story' %}">The <span class="brand-text">SAMSEL</span> Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Growth & Impact</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#showcase-section">Educational Impact</a></li>
+                        <li><a href="{% url 'home' %}#trusted-schools">Premier Partners</a></li>
+                        <li><a href="{% url 'home' %}#boards-section">Academic Boards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ecosystem</h4>
+                    <ul>
+                        <li><a href="{% url 'school_login' %}">Institutional Access</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="footer-logo">
+                <span class="brand-text">SAMSEL</span>
+                <span class="brand-secondary">PUBLICATIONS</span>
+            </h3>
+            <p class="footer-copyright">&copy; 2026 <span class="brand-text">SAMSEL</span> Publications. All Rights
+                Reserved.</p>
+        </div>
+    </footer>
+
+
+    <!-- GLOBAL JS FOR SCROLL REVEAL & HEADER -->
+    <script src="{% static 'js/global.js' %}"></script>
+    <script src="{% static 'js/scroll.js' %}"></script>
+
+    <!-- COUNTER ANIMATION SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const counters = document.querySelectorAll(".count");
+            const speed = 100; // The lower the slower
+
+            const startCounters = () => {
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = +counter.getAttribute("data-target");
+                        const count = +counter.innerText;
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 20);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            // Intersection Observer to trigger counting when visible
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        startCounters();
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const counterSection = document.getElementById("counter-section");
+            if (counterSection) {
+                observer.observe(counterSection);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

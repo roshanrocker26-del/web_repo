@@ -1,0 +1,2154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SAMSEL PUBLICATIONS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Replace individual CSS with global UI framework -->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+</head>
+
+<body>
+
+
+    <!-- MAIN HEADER -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- LOGO (LEFT) -->
+            <div class="logo">
+                <a href="/">
+                    <div class="logo-text-group">
+                        <span class="logo-main">SAMSEL</span>
+                        <span class="logo-sub">Publications</span>
+                    </div>
+                    <div class="logo-tagline">Shaping Digital Minds since
+                        2001</div>
+                </a>
+            </div>
+
+            <!-- BUTTON (RIGHT) -->
+            <div class="header-action" style="display: flex; gap: 15px;">
+                <a href="{% url 'contact' %}" class="inquiry-btn" target="_blank">
+                    WHAT'S YOUR QUERY <span class="icon"></span>
+                </a>
+                <a href="{% url 'request_demo' %}" class="demo-btn">
+                    REQUEST DEMO <span class="icon"></span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- TOP NAVBAR (Centered) -->
+    <nav class="top-navbar">
+        <ul class="top-menu">
+            <li><a href="{% url 'home' %}" class="active">Home</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li class="dropdown">
+                <a href="{% url 'products' %}">Products <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu wide-dropdown">
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ibot-series' %}">I-Bot Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-1' %}">Class
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-2' %}">Class
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-3' %}">Class
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-4' %}">Class
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-5' %}">Class
+                                    5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-6' %}">Class
+                                    6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-7' %}">Class
+                                    7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-8' %}">Class
+                                    8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-9' %}">Class
+                                    9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ismart-series' %}">I-Smart Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-1' %}">Standard
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-2' %}">Standard
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-3' %}">Standard
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-4' %}">Standard
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-5' %}">Standard
+                                    5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-6' %}">Standard
+                                    6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-7' %}">Standard
+                                    7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-8' %}">Standard
+                                    8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-9' %}">Standard
+                                    9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='iwhizz-series' %}">I-Whizz Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-1' %}">Standard
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-2' %}">Standard
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-3' %}">Standard
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-4' %}">Standard
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-5' %}">Standard
+                                    5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-6' %}">Standard
+                                    6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-7' %}">Standard
+                                    7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-8' %}">Standard
+                                    8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-9' %}">Standard
+                                    9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='young-wizard-series' %}">Young Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-1' %}">Level
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-2' %}">Level
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-3' %}">Level
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-4' %}">Level
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-5' %}">Level
+                                    5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='little-wizard-series' %}">Little Wizard Series
+                            <span class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-1' %}">Kids
+                                    Level 1</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-2' %}">Kids
+                                    Level 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2016-series' %}">Application 2016 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='word' %}">MS-Word</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='excel' %}">MS-Excel</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='ppt' %}">MS-PowerPoint</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2007-series' %}">Application 2007 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='office-2007' %}">MS-Office
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='word-2007' %}">MS-Word
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='excel-2007' %}">MS-Excel
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='ppt-2007' %}">MS-PowerPoint
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='access-2007' %}">MS-Access
+                                    2007</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='programming-series' %}">Programming Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-1' %}">C++
+                                    Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-2' %}">C
+                                    Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-3' %}">Multimedia
+                                    Flash</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-4' %}">Learning
+                                    HTML</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='my-computer-series' %}">My Computer Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-1' %}">Grade
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-2' %}">Grade
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-3' %}">Grade
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-4' %}">Grade
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-5' %}">Grade
+                                    5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='right-click-series' %}">Right-Click Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-6' %}">ICT
+                                    Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-7' %}">ICT
+                                    Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-8' %}">ICT
+                                    Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-9' %}">ICT
+                                    Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}">English Cursive Writing
+                            <span class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='lkg' %}">LKG</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='ukg' %}">UKG</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-1' %}">Level
+                                    1</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-2' %}">Level
+                                    2</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-3' %}">Level
+                                    3</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-4' %}">Level
+                                    4</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-5' %}">Level
+                                    5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}">Tamil Copy Writing <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-1' %}">L.K.G</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-2' %}">U.K.G</a>
+                            </li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-3' %}">முதல்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-4' %}">இரண்டாம்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-5' %}">மூன்றாம்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-6' %}">நான்காம்
+                                    நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-7' %}">ஐந்தாம்
+                                    நிலை</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+
+
+            <li class="dropdown">
+                <a href="#">Login <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'school_login' %}">School Login</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <style>
+        /* =============================================
+           PREMIUM LANDING HERO
+        ============================================= */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap');
+
+        .hero-landing {
+            position: relative;
+            min-height: min(85vh, 800px); padding-bottom: 80px;
+            /* Increased to accommodate pillars */
+            display: flex;
+            flex-direction: column;
+            /* Stack content and pillars */
+            align-items: center;
+            justify-content: flex-start;
+            /* Start from top */
+            padding-top: 60px;
+            overflow: hidden;
+            background: url('{% static "images/landing_bg.png" %}') center/cover no-repeat;
+        }
+
+        /* Deep gradient overlay for premium feel/legibility */
+        .hero-landing::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(10, 30, 60, 0.88) 0%,
+                    rgba(13, 59, 102, 0.75) 50%,
+                    rgba(5, 20, 45, 0.90) 100%);
+            z-index: 1;
+        }
+
+        /* Animated radial glow in the center */
+        .hero-landing::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.07) 0%, transparent 65%);
+            z-index: 2;
+            animation: glowPulse 5s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Particle canvas */
+        #hero-particles {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* All hero content sits above overlays */
+        .hero-inner {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 2rem;
+        }
+
+        /* Eyebrow tag */
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeSlideUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.2;
+            }
+        }
+
+        /* Main headline */
+        .hero-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeSlideUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.55s forwards;
+        }
+
+        .hero-headline .accent-word {
+            background: linear-gradient(90deg, var(--accent), #ffb347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        /* Underline animation on accent word */
+        .hero-headline .accent-word::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #ffb347);
+            border-radius: 2px;
+            animation: lineGrow 1s cubic-bezier(0.23, 1, 0.32, 1) 1.4s forwards;
+        }
+
+        @keyframes lineGrow {
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Subtitle */
+        .hero-para {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.78);
+            max-width: 660px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeSlideUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.75s forwards;
+        }
+
+        /* CTA buttons row */
+        .hero-cta-row {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeSlideUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.95s forwards;
+        }
+
+        .btn-hero-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--accent), #e6a800);
+            color: #0d3b66;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 16px 36px;
+            border-radius: 50px;
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.35);
+        }
+
+        .hero-cta-row .btn-hero-primary {
+            font-size: 1.3rem;
+            padding: 22px 50px;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 16px 40px rgba(255, 215, 0, 0.5);
+            color: #0d3b66;
+        }
+
+        .btn-hero-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 15px 34px;
+            border-radius: 50px;
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .hero-cta-row .btn-hero-outline {
+            font-size: 1.3rem;
+            padding: 20px 48px;
+        }
+
+        .btn-hero-outline:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.75);
+            transform: translateY(-3px);
+            color: #fff;
+        }
+
+        /* Floating mini-badges */
+        .hero-badges {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 4rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.9s cubic-bezier(0.23, 1, 0.32, 1) 1.2s forwards;
+        }
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .hero-badge:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .hero-badge .badge-icon {
+            font-size: 1rem;
+        }
+
+        /* Scroll indicator */
+        .hero-scroll-cue {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeSlideUp 0.9s ease 1.5s forwards;
+        }
+
+        .hero-scroll-cue span {
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .scroll-bar {
+            width: 1.5px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-bar::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: scrollDown 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollDown {
+            0% {
+                top: -100%;
+            }
+
+            100% {
+                top: 200%;
+            }
+        }
+
+        /* Shared fade-up keyframe */
+        @keyframes fadeSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Pillars Integration inside Hero */
+        .hero-landing .sl-pillars {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 20;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.8rem;
+            margin-top: 3rem; margin-bottom: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .hero-landing .sl-pillars {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 901px) {
+            .hero-landing .sl-pillars {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .hero-landing .sl-pillar {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 2.4rem 2rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0;
+            transform: translateY(40px);
+            text-align: left;
+        }
+
+        .hero-landing .sl-pillar.sl-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-landing .sl-pillar:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .hero-landing .sl-pillar-icon {
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .hero-landing .sl-pillar h3 {
+            color: #fff;
+            font-size: 1.25rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero-landing .sl-pillar p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-cta-row {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+
+    <!-- ============================================
+         PREMIUM LANDING HERO
+    ============================================= -->
+    <section class="hero-landing" id="hero-landing">
+        <!-- Particle Canvas -->
+        <canvas id="hero-particles"></canvas>
+
+        <div class="hero-inner">
+
+            <h1 class="hero-headline">
+                <span class="accent-word">Empowering</span><br>
+                <span class="accent-word">Educators</span><br>
+                That Inspire
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="hero-para" style="text-align:left;">
+                We at <span class="brand-text">SAMSEL</span> excel in implementing computer literacy programs in
+                schools, ensuring effective learning
+                across all grades and cadres.<br>
+
+                Our conceptualizations blend the latest Windows academic curriculum, covering diversified application
+                packages in line with programming languages and breaking down complexities into simplified standards.
+
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="hero-cta-row">
+                <a href="#showcase-section" class="btn-hero-primary">
+                    Know More &nbsp;→
+                </a>
+                <a href="{% url 'our_story' %}" class="btn-hero-outline">
+                    Our Story
+                </a>
+            </div>
+        </div>
+
+
+
+        <!-- Pillars moved inside Hero Section -->
+        <div class="sl-pillars" id="sl-pillars">
+
+            <div class="sl-pillar">
+                <div class="sl-pillar-icon">🏫</div>
+                <h3>Computer Literacy at Schools</h3>
+                <p style="text-align: left;">We implement structured computer literacy programs at schools, ensuring
+                    an effective and progressive
+                    learning scope across all grades and cadres.</p>
+            </div>
+
+            <div class="sl-pillar">
+                <div class="sl-pillar-icon">📐</div>
+                <h3>Curriculum That Excels</h3>
+                <p style="text-align: left;">Specialised in conceptualising the latest Windows academic curriculum,
+                    covering diversified
+                    application
+                    packages in line with modern programming languages.</p>
+            </div>
+
+            <div class="sl-pillar">
+                <div class="sl-pillar-icon">🎓</div>
+                <h3>Empowering Educators</h3>
+                <p style="text-align: left;">We equip educators with tools and resources to inspire turning
+                    classrooms into innovation hubs and
+                    helping teachers deliver digital excellence with confidence.</p>
+            </div>
+
+            <div class="sl-pillar">
+                <div class="sl-pillar-icon">💡</div>
+                <h3>Digital Excellence</h3>
+                <p style="text-align: left;">Our emphasis on digital excellence ensures every student gains
+                    practical, future-ready skills from
+                    foundational IT concepts to advanced programming logic.</p>
+            </div>
+
+            <div class="sl-pillar">
+                <div class="sl-pillar-icon">🔬</div>
+                <h3>Breaking Complexities</h3>
+                <p style="text-align: left;">We excel at transforming complex technology topics into simple, engaging
+                    standards making advanced
+                    concepts accessible and enjoyable for every learner.</p>
+            </div>
+
+            <div class="sl-pillar">
+                <div class="sl-pillar-icon">🌐</div>
+                <h3>Leading E-Learning Enterprise</h3>
+                <p style="text-align: left;">As a pioneering academic e-learning enterprise since 2001, we deliver
+                    IT-specific knowledge for
+                    students
+                    in grades across India, trusted for over two decades.</p>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <script>
+        /* ---- Lightweight particle system ---- */
+        (function () {
+            const canvas = document.getElementById('hero-particles');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let W, H;
+
+            function resize() {
+                W = canvas.width = canvas.offsetWidth;
+                H = canvas.height = canvas.offsetHeight;
+            }
+
+            function createParticle() {
+                return {
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    r: Math.random() * 1.8 + 0.6,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: -Math.random() * 0.5 - 0.2,
+                    alpha: Math.random() * 0.5 + 0.15
+                };
+            }
+
+            function initParticles(n) {
+                particles = Array.from({ length: n }, createParticle);
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+                    ctx.fill();
+
+                    p.x += p.dx;
+                    p.y += p.dy;
+
+                    if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; }
+                    if (p.x < -5 || p.x > W + 5) { p.x = Math.random() * W; }
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', () => { resize(); initParticles(120); });
+            resize();
+            initParticles(120);
+            draw();
+        })();
+    </script>
+    <script>
+        /* ---- Reveal logic for pillars inside Hero ---- */
+        (function () {
+            const pillars = document.querySelectorAll('.hero-landing .sl-pillar');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('sl-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            pillars.forEach((p, i) => {
+                p.style.transitionDelay = (0.1 * i) + 's';
+                observer.observe(p);
+            });
+        })();
+    </script>
+
+    <!-- VALUE PROPOSITION — ZIGZAG LAYOUT -->
+    <section id="showcase-section" class="vp-section reveal-up delay-200">
+        <div class="vp-header">
+            <h2 class="vp-title" style="font-size: 2.5rem;">Value Proposition - Built for Modern Classrooms</h2>
+            <p class="vp-subtitle" style="font-size: 1.5rem;"><strong>Simple. Structured. Effective.</strong></p>
+        </div>
+
+        <!-- Row 1: Image LEFT, Text RIGHT -->
+        <div class="vp-row">
+            <div class="vp-img-wrap">
+                <img src="{% static 'images/vp_adopt.png' %}" alt="Adopt SAMSEL Content">
+            </div>
+            <div class="vp-text-wrap">
+                <span class="vp-check">✓</span>
+                <div>
+                    <p class="vp-point" style="font-size: 1.5rem;"><strong>Adopt <span class="brand-text">SAMSEL</span>
+                            Content:</strong> Schools
+                        integrate our textbooks and resources into their curriculum.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Text LEFT, Image RIGHT -->
+        <div class="vp-row vp-row-reverse">
+            <div class="vp-img-wrap">
+                <img src="{% static 'images/vp_digital.png' %}" alt="Enable Digital Learning">
+            </div>
+            <div class="vp-text-wrap">
+                <span class="vp-check">✓</span>
+                <div>
+                    <p class="vp-point" style="font-size: 1.5rem;"><strong>Enable Digital Learning:</strong> Students
+                        access personalized practice
+                        and assessments.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Image LEFT, Text RIGHT -->
+        <div class="vp-row">
+            <div class="vp-img-wrap">
+                <img src="{% static 'images/vp_track.png' %}" alt="Track Performance">
+            </div>
+            <div class="vp-text-wrap">
+                <span class="vp-check">✓</span>
+                <div>
+                    <p class="vp-point" style="font-size: 1.5rem;"><strong>Track &amp; Improve Performance:</strong>
+                        Teachers and students receive
+                        actionable insights for continuous improvement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .vp-section {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 24px;
+        }
+
+        .vp-header {
+            text-align: center;
+            margin-bottom: 52px;
+        }
+
+        .vp-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 800;
+            color: #0d3b66;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .vp-subtitle {
+            font-size: 1.1rem;
+            color: #1565a8;
+        }
+
+        .vp-row {
+            display: flex;
+            align-items: center;
+            gap: 52px;
+            margin-bottom: 48px;
+        }
+
+        .vp-row-reverse {
+            flex-direction: row-reverse;
+        }
+
+        .vp-img-wrap {
+            flex: 1.1;
+        }
+
+        .vp-img-wrap img {
+            width: 100%;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(13, 59, 102, 0.1);
+            object-fit: cover;
+            max-height: 280px;
+        }
+
+        .vp-text-wrap {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .vp-check {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #0d3b66;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .vp-point {
+            font-size: 1.05rem;
+            color: #374151;
+            line-height: 1.7;
+        }
+
+        .vp-point strong {
+            color: #0d3b66;
+        }
+
+        @media (max-width: 768px) {
+
+            .vp-row,
+            .vp-row-reverse {
+                flex-direction: column;
+                gap: 24px;
+            }
+        }
+    </style>
+
+    <!-- PREMIUM SERIES SLIDER CSS -->
+    <style>
+        .series-slider-wrapper {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 4rem 0;
+            overflow: hidden;
+            background: #020817;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .series-slides-container {
+            display: flex;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .series-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            /* Push content to top */
+            justify-content: space-between;
+            padding: 80px 10% 120px;
+            /* Top padding for content, Bottom padding for button area */
+            position: relative;
+            background: radial-gradient(circle at center, #021a4d 0%, #000 100%);
+            overflow: hidden;
+            transition: background 1.5s ease;
+        }
+
+        /* Subtle background zoom on active slide */
+        .active-slide {
+            background-size: 110%;
+        }
+
+        /* Ambient Glow & Spotlight */
+        .slide-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: 1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .slide-glow::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+            filter: blur(30px);
+            z-index: 2;
+        }
+
+        .slide-spotlight {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 100%;
+            background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .slide-image-wrapper {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 2rem;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.8s ease 0.2s;
+            perspective: 1000px;
+            flex: 0 0 45%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .slide-image-wrapper img {
+            max-height: 450px;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 60px var(--glow-color);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .slide-image-wrapper img:hover {
+            transform: translateY(-10px) rotateX(5deg) scale(1.05);
+        }
+
+        .slide-content {
+            position: static;
+            /* Allows child absolute elements to be relative to .series-slide */
+            z-index: 10;
+            max-width: 600px;
+            opacity: 0;
+            flex: 1;
+            text-align: left;
+            padding-left: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: all 0.8s ease;
+        }
+
+        .series-slide .btn-hero-primary {
+            position: relative !important;
+            margin-top: 2rem !important;
+            z-index: 50 !important;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s !important;
+            display: inline-flex !important;
+        }
+
+        .active-slide .btn-hero-primary {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .active-slide .slide-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .active-slide .slide-image-wrapper {
+            opacity: 1;
+            transform: scale(1) translateX(0);
+        }
+
+        .slide-tagline {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-title .accent-word {
+            color: var(--glow-color);
+            /* Overridden inline */
+            text-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .slide-title .accent-word::after {
+            display: none !important;
+        }
+
+        .slide-desc {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s ease;
+        }
+
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .arrow-prev {
+            left: 20px;
+        }
+
+        .arrow-next {
+            right: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .slide-title {
+                font-size: 2.5rem;
+            }
+
+            .slide-desc {
+                font-size: 1rem;
+            }
+
+            .slide-image-wrapper img {
+                max-height: 250px;
+            }
+
+            .series-slider-wrapper {
+                height: 650px;
+            }
+
+            .slider-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+
+
+    <section id="featured-series" class="container reveal-up" style="margin-top: 6rem;">
+        <h2 class="section-title" style="font-size: 3.5rem;">Our Featured Series</h2>
+
+        <div class="series-slider-wrapper">
+            <!-- AI ORIENTED BACKGROUND -->
+            <canvas id="ai-slider-canvas"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6;"></canvas>
+
+            <div class="series-slides-container" id="series-slider">
+                <!-- Slide 1: i-Bot -->
+                <div class="series-slide active-slide" style="--glow-color: rgba(255, 215, 0, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='ibot-series' %}">
+                            <img src="{% static 'images/i-bot-cover.png' %}" alt="I-Bot Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Innovation & Future</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='ibot-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #ffd700;">I-Bot</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Exploring the cutting-edge world of Robotics and Artificial Intelligence.
+                            Designed to spark curiosity and build future-ready skills.</p>
+                        <a href="{% url 'series_detail' series_slug='ibot-series' %}" class="btn-hero-primary">Know More
+                            &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 2: I-Smart -->
+                <div class="series-slide" style="--glow-color: rgba(0, 150, 255, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='ismart-series' %}">
+                            <img src="{% static 'images/i-smart-cover.jpg' %}" alt="I-Smart Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Core Fundamentals</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='ismart-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #0096ff;">I-Smart</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Mastering the core fundamentals of Information Technology with structured,
+                            easy-to-follow curriculum for all levels.</p>
+                        <a href="{% url 'series_detail' series_slug='ismart-series' %}" class="btn-hero-primary">Know
+                            More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 3: I-Whizz -->
+                <div class="series-slide" style="--glow-color: rgba(255, 50, 50, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='iwhizz-series' %}">
+                            <img src="{% static 'images/i-whizz-cover.png' %}" alt="I-Whizz Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Advanced Science</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='iwhizz-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #ff3232;">I-Whizz</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">High-level Computer Science concepts simplified for modern learners.
+                            Bridging the gap between theory and practical excellence.</p>
+                        <a href="{% url 'series_detail' series_slug='iwhizz-series' %}" class="btn-hero-primary">Know
+                            More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Young Wizard -->
+                <div class="series-slide" style="--glow-color: rgba(150, 50, 255, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='young-wizard-series' %}">
+                            <img src="{% static 'images/young-wizard-cover.png' %}" alt="Young Wizard Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Magical Computing</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='young-wizard-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #9632ff;">Young Wizard</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">A magical journey into the world of creative technology. Transforming
+                            complex IT tasks into fun, engaging puzzles.</p>
+                        <a href="{% url 'series_detail' series_slug='young-wizard-series' %}"
+                            class="btn-hero-primary">Know More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 5: Little Wizard -->
+                <div class="series-slide" style="--glow-color: rgba(0, 255, 255, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='little-wizard-series' %}">
+                            <img src="{% static 'images/little-wizard-cover.jpg' %}" alt="Little Wizard Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Early Steps</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='little-wizard-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #00ffff;">Little Wizard</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">The perfect introduction for our youngest learners. Colorful, intuitive,
+                            and designed for early cognitive growth.</p>
+                        <a href="{% url 'series_detail' series_slug='little-wizard-series' %}"
+                            class="btn-hero-primary">Know More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 6: App 2016 -->
+                <div class="series-slide" style="--glow-color: rgba(200, 200, 255, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='app2016-series' %}">
+                            <img src="{% static 'images/2016 word.png' %}" alt="App 2016 Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Modern Tools</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='app2016-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #c8c8ff;">Application 2016</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Empowering students with the latest Office suite skills. Professional
+                            document creation, data analysis, and presentations.</p>
+                        <a href="{% url 'series_detail' series_slug='app2016-series' %}" class="btn-hero-primary">Know
+                            More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 7: App 2007 -->
+                <div class="series-slide" style="--glow-color: rgba(0, 128, 128, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='app2007-series' %}">
+                            <img src="{% static 'images/App1.jpg' %}" alt="App 2007 Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Classic Suite</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='app2007-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #008080;">Application 2007</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Building foundation skills in Office 2007 applications. Essential for
+                            understanding core software functionality.</p>
+                        <a href="{% url 'series_detail' series_slug='app2007-series' %}" class="btn-hero-primary">Know
+                            More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 8: Programming -->
+                <div class="series-slide" style="--glow-color: rgba(50, 255, 100, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='programming-series' %}">
+                            <img src="{% static 'images/Pro1 New.jpg' %}" alt="Programming Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Logic & Code</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='programming-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #32ff64;">Programming</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Building strong computational logic and coding proficiency. From basic
+                            algorithms to complex programming structures.</p>
+                        <a href="{% url 'series_detail' series_slug='programming-series' %}"
+                            class="btn-hero-primary">Know More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 9: Right-Click -->
+                <div class="series-slide" style="--glow-color: rgba(175, 255, 0, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='right-click-series' %}">
+                            <img src="{% static 'images/right-click-cover.png' %}" alt="Right-Click Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">ICT Masterclass</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='right-click-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #afff00;">Right-Click</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">The ultimate ICT matrix for modern education. Integrating networks and
+                            data communication into easy-to-learn modules.</p>
+                        <a href="{% url 'series_detail' series_slug='right-click-series' %}"
+                            class="btn-hero-primary">Know More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 10: My Computer -->
+                <div class="series-slide" style="--glow-color: rgba(75, 0, 130, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='my-computer-series' %}">
+                            <img src="{% static 'images/my-computer-cover.png' %}" alt="My Computer Series">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">First Steps</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='my-computer-series' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #4b0082;">My Computer</span> Series
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Navigating your first PC with confidence. Detailed exploration of
+                            operating systems and system maintenance.</p>
+                        <a href="{% url 'series_detail' series_slug='my-computer-series' %}"
+                            class="btn-hero-primary">Know More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 11: English Cursive -->
+                <div class="series-slide" style="--glow-color: rgba(255, 50, 150, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}">
+                            <img src="{% static 'images/cursive-writing-cover.png' %}" alt="Cursive Writing">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Elegant Penmanship</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #ff3296;">Cursive Writing</span> Books
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Building fluid handwriting and fine motor skills. From connecting loops to
+                            professional cursive excellence.</p>
+                        <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}"
+                            class="btn-hero-primary">Know More &nbsp;→</a>
+                    </div>
+                </div>
+
+                <!-- Slide 12: Tamil -->
+                <div class="series-slide" style="--glow-color: rgba(255, 120, 0, 0.6);">
+                    <div class="slide-spotlight"></div>
+                    <div class="slide-image-wrapper">
+                        <div class="slide-glow"></div>
+                        <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}">
+                            <img src="{% static 'images/tamil-writing-cover.png' %}" alt="Tamil Writing">
+                        </a>
+                    </div>
+                    <div class="slide-content">
+                        <span class="slide-tagline">Cultural Heritage</span>
+                        <h2 class="slide-title">
+                            <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}"
+                                style="text-decoration: none; color: inherit;">
+                                <span class="accent-word" style="color: #ff7800;">Tamil Writing</span> Books
+                            </a>
+                        </h2>
+                        <p class="slide-desc">Mastering the art of Tamil penmanship. Structured practice from basic
+                            strokes to advanced artistic script styles.</p>
+                        <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}"
+                            class="btn-hero-primary">Know More &nbsp;→</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="slider-arrow arrow-prev" onclick="moveSlide(-1)">❮</div>
+            <div class="slider-arrow arrow-next" onclick="moveSlide(1)">❯</div>
+        </div>
+    </section>
+
+
+
+    <!-- DISTRIBUTION MAP -->
+    <section id="india-presence" class="container reveal-up" style="padding: 3rem 20px;">
+        <h2 class="section-title" style="font-size: 3.5rem;">Our Regional Digital Presence</h2>
+        <p
+            style="text-align:left; color: var(--text-muted); max-width: 800px; margin: 0 auto 4rem; font-size: 1.25rem;">
+            Empowering limitless learning without boundaries across borders. Advancing a digital-first e-learning
+            experience across South India.<br>
+            Trusted by top institutions in Tamil Nadu, Kerala, Karnataka, Andhra Pradesh, and Telangana. Our textbooks
+            inspire and shape future-ready minds.
+        </p>
+
+        <div class="map-container">
+            <div class="map-wrapper">
+                <!-- Realistic Stylized Map Outline of South India -->
+                <svg viewBox="0 0 600 700" class="tn-map">
+                    <defs>
+                        <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="var(--primary)" />
+                            <stop offset="100%" stop-color="#e91e63" />
+                        </linearGradient>
+                    </defs>
+                    <path data-state="Andhra Pradesh"
+                        d="M 440.6,216.2 L 434.5,215.6 L 441.1,223.6 L 423.3,232.4 L 412.3,236.8 L 395.0,234.2 L 375.5,266.1 L 368.5,267.1 L 367.6,260.5 L 361.9,258.5 L 341.5,269.1 L 332.2,287.2 L 330.7,299.3 L 331.2,312.3 L 338.1,324.0 L 334.3,347.8 L 343.8,381.9 L 335.5,367.4 L 335.1,373.0 L 333.5,368.2 L 330.8,374.3 L 343.6,385.3 L 339.6,379.9 L 328.7,377.1 L 324.7,386.9 L 314.7,390.1 L 315.9,394.0 L 312.2,389.6 L 307.8,391.5 L 300.5,387.6 L 297.8,388.6 L 300.2,394.4 L 294.6,398.9 L 290.2,397.0 L 287.0,403.4 L 278.5,399.9 L 275.8,402.8 L 273.5,399.5 L 265.0,401.0 L 260.7,404.8 L 257.4,419.5 L 254.4,417.1 L 252.9,423.2 L 248.7,423.2 L 240.0,419.7 L 242.5,411.4 L 247.6,407.4 L 252.9,411.1 L 251.3,405.4 L 258.9,390.6 L 248.6,387.7 L 249.8,374.8 L 239.7,375.9 L 238.3,371.2 L 234.7,371.9 L 235.9,360.9 L 228.0,362.6 L 229.7,356.2 L 221.8,356.9 L 216.5,367.0 L 213.6,364.9 L 203.9,369.9 L 202.6,361.9 L 190.6,360.6 L 190.5,357.7 L 190.0,365.9 L 181.5,366.5 L 183.7,357.3 L 176.6,345.6 L 182.9,344.9 L 183.1,350.9 L 189.1,354.0 L 197.2,352.3 L 201.3,359.6 L 202.9,355.2 L 197.8,352.4 L 201.2,348.4 L 198.9,347.3 L 206.3,346.0 L 206.3,340.5 L 200.7,337.2 L 200.6,343.9 L 195.6,336.9 L 189.3,336.6 L 187.0,342.8 L 178.9,341.5 L 176.2,333.9 L 180.6,329.5 L 175.6,330.0 L 170.2,323.5 L 175.3,306.3 L 170.4,304.7 L 170.7,300.2 L 185.8,303.2 L 189.4,297.1 L 189.9,290.1 L 180.5,278.3 L 183.3,271.1 L 187.8,270.9 L 183.0,261.0 L 185.1,257.6 L 194.1,254.7 L 206.8,256.5 L 205.7,239.8 L 210.8,235.4 L 193.4,228.7 L 204.6,222.8 L 202.2,218.8 L 206.3,201.2 L 200.5,190.4 L 206.8,179.8 L 215.4,176.5 L 203.4,171.9 L 213.8,152.0 L 208.5,147.7 L 211.3,136.1 L 207.7,127.8 L 211.1,122.3 L 217.9,121.9 L 222.8,108.9 L 227.9,108.1 L 218.9,97.5 L 223.3,94.3 L 223.9,83.3 L 228.2,81.3 L 239.0,86.7 L 239.6,77.7 L 245.8,75.4 L 243.9,64.7 L 248.7,58.5 L 245.9,51.7 L 254.8,57.9 L 272.0,59.7 L 272.6,65.0 L 278.0,65.4 L 277.3,70.4 L 288.2,75.1 L 291.4,67.3 L 302.5,73.2 L 319.1,69.3 L 327.0,78.2 L 325.6,90.1 L 321.4,93.6 L 325.1,97.8 L 323.9,108.9 L 333.7,115.7 L 341.4,113.5 L 345.0,120.3 L 351.9,118.1 L 359.2,123.8 L 366.8,137.4 L 364.2,141.6 L 368.8,138.4 L 370.4,143.6 L 375.9,141.8 L 379.4,161.5 L 384.9,158.0 L 407.0,159.9 L 429.5,147.1 L 438.7,151.3 L 443.7,143.5 L 440.9,140.4 L 445.1,134.7 L 442.3,134.1 L 443.6,129.4 L 449.1,122.8 L 456.6,138.7 L 465.0,127.8 L 470.0,132.1 L 477.4,131.1 L 475.5,127.6 L 479.1,122.8 L 475.2,117.7 L 481.3,110.7 L 484.8,113.6 L 494.1,107.7 L 489.7,99.5 L 497.0,101.8 L 497.2,95.4 L 500.7,98.7 L 505.2,91.0 L 511.2,103.2 L 513.2,98.6 L 517.2,108.3 L 527.6,112.1 L 538.8,110.3 L 544.5,103.4 L 543.8,98.2 L 546.6,99.9 L 551.2,95.6 L 552.4,98.3 L 556.0,95.5 L 552.5,92.6 L 558.0,91.3 L 560.0,96.5 L 529.7,134.5 L 502.7,149.5 L 485.2,171.4 L 443.9,195.5 L 438.1,205.2 L 443.3,209.2 L 443.4,203.5 L 440.6,216.2 Z"
+                        class="map-path" fill="none" stroke="url(#mapGradient)" stroke-width="4" stroke-linejoin="round"
+                        stroke-dasharray="3500" stroke-dashoffset="3500" />
+                    <path data-state="Karnataka"
+                        d="M 198.4,128.0 L 201.9,130.5 L 199.6,134.6 L 211.3,136.1 L 208.5,147.7 L 213.8,152.0 L 203.4,171.9 L 215.5,176.1 L 206.8,179.8 L 200.5,190.4 L 206.3,201.2 L 202.2,218.8 L 204.6,222.8 L 193.4,228.7 L 210.8,237.8 L 205.7,239.8 L 206.8,256.5 L 190.7,255.0 L 183.0,261.0 L 188.0,269.8 L 183.3,271.1 L 180.5,278.3 L 189.9,290.1 L 189.9,295.0 L 185.8,303.2 L 170.9,299.6 L 170.4,304.7 L 175.3,306.3 L 170.2,323.5 L 175.6,330.0 L 180.6,329.5 L 176.2,333.9 L 179.1,341.7 L 187.0,342.8 L 189.3,336.6 L 195.6,336.9 L 200.6,343.9 L 200.7,337.2 L 206.3,340.5 L 206.3,346.0 L 198.9,347.3 L 201.2,348.4 L 197.8,352.4 L 202.9,355.2 L 201.3,359.6 L 197.2,352.3 L 189.1,354.0 L 183.1,350.9 L 182.9,344.9 L 176.6,345.6 L 183.7,357.3 L 181.6,366.6 L 190.0,365.9 L 190.5,357.7 L 190.6,360.6 L 202.6,361.9 L 205.2,369.8 L 213.6,364.9 L 216.5,367.0 L 221.8,356.9 L 229.7,356.2 L 228.0,362.6 L 232.7,359.3 L 236.3,361.6 L 234.7,371.9 L 238.3,371.2 L 239.7,375.9 L 249.8,374.8 L 248.6,387.7 L 258.9,390.6 L 251.3,405.4 L 252.9,411.1 L 247.6,407.4 L 241.5,416.2 L 222.2,410.8 L 217.6,420.6 L 210.7,420.9 L 212.2,433.4 L 204.6,443.7 L 217.4,445.4 L 219.4,448.5 L 214.4,456.8 L 205.6,457.1 L 202.4,466.2 L 193.7,463.6 L 187.2,468.1 L 182.1,463.6 L 177.0,464.6 L 174.0,475.0 L 160.4,473.2 L 157.7,468.8 L 153.1,470.5 L 153.0,466.1 L 138.4,461.2 L 138.4,455.2 L 126.6,456.5 L 123.3,450.2 L 116.6,449.2 L 104.7,439.5 L 102.1,433.4 L 104.5,429.0 L 100.9,431.0 L 97.6,426.8 L 100.3,424.5 L 95.2,425.7 L 91.6,420.0 L 86.6,420.8 L 83.9,414.3 L 77.8,416.1 L 66.4,361.2 L 60.0,352.4 L 54.4,326.0 L 50.6,327.4 L 47.7,316.3 L 40.0,313.1 L 40.6,308.0 L 48.7,304.8 L 51.2,293.9 L 48.0,290.1 L 52.2,288.4 L 47.9,270.1 L 40.2,269.2 L 46.6,263.4 L 53.3,264.0 L 58.4,250.5 L 53.4,249.8 L 59.7,247.4 L 60.0,240.8 L 51.6,238.6 L 53.5,232.5 L 49.0,224.8 L 54.5,225.7 L 58.8,218.9 L 63.5,224.4 L 69.2,221.8 L 69.6,216.1 L 80.6,213.3 L 81.3,204.6 L 88.7,204.2 L 94.8,209.7 L 98.4,203.9 L 108.3,204.5 L 112.4,201.2 L 117.2,203.6 L 116.5,188.3 L 112.5,182.0 L 115.3,177.2 L 123.5,182.7 L 127.6,180.3 L 129.7,185.0 L 139.0,182.9 L 141.7,186.4 L 145.0,182.5 L 151.7,185.7 L 149.3,171.2 L 157.0,167.8 L 158.7,162.8 L 166.8,166.8 L 171.6,159.3 L 169.3,155.7 L 177.8,154.8 L 179.7,140.9 L 187.2,142.6 L 193.6,129.4 L 198.4,128.0 Z"
+                        class="map-path" fill="none" stroke="url(#mapGradient)" stroke-width="4" stroke-linejoin="round"
+                        stroke-dasharray="3500" stroke-dashoffset="3500" />
+                    <path data-state="Kerala"
+                        d="M 84.1,414.4 L 86.6,420.8 L 91.6,420.0 L 95.2,425.7 L 100.3,424.5 L 97.5,426.1 L 100.7,430.9 L 104.5,429.0 L 102.1,433.4 L 104.7,439.5 L 112.4,446.2 L 123.1,450.1 L 127.1,456.7 L 138.4,455.2 L 138.8,461.6 L 153.0,466.1 L 154.3,472.0 L 144.1,475.5 L 144.8,480.7 L 159.4,486.1 L 155.2,494.6 L 168.5,493.2 L 166.8,496.4 L 171.8,501.5 L 164.8,507.4 L 176.9,515.0 L 175.7,522.0 L 172.4,522.2 L 173.1,538.6 L 180.5,542.9 L 192.8,536.4 L 195.6,542.9 L 191.1,548.6 L 194.7,555.0 L 189.3,572.7 L 198.5,573.3 L 201.2,578.2 L 188.4,602.1 L 193.7,609.4 L 189.5,615.7 L 194.8,625.3 L 191.0,627.7 L 189.7,636.7 L 180.7,633.1 L 159.8,607.5 L 148.2,576.8 L 145.2,554.7 L 149.9,567.4 L 148.7,559.6 L 151.2,562.1 L 150.5,576.7 L 157.6,576.5 L 153.5,575.0 L 151.5,559.9 L 143.4,546.1 L 144.0,554.4 L 136.4,526.2 L 128.7,513.9 L 126.2,496.7 L 114.4,479.8 L 108.7,463.8 L 106.4,465.2 L 98.9,456.6 L 102.6,455.9 L 97.2,453.4 L 103.9,446.9 L 95.2,448.5 L 94.1,453.4 L 77.8,416.2 L 84.1,414.4 Z"
+                        class="map-path" fill="none" stroke="url(#mapGradient)" stroke-width="4" stroke-linejoin="round"
+                        stroke-dasharray="3500" stroke-dashoffset="3500" />
+                    <path data-state="Tamil Nadu"
+                        d="M 332.0,377.4 L 343.6,385.3 L 344.3,381.6 L 340.7,414.8 L 336.0,430.5 L 329.2,436.8 L 320.4,456.7 L 315.5,458.4 L 316.1,454.5 L 310.9,455.0 L 314.9,459.2 L 311.7,460.5 L 318.6,463.4 L 316.5,475.5 L 321.3,504.7 L 315.3,504.2 L 313.9,507.6 L 321.1,512.8 L 322.6,538.2 L 315.8,539.6 L 310.3,535.2 L 306.5,537.8 L 315.2,539.6 L 306.1,536.0 L 293.9,540.3 L 290.7,546.1 L 292.6,551.3 L 274.6,578.5 L 281.2,587.0 L 288.8,588.8 L 271.4,589.4 L 248.6,598.2 L 239.0,608.5 L 238.4,614.0 L 242.0,615.1 L 235.8,619.9 L 234.0,633.8 L 208.8,648.3 L 197.3,646.1 L 186.3,637.4 L 194.9,625.6 L 189.5,615.7 L 193.7,609.4 L 188.4,602.1 L 201.2,578.2 L 198.5,573.3 L 189.3,572.7 L 194.7,555.0 L 191.1,548.5 L 195.6,542.9 L 192.8,536.4 L 180.5,542.9 L 173.1,538.6 L 172.4,522.2 L 175.7,522.0 L 176.9,515.0 L 164.8,507.4 L 171.8,501.5 L 166.8,496.4 L 168.5,493.2 L 155.2,494.6 L 159.4,486.1 L 144.8,480.7 L 144.1,475.5 L 157.7,468.8 L 160.4,473.2 L 174.0,475.0 L 177.0,464.6 L 182.1,463.6 L 187.2,468.1 L 193.7,463.6 L 202.4,466.2 L 205.6,457.1 L 214.4,456.8 L 219.3,448.3 L 204.5,441.6 L 211.5,435.8 L 210.7,420.9 L 217.6,420.6 L 222.2,410.8 L 227.0,409.9 L 229.8,414.0 L 233.0,411.7 L 241.5,416.2 L 240.0,419.7 L 252.9,423.2 L 265.0,401.0 L 273.5,399.5 L 275.8,402.8 L 278.5,399.9 L 287.0,403.4 L 290.2,397.0 L 294.6,398.9 L 300.2,394.4 L 297.8,388.6 L 300.5,387.6 L 307.8,391.5 L 312.2,389.6 L 315.9,394.0 L 314.7,390.1 L 324.7,386.9 L 330.1,379.5 L 327.8,377.4 L 332.0,377.4 Z"
+                        class="map-path" fill="none" stroke="url(#mapGradient)" stroke-width="4" stroke-linejoin="round"
+                        stroke-dasharray="3500" stroke-dashoffset="3500" />
+                </svg>
+
+                <!-- Glowing Points -->
+                <div class="map-point chennai" data-tooltip="Chennai, TN">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point pondy" data-tooltip="Puducherry">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point madurai" data-tooltip="Madurai, TN">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point coimbatore" data-tooltip="Coimbatore, TN">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+
+                <div class="map-point bangalore" data-tooltip="Bengaluru, KA">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point hyderabad" data-tooltip="Hyderabad, TS">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point kochi" data-tooltip="Kochi, KL">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point cuddalore" data-tooltip="Cuddalore">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point vijayawada" data-tooltip="Vijayawada, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <!-- New Cities -->
+                <div class="map-point chittoor" data-tooltip="Chittoor">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point kakinada" data-tooltip="Kakinada">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point secunderabad" data-tooltip="Secunderabad">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point kanyakumari" data-tooltip="Kanyakumari">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point trichy" data-tooltip="Tiruchirappalli">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point vizag" data-tooltip="Visakhapatnam">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point trivandrum" data-tooltip="Trivandrum">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point mangalore" data-tooltip="Mangalore">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point mysuru" data-tooltip="Mysuru">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <!-- More New Cities -->
+                <div class="map-point guntur" data-tooltip="Guntur, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point nellore" data-tooltip="Nellore, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point kurnool" data-tooltip="Kurnool, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point rajahmundry" data-tooltip="Rajamahendravaram, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point salem" data-tooltip="Salem, TN">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point tirunelveli" data-tooltip="Tirunelveli, TN">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point erode" data-tooltip="Erode, TN">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point vellore" data-tooltip="Vellore, TN">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point hubballi" data-tooltip="Hubballi, KA">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point belagavi" data-tooltip="Belagavi, KA">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point davanagere" data-tooltip="Davanagere, KA">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point kalaburagi" data-tooltip="Kalaburagi, KA">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <!-- AP and TS Density Update -->
+                <div class="map-point tirupati" data-tooltip="Tirupati, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point anantapur" data-tooltip="Anantapur, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point kadapa" data-tooltip="Kadapa, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+
+                <div class="map-point eluru" data-tooltip="Eluru, AP">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point warangal" data-tooltip="Warangal, TS">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="map-point nizamabad" data-tooltip="Nizamabad, TS">
+                    <div class="glow"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- STATS / IMPACT -->
+    <section class="container reveal-up delay-200" id="counter-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number"><span class="count" data-target="25">0</span>+</div>
+                <div class="stat-label">Years of Heritage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><span class="count" data-target="2500">0</span>+</div>
+                <div class="stat-label">Schools Trust Us</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><span class="count" data-target="12">0</span></div>
+                <div class="stat-label">Distinct Series</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><span class="count" data-target="200">0</span>+</div>
+                <div class="stat-label">Concept Videos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><span class="count" data-target="50">0</span>+</div>
+                <div class="stat-label">Course Titles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><span class="count" data-target="30">0</span>+</div>
+                <div class="stat-label">Geographic distribution</div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- TRUSTED SCHOOLS -->
+    <section id="trusted-schools" style="margin: 4rem 0;">
+        <h3 class="section-title reveal-up" style="font-size: 3rem;">
+            Trusted by Premier Institutions
+        </h3>
+        <p style="text-align: left; color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 3rem;"
+            class="reveal-up delay-100">
+            It’s a proud moment to disclose that both recently established and the most reputable institutions have
+            partnered and subscribed to our tech-savvy academic curriculum courses for empowering digital minds
+            nationwide.
+
+        </p>
+
+        <div class="boards-grid">
+            <div class="board-card reveal-up delay-100">
+                <img src="{% static 'images/MCC new.png' %}" alt="School 1">
+                <p>Madras Christian College Higher Secondary School </p>
+            </div>
+            <div class="board-card reveal-up delay-200">
+                <img src="{% static 'images/sch2.png' %}" alt="School 2">
+                <p>Bethel Matriculation Higher Secondary School</p>
+            </div>
+            <div class="board-card reveal-up delay-300">
+                <img src="{% static 'images/MES R.png' %}" alt="School 3">
+                <p>M.E.S. Razeena Matriculation Higher Secondary School</p>
+            </div>
+            <div class="board-card reveal-up delay-400">
+                <img src="{% static 'images/sch4.png' %}" alt="School 4">
+                <p>DAV School</p>
+            </div>
+            <div class="board-card reveal-up delay-100">
+                <img src="{% static 'images/Equitas.png' %}" alt="School 5">
+                <p>EQUITAS Group of Schools</p>
+            </div>
+            <div class="board-card reveal-up delay-200">
+                <img src="{% static 'images/Seetha-removebg-preview.png' %}" alt="School 6">
+                <p>Seetha Kingston House Matriculation Higher Secondary School</p>
+            </div>
+            <div class="board-card reveal-up delay-300">
+                <img src="{% static 'images/jaya Group.png' %}" alt="School 7">
+                <p> JAYA GROUP OF SCHOOLS</p>
+            </div>
+            <div class="board-card reveal-up delay-400">
+                <img src="{% static 'images/ECI Group.png' %}" alt="School 8">
+                <p>ECI Group of Schools</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION BOARDS SLIDER -->
+    <section id="boards-section" class="boards-slider-container">
+        <div class="boards-track">
+            <!-- Set 1 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 2 for infinite loop -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 3 for infinite loop fail-safe on wide screens -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-links-grid">
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#counter-section">Our Heritage</a></li>
+                        <li><a href="{% url 'home' %}#india-presence">Digital Presence</a></li>
+                        <li><a href="{% url 'home' %}#sl-pillars">Digital Vision</a></li>
+                        <li><a href="{% url 'home' %}#featured-series">Innovative Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="{% url 'request_demo' %}">Request Demo</a></li>
+                        <li><a href="{% url 'contact' %}">Executive Query</a></li>
+                        <li><a href="{% url 'our_story' %}">The <span class="brand-text">SAMSEL</span> Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Growth & Impact</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#showcase-section">Educational Impact</a></li>
+                        <li><a href="{% url 'home' %}#trusted-schools">Premier Partners</a></li>
+                        <li><a href="{% url 'home' %}#boards-section">Academic Boards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ecosystem</h4>
+                    <ul>
+                        <li><a href="{% url 'school_login' %}">Institutional Access</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="footer-logo">
+                <span class="brand-text">SAMSEL</span>
+                <span class="brand-secondary">PUBLICATIONS</span>
+            </h3>
+            <p class="footer-copyright">&copy; 2026 <span class="brand-text">SAMSEL</span> Publications. All Rights
+                Reserved.</p>
+        </div>
+    </footer>
+
+
+    <!-- GLOBAL JS -->
+    <script src="{% static 'js/global.js' %}"></script>
+
+    <!-- AI ANIMATION BACKGROUND SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById('ai-slider-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const wrapper = canvas.parentElement;
+
+            let particles = [];
+            let width, height;
+
+            function initCanvas() {
+                width = wrapper.offsetWidth;
+                height = wrapper.offsetHeight;
+                canvas.width = width;
+                canvas.height = height;
+            }
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.size = Math.random() * 2 + 1;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = 'rgba(100, 200, 255, 0.5)';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function createParticles() {
+                particles = [];
+                const count = Math.floor((width * height) / 15000);
+                for (let i = 0; i < count; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function connectParticles() {
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.strokeStyle = `rgba(100, 200, 255, ${0.2 * (1 - dist / 150)})`;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                connectParticles();
+                requestAnimationFrame(animate);
+            }
+
+            initCanvas();
+            createParticles();
+            animate();
+
+            window.addEventListener('resize', () => {
+                initCanvas();
+                createParticles();
+            });
+        });
+    </script>
+
+    <!-- PREMIUM SERIES SLIDER LOGIC -->
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.series-slide');
+        const totalSlides = slides.length;
+
+        function updateSlider() {
+            const container = document.getElementById('series-slider');
+            if (!container) return;
+
+            container.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active-slide');
+                } else {
+                    slide.classList.remove('active-slide');
+                }
+            });
+        }
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        // Auto-play
+        setInterval(() => {
+            if (document.getElementById('series-slider')) {
+                moveSlide(1);
+            }
+        }, 8000);
+    </script>
+
+
+    <!-- COUNTER ANIMATION SCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const counters = document.querySelectorAll(".count");
+            const speed = 60; // Animation speed
+
+            const startCounters = () => {
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = +counter.getAttribute("data-target");
+                        const count = +counter.innerText;
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 30);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        startCounters();
+                        obs.unobserve(entry.target); // Run only once
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            const counterSection = document.getElementById("counter-section");
+            if (counterSection) {
+                observer.observe(counterSection);
+            }
+        });
+    </script>
+</body>
+
+</html>

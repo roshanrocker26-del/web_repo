@@ -1,0 +1,808 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SAMSEL | {{ book.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+
+        :root {
+            --accent-color: #A360F3;
+            --secondary-color: #4F46E5;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+        }
+
+        body {
+            background: #ffffff;
+            color: var(--text-dark);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .book-container {
+            max-width: 1100px;
+            margin: 20px auto 100px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .book-visual {
+            position: sticky;
+            top: 100px;
+        }
+
+        .book-image-large {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .book-image-large:hover {
+            transform: scale(1.02);
+        }
+
+        .book-content {
+            animation: fadeInRight 0.8s ease forwards;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .series-tag {
+            display: inline-block;
+            background: rgba(163, 96, 243, 0.1);
+            color: var(--accent-color);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .book-title {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: #111827;
+        }
+
+        .book-summary {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #111827;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 30px 0;
+        }
+
+        .back-nav:hover {
+            transform: translateX(-5px);
+            background: #111827;
+            color: white;
+        }
+
+        .learning-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 40px auto 60px;
+        }
+
+        .highlight-card {
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(163, 96, 243, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .highlight-title {
+            font-weight: 800;
+            color: var(--accent-color);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* ---- 3D Coverflow Carousel (More in this Series) ---- */
+        .carousel-section {
+            width: 100%;
+            padding: 60px 0 100px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(243, 244, 246, 0.3);
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .carousel-track-wrapper {
+            perspective: 1400px;
+            width: 100%;
+            height: 520px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-track {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .carousel-card {
+            position: absolute;
+            width: 240px;
+            flex-shrink: 0;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            transform-origin: center center;
+        }
+
+        .carousel-card-inner {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1.5px solid transparent;
+        }
+
+        .carousel-card.active .carousel-card-inner {
+            border-color: var(--accent-color);
+            box-shadow: 0 25px 60px rgba(163, 96, 243, 0.25);
+        }
+
+        .carousel-card-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-card-label {
+            padding: 12px 16px;
+            background: white;
+            text-align: center;
+        }
+
+        .carousel-card-label h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+
+        .carousel-card-label p {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .carousel-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #111827;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .carousel-dot.active {
+            background: var(--accent-color);
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        .collection-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: var(--primary);
+        }
+
+        @media (max-width: 900px) {
+            .book-container {
+                grid-template-columns: 1fr;
+                margin-top: 80px;
+            }
+
+            .book-visual {
+                position: static;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .book-title {
+                text-align: center;
+            }
+
+            .book-summary {
+                text-align: center;
+            }
+
+            .carousel-track-wrapper {
+                height: 450px;
+            }
+            .carousel-card {
+                width: 180px;
+            }
+            .carousel-card-img {
+                height: 240px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MAIN HEADER -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- LOGO (LEFT) -->
+            <div class="logo">
+                <a href="/">
+                    <div class="logo-text-group">
+                        <span class="logo-main">SAMSEL</span>
+                        <span class="logo-sub">Publications</span>
+                    </div>
+                    <div class="logo-tagline">Shaping Digital Minds since 2001</div>
+                </a>
+            </div>
+
+            <!-- BUTTON (RIGHT) -->
+            <div class="header-action" style="display: flex; gap: 15px;">
+                <a href="{% url 'contact' %}" class="inquiry-btn">
+                    WHAT'S YOUR QUERY <span class="icon"></span>
+                </a>
+                <a href="{% url 'request_demo' %}" class="demo-btn">
+                    REQUEST DEMO <span class="icon"></span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- TOP NAVBAR (Centered) -->
+    <nav class="top-navbar">
+        <ul class="top-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li class="dropdown">
+                <a href="{% url 'products' %}" class="active">Products <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu wide-dropdown">
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ibot-series' %}">I-Bot Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-1' %}">Class 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-2' %}">Class 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-3' %}">Class 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-4' %}">Class 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-5' %}">Class 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-6' %}">Class 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-7' %}">Class 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-8' %}">Class 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-9' %}">Class 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ismart-series' %}">I-Smart Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-1' %}">Standard 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-2' %}">Standard 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-3' %}">Standard 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-4' %}">Standard 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-5' %}">Standard 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-6' %}">Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-7' %}">Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-8' %}">Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-9' %}">Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='iwhizz-series' %}">I-Whizz Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-1' %}">Standard 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-2' %}">Standard 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-3' %}">Standard 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-4' %}">Standard 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-5' %}">Standard 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-6' %}">Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-7' %}">Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-8' %}">Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-9' %}">Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='young-wizard-series' %}">Young Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-1' %}">Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-2' %}">Level 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-3' %}">Level 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-4' %}">Level 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-5' %}">Level 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='little-wizard-series' %}">Little Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-1' %}">Kids Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-2' %}">Kids Level 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2016-series' %}">Application 2016 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2016-series' book_slug='word' %}">MS-Word</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2016-series' book_slug='excel' %}">MS-Excel</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2016-series' book_slug='ppt' %}">MS-PowerPoint</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2007-series' %}">Application 2007 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='office-2007' %}">MS-Office 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='word-2007' %}">MS-Word 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='excel-2007' %}">MS-Excel 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='ppt-2007' %}">MS-PowerPoint 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='access-2007' %}">MS-Access 2007</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='programming-series' %}">Programming Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-1' %}">C++ Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-2' %}">C Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-3' %}">Multimedia Flash</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-4' %}">Learning HTML</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='my-computer-series' %}">My Computer Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-1' %}">Grade 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-2' %}">Grade 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-3' %}">Grade 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-4' %}">Grade 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-5' %}">Grade 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='right-click-series' %}">Right-Click Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-6' %}">ICT Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-7' %}">ICT Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-8' %}">ICT Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-9' %}">ICT Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}">English Cursive Writing
+                            <span class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='lkg' %}">LKG</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='ukg' %}">UKG</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-1' %}">Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-2' %}">Level 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-3' %}">Level 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-4' %}">Level 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-5' %}">Level 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}">Tamil Copy Writing <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-1' %}">L.K.G</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-2' %}">U.K.G</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-3' %}">முதல் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-4' %}">இரண்டாம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-5' %}">மூன்றாம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-6' %}">நான்காம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-7' %}">ஐந்தாம் நிலை</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+
+            <li class="dropdown">
+                <a href="#">Login <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'school_login' %}">School Login</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 20px;">
+        <a href="{% url 'series_detail' series_slug=series_slug %}" class="back-nav" style="margin-top: 30px;">
+            <span>←</span> Back to Series
+        </a>
+    </div>
+
+    <main class="book-container">
+        <div class="book-visual">
+            <img src="{% static book.image %}" alt="{{ book.title }}" class="book-image-large" data-vt-name="book-image-{{ series_slug }}-{{ book_slug }}">
+        </div>
+
+        <div class="book-content">
+            <div class="series-logo-wrapper" style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; color: transparent; font-size: 0;">
+                <span class="series-tag" style="margin-bottom: 0; color: initial; font-size: initial;">{{ series.title }}</span>
+                {% if series.logo %}
+                    <img src="{% static series.logo %}" alt="{{ series.title }} Logo" 
+                         style="height: 50px; width: auto; object-fit: contain; mix-blend-mode: multiply; transition: transform 0.3s ease; margin-top: 0;" 
+                         onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                {% endif %}
+            </div>
+            <h1 class="premium-headline">{{ book.title }}</h1>
+            <div class="book-summary">
+                {% if book.details %}
+                    <ul style="padding-left: 1.5rem; list-style-type: none;">
+                        {% for point in book.details %}
+                            <li style="margin-bottom: 12px; position: relative;">
+                                <span style="position: absolute; left: -1.5rem; color: var(--accent-color);">✓</span>
+                                {{ point }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>{{ book.desc }}</p>
+                {% endif %}
+            </div>
+            <div class="learning-highlights">
+                <div class="highlight-card" style="animation-delay: 0.6s">
+                    <span class="highlight-title">💡 Hint Sections</span>
+                    <p style="font-size: 0.9rem; margin:0;">Quick tips and guidance for better understanding.</p>
+                </div>
+                <div class="highlight-card" style="animation-delay: 0.8s">
+                    <span class="highlight-title">❓ Do You Know?</span>
+                    <p style="font-size: 0.9rem; margin:0;">Interactive facts and fascinating extra information.</p>
+                </div>
+                <div class="highlight-card" style="animation-delay: 1.0s">
+                    <span class="highlight-title">🛠️ DIY Activities</span>
+                    <p style="font-size: 0.9rem; margin:0;">Hands-on practice designed for reinforcement.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MORE IN THIS SERIES (3D Carousel) -->
+    <section class="carousel-section">
+        <h2 class="collection-title">More in this Series</h2>
+        <div class="carousel-track-wrapper">
+            <div class="carousel-track" id="carouselTrack">
+                {% for book_slug_loop, book_loop in series.books.items %}
+                <div class="carousel-card" data-slug="{{ book_slug_loop }}" data-url="{% url 'book_detail' series_slug=series_slug book_slug=book_slug_loop %}">
+                    <div class="carousel-card-inner">
+                        <img src="{% static book_loop.image %}" alt="{{ book_loop.title }}" class="carousel-card-img" loading="lazy">
+                        <div class="carousel-card-label">
+                            <h3>{{ book_loop.title }}</h3>
+                            <p>{{ book_loop.desc }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="carousel-nav">
+            <button class="carousel-btn" id="prevBtn" aria-label="Previous">&#8592;</button>
+            <div class="carousel-dots" id="carouselDots"></div>
+            <button class="carousel-btn" id="nextBtn" aria-label="Next">&#8594;</button>
+        </div>
+    </section>
+
+    <!-- BOARDS SLIDER -->
+    <section class="boards-slider-container">
+        <div class="boards-track">
+            <!-- Set 1 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Kerala Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="KA Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="AP Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 2 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Kerala Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="KA Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="AP Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-links-grid">
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#counter-section">Our Heritage</a></li>
+                        <li><a href="{% url 'home' %}#india-presence">Digital Presence</a></li>
+                        <li><a href="{% url 'home' %}#sl-pillars">Digital Vision</a></li>
+                        <li><a href="{% url 'home' %}#featured-series">Innovative Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="{% url 'request_demo' %}">Request Demo</a></li>
+                        <li><a href="{% url 'contact' %}">Executive Query</a></li>
+                        <li><a href="{% url 'our_story' %}">The <span class="brand-text">SAMSEL</span> Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Growth & Impact</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#showcase-section">Educational Impact</a></li>
+                        <li><a href="{% url 'home' %}#trusted-schools">Premier Partners</a></li>
+                        <li><a href="{% url 'home' %}#boards-section">Academic Boards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ecosystem</h4>
+                    <ul>
+                        <li><a href="{% url 'school_login' %}">Institutional Access</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="footer-logo">
+                <span class="brand-text">SAMSEL</span>
+                <span class="brand-secondary">PUBLICATIONS</span>
+            </h3>
+            <p class="footer-copyright">&copy; 2026 <span class="brand-text">SAMSEL</span> Publications. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Apply dynamic styles from data attributes
+        document.querySelectorAll('[data-vt-name]').forEach(el => {
+            el.style.viewTransitionName = el.dataset.vtName;
+        });
+
+        // ---- 3D Coverflow Carousel Logic ----
+        const track = document.getElementById('carouselTrack');
+        if (track) {
+            const cards = Array.from(track.querySelectorAll('.carousel-card'));
+            const dotsContainer = document.getElementById('carouselDots');
+            
+            // Find current book index in the series
+            const currentBookSlug = "{{ book_slug }}";
+            let current = cards.findIndex(c => c.dataset.slug === currentBookSlug);
+            if (current === -1) current = 0;
+
+            const total = cards.length;
+
+            // Build dots
+            cards.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'carousel-dot' + (i === current ? ' active' : '');
+                dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                dot.addEventListener('click', () => goTo(i));
+                dotsContainer.appendChild(dot);
+            });
+
+            function goTo(index) {
+                current = (index + total) % total;
+                positionCards();
+                updateDots();
+            }
+
+            function positionCards() {
+                cards.forEach((card, i) => {
+                    const offset = i - current;
+                    const absOffset = Math.abs(offset);
+
+                    // Cards more than 3 away are hidden
+                    if (absOffset > 3) {
+                        card.style.opacity = '0';
+                        card.style.pointerEvents = 'none';
+                        card.style.transform = `translateX(${offset * 300}px) scale(0.4) rotateY(${offset > 0 ? 45 : -45}deg)`;
+                        card.style.zIndex = 0;
+                        card.classList.remove('active');
+                        return;
+                    }
+
+                    const translateX = offset * 220;
+                    const scale = offset === 0 ? 1 : absOffset === 1 ? 0.8 : absOffset === 2 ? 0.6 : 0.4;
+                    const rotateY = offset === 0 ? 0 : offset > 0 ? -35 : 35;
+                    const opacity = absOffset === 0 ? 1 : absOffset === 1 ? 0.8 : absOffset === 2 ? 0.5 : 0.2;
+                    const zIndex = 10 - absOffset;
+
+                    card.style.transform = `translateX(${translateX}px) scale(${scale}) rotateY(${rotateY}deg)`;
+                    card.style.opacity = opacity;
+                    card.style.zIndex = zIndex;
+                    card.style.pointerEvents = 'auto';
+
+                    if (offset === 0) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+            }
+
+            function updateDots() {
+                dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === current);
+                });
+            }
+
+            // Nav buttons
+            document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+            document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+
+            // Click handling
+            cards.forEach((card, i) => {
+                card.addEventListener('click', (e) => {
+                    if (!card.classList.contains('active')) {
+                        e.preventDefault();
+                        goTo(i);
+                    } else {
+                        // If clicking current book, just keep them here, or navigate if it's a different one
+                        if (card.dataset.slug !== currentBookSlug) {
+                            window.location.href = card.dataset.url;
+                        }
+                    }
+                });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') goTo(current - 1);
+                if (e.key === 'ArrowRight') goTo(current + 1);
+            });
+
+            // Initial render
+            positionCards();
+        }
+    </script>
+</body>
+
+</html>

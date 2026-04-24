@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Generated Question Paper</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1cm 1.2cm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            line-height: 1.25;
+            color: #000;
+        }
+
+        /* ── Header ── */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid black;
+            margin-bottom: 7px;
+        }
+        .header-table td {
+            border-right: 2px solid black;
+            padding: 5px 7px;
+            vertical-align: top;
+        }
+        .header-table td:last-child { border-right: none; }
+
+        /* ── Section title row ── */
+        .sec-title-row {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 3px;
+            margin-top: 6px;
+        }
+        .sec-title-row td { padding: 0; font-weight: bold; font-size: 12px; }
+
+        /* ── Fill in blanks (3-column) ── */
+        .three-col-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-bottom: 5px;
+        }
+        .three-col-table td { padding: 2px 4px; vertical-align: top; }
+
+        /* ── TF ── */
+        .tf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px;
+        }
+        .tf-table td { padding: 2px 0; vertical-align: middle; }
+        .checkbox-square {
+            width: 16px; height: 16px;
+            border: 2px solid black;
+            display: inline-block;
+        }
+
+        /* ── Match the Following ── */
+        /*
+          Layout: an outer 2-column wrapper
+            LEFT  (63%) : numbered question rows  [text/img]  -->  ______
+            RIGHT (35%) : Word Bank box (vertical list of images or words)
+        */
+        .match-outer {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px;
+        }
+        .match-outer > tbody > tr > td { vertical-align: top; }
+
+        .match-qs-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .match-qs-table td { padding: 2px 3px; vertical-align: middle; }
+
+        .match-num  { width: 18px; white-space: nowrap; }
+        .match-item { padding-left: 2px; }
+        .match-line {
+            display: inline-block;
+            border-bottom: 1.5px solid black;
+            width: 65px;
+            margin-left: 6px;
+        }
+
+        /* Right-side word bank box */
+        .wb-box {
+            border: 2px solid black;
+            border-radius: 4px;
+            padding: 5px 7px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .wb-title {
+            font-weight: bold;
+            font-size: 11px;
+            text-align: center;
+            border-bottom: 1px solid #555;
+            padding-bottom: 3px;
+            margin-bottom: 4px;
+        }
+        .wb-item {
+            text-align: center;
+            padding: 2px 0;
+            font-size: 11px;
+            border-bottom: 1px dashed #bbb;
+        }
+        .wb-item:last-child { border-bottom: none; }
+        .wb-item img {
+            max-height: 50px;
+            max-width: 100%;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* ── Answer the Following ── */
+        .ans-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5px;
+        }
+        .ans-table td { padding: 2px 0 5px 0; vertical-align: top; }
+
+        /* ── Full Forms ── */
+        .full-forms-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-bottom: 5px;
+        }
+        .full-forms-table td { padding: 2px 4px; vertical-align: top; }
+
+        /* ── Footer ── */
+        .samsel-footer {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            font-style: italic;
+            text-transform: uppercase;
+        }
+
+        /* ── Print button (hidden on print) ── */
+        .download-btn { text-align: right; margin-bottom: 8px; }
+        .download-btn a {
+            padding: 5px 10px;
+            background: #1e40af;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        .no-print { display: block; }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+
+<body>
+
+    <div class="download-btn no-print">
+        <a href="{% url 'download_paper_pdf' %}?marks={{ paper.total_marks }}&standard={{ paper.standard }}&series={{ paper.series }}&answer_marks={{ paper.answer_marks }}">⬇ Download PDF</a>
+    </div>
+
+    <!-- ═══ HEADER ═══ -->
+    <table class="header-table">
+        <tr>
+            <td style="width:30%;">
+                <b>{{ paper.series|upper }} - {{ paper.standard }}</b><br>
+                Computer Science
+            </td>
+            <td style="width:45%; text-align:center; font-size:13px;">
+                <b>COMMON QUESTION PAPER</b><br>
+                QUARTERLY EXAMINATION
+            </td>
+            <td style="width:25%; text-align:right;">
+                Duration : 1 Hour<br>
+                <b>Marks : {{ paper.total_marks }}</b>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ═══ I. FILL IN THE MISSING LETTERS ═══ -->
+    {% if paper.fill %}
+    <table class="sec-title-row">
+        <tr>
+            <td style="text-align:left; width:78%;">I. FILL IN THE MISSING LETTERS</td>
+            <td style="text-align:right; width:22%;">{{ paper.fill|length }} X 1 = {{ paper.fill|length }}</td>
+        </tr>
+    </table>
+    <table class="three-col-table">
+        <tr>
+        {% for q in paper.fill %}
+            <td>{{ forloop.counter }}. {{ q.q|safe }}</td>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                </tr><tr>
+            {% endif %}
+            {% if forloop.last %}
+                {% if forloop.counter|add:"2"|divisibleby:3 %}
+                    <td>&nbsp;</td><td>&nbsp;</td>
+                {% elif forloop.counter|add:"1"|divisibleby:3 %}
+                    <td>&nbsp;</td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table>
+    {% endif %}
+
+    <!-- ═══ II. CHOOSE THE CORRECT OPTION ═══ -->
+    {% if paper.mcq %}
+    <table class="sec-title-row">
+        <tr>
+            <td style="text-align:left; width:78%;">II. CHOOSE THE CORRECT OPTION</td>
+            <td style="text-align:right; width:22%;">{{ paper.mcq|length }} X 1 = {{ paper.mcq|length }}</td>
+        </tr>
+    </table>
+    {% for q in paper.mcq %}
+    <div style="margin-bottom: 10px; padding-left: 5px;">
+        <p style="margin: 0 0 5px 0;">{{ forloop.counter }}. {{ q.q|safe }}</p>
+        {% if q.image %}
+        <img src="/static/{{ q.image }}" alt="Question Image" style="max-height: 100px; display: block; margin: 5px 0;">
+        {% endif %}
+        <table style="width: 100%; font-size: 11px;">
+            <tr>
+                {% for opt in q.options %}
+                <td style="width: 25%;">{{ forloop.counter|add:96|byte_to_char }}) {{ opt }}</td>
+                {% if forloop.counter|divisibleby:4 and not forloop.last %}</tr><tr>{% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- ═══ III. PUT ✔ OR ✖ FOR THE FOLLOWING ═══ -->
+    {% if paper.tf %}
+    <table class="sec-title-row">
+        <tr>
+            <td style="text-align:left; width:78%;">III. PUT ✔ OR ✖ FOR THE FOLLOWING</td>
+            <td style="text-align:right; width:22%;">{{ paper.tf|length }} X 1 = {{ paper.tf|length }}</td>
+        </tr>
+    </table>
+
+    <table class="tf-table">
+        {% for q in paper.tf %}
+        <tr>
+            <td style="width:93%;">{{ forloop.counter }}. {{ q.q|safe }}</td>
+            <td style="width:7%; text-align:right;"><div class="checkbox-square"></div></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <!-- ═══ IV. MATCH THE FOLLOWING ═══ -->
+    {% if paper.match %}
+    <table class="sec-title-row">
+        <tr>
+            <td style="text-align:left; width:78%;">IV. MATCH THE FOLLOWING</td>
+            <td style="text-align:right; width:22%;">{{ paper.match|length }} X 1 = {{ paper.match|length }}</td>
+        </tr>
+    </table>
+
+
+    <table style="width: 100%; margin-bottom: 5px;">
+        <tr>
+            <td style="width: 50%; vertical-align: top; padding-right: 15px;">
+                <ol type="1" style="margin: 0; padding-left: 20px;">
+                    {% for m in paper.match %}
+                    <li style="margin-bottom: 8px;">
+                        {% if m.left_image %}
+                            <img src="/static/{{ m.left_image }}" style="max-height:45px; vertical-align:middle;">
+                        {% else %}
+                            {{ m.left|default:"________"|safe }}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ol>
+            </td>
+            <td style="width: 50%; vertical-align: top;">
+                <ol type="a" style="margin: 0; padding-left: 20px;">
+                    {% for item in paper.match_right_col %}
+                    <li style="margin-bottom: 8px;">
+                        {% if item.right_image %}
+                            <img src="/static/{{ item.right_image }}" style="max-height:45px; vertical-align:middle;" alt="option">
+                        {% else %}
+                            {{ item.right }}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ol>
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+
+    <!-- ═══ V. WRITE THE FULL FORMS ═══ -->
+    {% if paper.full %}
+    <table class="sec-title-row">
+        <tr>
+            <td style="text-align:left; width:78%;">V. WRITE THE FULL FORMS</td>
+            <td style="text-align:right; width:22%;">{{ paper.full|length }} X 1 = {{ paper.full|length }}</td>
+        </tr>
+    </table>
+
+    <table class="three-col-table">
+        <tr>
+        {% for q in paper.full %}
+            <td>{{ forloop.counter }}. {{ q.q|safe }} = ______________</td>
+            {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                </tr><tr>
+            {% endif %}
+            {% if forloop.last %}
+                {% if forloop.counter|add:"2"|divisibleby:3 %}
+                    <td>&nbsp;</td><td>&nbsp;</td>
+                {% elif forloop.counter|add:"1"|divisibleby:3 %}
+                    <td>&nbsp;</td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        </tr>
+    </table>
+    {% endif %}
+
+    <!-- ═══ VI. ANSWER THE FOLLOWING ═══ -->
+    {% if paper.short %}
+    <table class="sec-title-row">
+        <tr>
+            <td style="text-align:left; width:78%;">VI. ANSWER THE FOLLOWING</td>
+            <td style="text-align:right; width:22%;">
+                {{ paper.short|length }} X {{ paper.answer_marks }} = {% widthratio paper.short|length 1 paper.answer_marks %}
+            </td>
+        </tr>
+    </table>
+
+    <table class="ans-table">
+        {% for q in paper.short %}
+        <tr>
+            <td>{{ forloop.counter }}. {{ q.q|safe }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <!-- SAMSEL FOOTER -->
+    <div class="samsel-footer">SAMSEL</div>
+
+</body>
+</html>

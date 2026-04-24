@@ -1,0 +1,1089 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SAMSEL | Book Order Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+        }
+
+        /* ---- TOP NAVBAR ---- */
+        .top-navbar {
+            background: #0d3b66;
+            padding: 10px 0;
+        }
+
+        .top-menu {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .top-menu a {
+            color: #fff;
+            font-weight: 500;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .top-menu a:hover {
+            color: #ffd700;
+        }
+
+        .main-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-main {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 38px;
+            color: #e91e63;
+        }
+
+        .logo-sub {
+            font-family: 'Times New Roman', serif;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* ---- Page Layout ---- */
+        .page-wrap {
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 0 20px 60px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: #0d3b66;
+            margin-bottom: 6px;
+        }
+
+        .page-sub {
+            color: #64748b;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        /* ---- Order Card ---- */
+        .order-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            padding: 36px 40px;
+        }
+
+        /* ---- Section blocks ---- */
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .form-section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0d3b66;
+            border-bottom: 2px solid #0d3b66;
+            padding-bottom: 6px;
+            margin-bottom: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group label .req {
+            color: #e53e3e;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #0d3b66;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        /* ---- Book Tables ---- */
+        .series-group {
+            margin-bottom: 24px;
+        }
+
+        .series-name {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: #0d3b66;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px 6px 0 0;
+            letter-spacing: 0.5px;
+        }
+
+        .books-table-wrap {
+            overflow-x: auto;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 0 8px 8px 8px;
+        }
+
+        table.books-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        table.books-table th {
+            background: #f8fafc;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #374151;
+            padding: 8px 6px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        table.books-table td {
+            padding: 6px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            font-size: 0.78rem;
+            color: #374151;
+        }
+
+        table.books-table td:first-child {
+            font-weight: 600;
+            text-align: left;
+            padding-left: 10px;
+            white-space: nowrap;
+        }
+
+        .qty-input {
+            width: 60px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 5px 4px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .qty-input:focus {
+            border-color: #0d3b66;
+            outline: none;
+        }
+
+        /* ---- Footer row ---- */
+        .form-footer-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-top: 10px;
+        }
+
+        /* ---- Submit ---- */
+        .submit-section {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, #0d3b66, #165b9e);
+            color: #fff;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 30px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(13, 59, 102, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13, 59, 102, 0.4);
+        }
+
+        .submit-note {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+
+        /* ---- Toast ---- */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 9999;
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #toast.success {
+            border-left: 4px solid #22c55e;
+            color: #166534;
+        }
+
+        #toast.error {
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+
+        /* ---- Spinner overlay ---- */
+        #submit-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        #submit-overlay.active {
+            display: flex;
+        }
+
+        .big-spinner {
+            width: 52px;
+            height: 52px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #0d3b66;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="top-navbar">
+        <ul class="top-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'products' %}">Products</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+        </ul>
+    </nav>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo"><a href="/"><span class="logo-main">SAMSEL</span> <span
+                        class="logo-sub">Publications</span></a></div>
+            <a href="{% url 'products' %}" style="color:#0d3b66;font-weight:600;font-size:0.9rem;">← Back to
+                Products</a>
+        </div>
+    </header>
+
+    <!-- Page -->
+    <div class="page-wrap">
+        <h1 class="page-title">Book Order Form</h1>
+        <p class="page-sub">Fill in the details below. Once submitted, a PDF order form will be emailed to SAMSEL.</p>
+
+        <div class="order-card">
+
+            <!-- ── FROM / SCHOOL DETAILS ── -->
+            <div class="form-section">
+                <div class="form-section-title">School / Order Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>School Name <span class="req">*</span></label>
+                        <input type="text" id="school-name" value="{{ school_name }}" placeholder="School name">
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number</label>
+                        <input type="text" id="school-mobile" value="{{ mobile }}" placeholder="+91 XXXXXX">
+                    </div>
+                </div>
+                <div class="form-row" style="margin-top:12px;">
+                    <div class="form-group" style="flex:2;">
+                        <label>From Address <span class="req">*</span></label>
+                        <textarea id="from-address"
+                            placeholder="Full address of the school / institution (mandatory)"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Date <span class="req">*</span></label>
+                        <input type="date" id="delivery-date">
+                    </div>
+                </div>
+                <div class="form-row" style="margin-top:12px;">
+                    <div class="form-group">
+                        <label>Parcel / Bus Service</label>
+                        <input type="text" id="parcel-service" placeholder="e.g., Indian Post / TNSTC">
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Point</label>
+                        <input type="text" id="delivery-point" placeholder="e.g., Madurai Bus Stand">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── i-SMART SERIES ── -->
+            <div class="form-section">
+                <div class="form-section-title">Book Series — Select Quantities</div>
+
+                <div class="series-group">
+                    <div class="series-name">i-Smart Series</div>
+                    <div class="books-table-wrap">
+                        <table class="books-table" id="tbl-ismart">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;"></th>
+                                    <th>ISM Std I</th>
+                                    <th>ISM Std II</th>
+                                    <th>ISM Std III</th>
+                                    <th>ISM Std IV</th>
+                                    <th>ISM Std V</th>
+                                    <th>ISM Std VI</th>
+                                    <th>ISM Std VII</th>
+                                    <th>ISM Std VIII</th>
+                                    <th>ISM Std IX</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>No. of Copies</td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std I"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std II"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std III"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std IV"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std V"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std VI"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std VII"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std VIII"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iSmart"
+                                            data-class="Std IX"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- i-WHIZZ -->
+                <div class="series-group">
+                    <div class="series-name">i-Whizz Series</div>
+                    <div class="books-table-wrap">
+                        <table class="books-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;"></th>
+                                    <th>IW-Std I</th>
+                                    <th>IW-Std II</th>
+                                    <th>IW-Std III</th>
+                                    <th>IW-Std IV</th>
+                                    <th>IW-Std V</th>
+                                    <th>IW-Std VI</th>
+                                    <th>IW-Std VII</th>
+                                    <th>IW-Std VIII</th>
+                                    <th>IW-Std IX</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>No. of Copies</td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std I"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std II"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std III"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std IV"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std V"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std VI"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std VII"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std VIII"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iWhizz"
+                                            data-class="Std IX"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- YOUNG WIZARD + LITTLE WIZARD -->
+                <div class="form-row" style="gap:16px; flex-wrap:wrap;">
+                    <div class="series-group" style="flex:3;min-width:300px;">
+                        <div class="series-name">Young Wizard Series</div>
+                        <div class="books-table-wrap">
+                            <table class="books-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Level I</th>
+                                        <th>Level II</th>
+                                        <th>Level III</th>
+                                        <th>Level IV</th>
+                                        <th>Level V</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>No. of Copies</td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="YoungWizard"
+                                                data-class="Level I"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="YoungWizard"
+                                                data-class="Level II"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="YoungWizard"
+                                                data-class="Level III"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="YoungWizard"
+                                                data-class="Level IV"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="YoungWizard"
+                                                data-class="Level V"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="series-group" style="flex:1;min-width:200px;">
+                        <div class="series-name">Little Wizard Series</div>
+                        <div class="books-table-wrap">
+                            <table class="books-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Kids Level 1</th>
+                                        <th>Kids Level 2</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>No. of Copies</td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="LittleWizard"
+                                                data-class="Kids Level 1"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="LittleWizard"
+                                                data-class="Kids Level 2"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MY COMPUTER + RIGHT CLICK -->
+                <div class="form-row" style="gap:16px; flex-wrap:wrap;">
+                    <div class="series-group" style="flex:3;min-width:300px;">
+                        <div class="series-name">My Computer Series</div>
+                        <div class="books-table-wrap">
+                            <table class="books-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Grade I</th>
+                                        <th>Grade II</th>
+                                        <th>Grade III</th>
+                                        <th>Grade IV</th>
+                                        <th>Grade V</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>No. of Copies</td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="MyComputer"
+                                                data-class="Grade I"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="MyComputer"
+                                                data-class="Grade II"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="MyComputer"
+                                                data-class="Grade III"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="MyComputer"
+                                                data-class="Grade IV"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="MyComputer"
+                                                data-class="Grade V"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="series-group" style="flex:2;min-width:240px;">
+                        <div class="series-name">Right Click Series – ICT</div>
+                        <div class="books-table-wrap">
+                            <table class="books-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>VI</th>
+                                        <th>VII</th>
+                                        <th>VIII</th>
+                                        <th>IX</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>No. of Copies</td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="RightClickICT"
+                                                data-class="VI"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="RightClickICT"
+                                                data-class="VII"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="RightClickICT"
+                                                data-class="VIII"></td>
+                                        <td><input class="qty-input" type="number" min="0" data-series="RightClickICT"
+                                                data-class="IX"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- APPLICATION SERIES -->
+                <div class="series-group">
+                    <div class="series-name">Application Series</div>
+                    <div class="books-table-wrap">
+                        <table class="books-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;"></th>
+                                    <th>MS WRD 2016</th>
+                                    <th>MS EXL 2016</th>
+                                    <th>MS PPT 2016</th>
+                                    <th>MS OFF 2007</th>
+                                    <th>MS WRD 2007</th>
+                                    <th>MS EXL 2007</th>
+                                    <th>MS PPT 2007</th>
+                                    <th>MS ACC 2007</th>
+                                    <th>HTML</th>
+                                    <th>C++</th>
+                                    <th>C Pro</th>
+                                    <th>Flash</th>
+                                    <th>VB &amp; Access</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>No. of Copies</td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS WRD 2016"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS EXL 2016"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS PPT 2016"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS OFF 2007"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS WRD 2007"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS EXL 2007"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS PPT 2007"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="MS ACC 2007"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="HTML"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="C++"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="C Pro"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="Flash"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="AppSeries"
+                                            data-class="VB & Access"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- CURSIVE WRITING -->
+                <div class="series-group">
+                    <div class="series-name">My First Stroke Series – Cursive Writing</div>
+                    <div class="books-table-wrap">
+                        <table class="books-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;"></th>
+                                    <th>LKG</th>
+                                    <th>UKG</th>
+                                    <th>Level 1</th>
+                                    <th>Level 2</th>
+                                    <th>Level 3</th>
+                                    <th>Level 4</th>
+                                    <th>Level 5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>No. of Copies</td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="CursiveWriting"
+                                            data-class="LKG"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="CursiveWriting"
+                                            data-class="UKG"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="CursiveWriting"
+                                            data-class="Level 1"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="CursiveWriting"
+                                            data-class="Level 2"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="CursiveWriting"
+                                            data-class="Level 3"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="CursiveWriting"
+                                            data-class="Level 4"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="CursiveWriting"
+                                            data-class="Level 5"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAMIL SERIES -->
+                <div class="series-group">
+                    <div class="series-name">இளைய தமிழ் படகுகள் – Tamil Series</div>
+                    <div class="books-table-wrap">
+                        <table class="books-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;"></th>
+                                    <th>LKG</th>
+                                    <th>UKG</th>
+                                    <th>முதல் நிலை</th>
+                                    <th>இரண்டாம் நிலை</th>
+                                    <th>மூன்றாம் நிலை</th>
+                                    <th>நான்காம் நிலை</th>
+                                    <th>ஐந்தாம் நிலை</th>
+                                    <th>ஆறாம் நிலை</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>No. of Copies</td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="LKG"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="UKG"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="Level 1"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="Level 2"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="Level 3"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="Level 4"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="Level 5"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="TamilSeries"
+                                            data-class="Level 6"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- i-BOT -->
+                <div class="series-group">
+                    <div class="series-name">i-Bot Series</div>
+                    <div class="books-table-wrap">
+                        <table class="books-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:110px;"></th>
+                                    <th>i-Bot I</th>
+                                    <th>i-Bot II</th>
+                                    <th>i-Bot III</th>
+                                    <th>i-Bot IV</th>
+                                    <th>i-Bot V</th>
+                                    <th>i-Bot VI</th>
+                                    <th>i-Bot VII</th>
+                                    <th>i-Bot VIII</th>
+                                    <th>i-Bot IX</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>No. of Copies</td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="I"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="II"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="III"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="IV"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="V"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="VI"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="VII"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="VIII"></td>
+                                    <td><input class="qty-input" type="number" min="0" data-series="iBot"
+                                            data-class="IX"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden inputs for PDF (not shown on page, appear as empty boxes in PDF like Order No.) -->
+            <input type="hidden" id="discount" value="">
+            <textarea id="other-info" style="display:none;"></textarea>
+
+            <!-- ── SUBMIT ── -->
+            <div class="submit-section">
+                <p style="font-size:0.85rem;color:#64748b;margin-bottom:16px;">
+                    * Orders once placed cannot be cancelled. By submitting, you accept that the payment will be made
+                    within the agreed timeline.
+                </p>
+                <button class="submit-btn" onclick="submitOrder()"> Submit Order</button>
+                <p class="submit-note">A PDF copy of this order will be automatically sent to SAMSEL.</p>
+            </div>
+
+        </div><!-- .order-card -->
+    </div><!-- .page-wrap -->
+
+    <!-- Toast -->
+    <div id="toast"></div>
+    <!-- Spinner -->
+    <div id="submit-overlay">
+        <div class="big-spinner"></div>
+        <p style="font-weight:600;color:#0d3b66;">Generating PDF &amp; Sending Order…</p>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            let c = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+            return c ? c.pop() : '';
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'show ' + type;
+            setTimeout(() => { t.className = ''; }, 4000);
+        }
+
+        function submitOrder() {
+            // ── Validate mandatory fields
+            const school = document.getElementById('school-name').value.trim();
+            const fromAddr = document.getElementById('from-address').value.trim();
+            const deliveryDate = document.getElementById('delivery-date').value;
+
+            if (!school) { showToast('Please enter a School Name.', 'error'); return; }
+            if (!fromAddr) { showToast('From Address is mandatory.', 'error'); return; }
+            if (!deliveryDate) { showToast('Delivery Date is mandatory.', 'error'); return; }
+
+            // ── Collect all form data
+            const mobile = document.getElementById('school-mobile').value.trim();
+            const parcelService = document.getElementById('parcel-service').value.trim();
+            const deliveryPoint = document.getElementById('delivery-point').value.trim();
+            const discount = document.getElementById('discount').value.trim();
+            const otherInfo = document.getElementById('other-info').value.trim();
+
+            // Collect quantities
+            const quantities = {};
+            document.querySelectorAll('.qty-input').forEach(inp => {
+                const val = parseInt(inp.value || '0');
+                if (val > 0) {
+                    const series = inp.dataset.series;
+                    const cls = inp.dataset.class;
+                    if (!quantities[series]) quantities[series] = {};
+                    quantities[series][cls] = val;
+                }
+            });
+
+            // ── Show spinner
+            document.getElementById('submit-overlay').classList.add('active');
+
+            // ── Generate PDF using jsPDF
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                const W = 210, H = 297;
+                const margin = 10;
+                let y = margin;
+
+                // Helper fns
+                function line(y2) { doc.setLineWidth(0.3); doc.line(margin, y2, W - margin, y2); }
+                function vline(x2, y1, y2) { doc.setLineWidth(0.3); doc.line(x2, y1, x2, y2); }
+                function rect(x2, y2, w2, h2) { doc.setLineWidth(0.3); doc.rect(x2, y2, w2, h2); }
+                function bold(s) { doc.setFont('helvetica', 'bold'); doc.setFontSize(s || 9); }
+                function normal(s) { doc.setFont('helvetica', 'normal'); doc.setFontSize(s || 8); }
+                function txt(t, x2, y2, opts) { doc.text(String(t), x2, y2, opts || {}); }
+
+                // ─── HEADER ───
+                bold(11);
+                // Border around form title
+                rect(margin, y, 48, 8);
+                txt('ORDER FORM', margin + 2, y + 5.5);
+                normal(8);
+                txt('Order No.', margin + 50, y + 5.5);
+                rect(margin + 66, y, 28, 8);  // empty box
+                txt('Date:', margin + 97, y + 5.5);
+                rect(margin + 107, y, 22, 8);  // empty date box
+                y += 10;
+
+                // Company header (right side)
+                const compX = W / 2 + 5;
+                bold(13);
+                doc.setTextColor(0, 0, 150);
+                txt('SAMSEL', compX, y + 5, { align: 'center' });
+                doc.setTextColor(0, 0, 0);
+                normal(7);
+                txt('Computer Books for Academic Excellence', compX, y + 9, { align: 'center' });
+                txt('#44, 2nd Floor, Taylor\'s Road, Kilpauk, Chennai - 600 010', compX, y + 13, { align: 'center' });
+                txt('Ph: 044-26474736 / 42857185/86  Email: usssamsel@yahoo.co.in', compX, y + 17, { align: 'center' });
+                txt('(A unit of USS UNIQUE SOFTWARE SOLUTIONS)', compX, y + 21, { align: 'center' });
+
+                // From address (left side)
+                normal(7);
+                txt('From', margin, y + 3);
+                txt(fromAddr, margin, y + 8, { maxWidth: 80 });
+                y += 28;
+                line(y); y += 4;
+
+                // Kindly supply line
+                normal(7);
+                const delDateStr = deliveryDate ? new Date(deliveryDate).toLocaleDateString('en-IN') : '____________';
+                txt(`Kindly supply the following books by ${parcelService || '____________'} parcel/bus service to ${deliveryPoint || '____________'} delivery point.`, margin, y, { maxWidth: W - margin * 2 });
+                y += 6; line(y); y += 3;
+
+                // ─── TABLE HELPER ───
+                function drawSeriesTable(seriesLabel, headers, seriesKey) {
+                    if (y > H - 30) { doc.addPage(); y = margin; }
+                    const rowH = 6, labelW = 28;
+                    const usableW = W - margin * 2;
+                    const colW = (usableW - labelW) / headers.length;
+
+                    // Series label
+                    bold(7.5);
+                    doc.setFillColor(220, 230, 242);
+                    doc.rect(margin, y, usableW, rowH, 'F');
+                    rect(margin, y, usableW, rowH);
+                    txt(seriesLabel, margin + 2, y + 4.2);
+
+                    // Headers
+                    normal(6.5);
+                    headers.forEach((h, i) => {
+                        const x2 = margin + labelW + i * colW;
+                        rect(x2, y, colW, rowH);
+                        txt(h, x2 + colW / 2, y + 4.2, { align: 'center' });
+                    });
+                    y += rowH;
+
+                    // No.of Copies row
+                    bold(6.5);
+                    rect(margin, y, labelW, rowH);
+                    txt('No. of Copies', margin + 2, y + 4.2);
+                    normal(7);
+                    headers.forEach((h, i) => {
+                        const x2 = margin + labelW + i * colW;
+                        rect(x2, y, colW, rowH);
+                        const qtyKey = h.replace('ISM ', '').replace('IW-', '').replace('i-Bot ', '').trim();
+                        // Try to find the value
+                        let val = '';
+                        if (quantities[seriesKey]) {
+                            // match by exact class name or label
+                            const found = Object.entries(quantities[seriesKey]).find(([k]) =>
+                                h.includes(k) || k.includes(h) || k === h.trim()
+                            );
+                            if (found) val = String(found[1]);
+                        }
+                        if (val) { bold(8); txt(val, x2 + colW / 2, y + 4.2, { align: 'center' }); normal(7); }
+                    });
+                    y += rowH + 2;
+                }
+
+                // ─── ALL SERIES TABLES ───
+                const smartHeaders = ['ISM Std I', 'ISM Std II', 'ISM Std III', 'ISM Std IV', 'ISM Std V', 'ISM Std VI', 'ISM Std VII', 'ISM Std VIII', 'ISM Std IX'];
+                drawSeriesTable('i-Smart Series', smartHeaders, 'iSmart');
+
+                const whizzHeaders = ['IW-Std I', 'IW-Std II', 'IW-Std III', 'IW-Std IV', 'IW-Std V', 'IW-Std VI', 'IW-Std VII', 'IW-Std VIII', 'IW-Std IX'];
+                drawSeriesTable('i-Whizz Series', whizzHeaders, 'iWhizz');
+
+                // Young Wizard + Little Wizard side-by-side (draw separately)
+                drawSeriesTable('Young Wizard Series', ['Level I', 'Level II', 'Level III', 'Level IV', 'Level V'], 'YoungWizard');
+                drawSeriesTable('Little Wizard Series', ['Kids Level 1', 'Kids Level 2'], 'LittleWizard');
+                drawSeriesTable('My Computer Series', ['Grade I', 'Grade II', 'Grade III', 'Grade IV', 'Grade V'], 'MyComputer');
+                drawSeriesTable('Right Click Series – ICT', ['VI', 'VII', 'VIII', 'IX'], 'RightClickICT');
+
+                const appHeaders = ['MS WRD 2016', 'MS EXL 2016', 'MS PPT 2016', 'MS OFF 2007', 'MS WRD 2007', 'MS EXL 2007', 'MS PPT 2007', 'MS ACC 2007', 'HTML', 'C++', 'C Pro', 'Flash', 'VB & Access'];
+                drawSeriesTable('Application Series', appHeaders, 'AppSeries');
+
+                drawSeriesTable('Cursive Writing', ['LKG', 'UKG', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'], 'CursiveWriting');
+                drawSeriesTable('Tamil Series', ['LKG', 'UKG', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5', 'Level 6'], 'TamilSeries');
+
+                const ibotHeaders = ['i-Bot I', 'i-Bot II', 'i-Bot III', 'i-Bot IV', 'i-Bot V', 'i-Bot VI', 'i-Bot VII', 'i-Bot VIII', 'i-Bot IX'];
+                drawSeriesTable('i-Bot Series', ibotHeaders, 'iBot');
+
+                // ─── FOOTER ───
+                if (y > H - 45) { doc.addPage(); y = margin; }
+                y += 2; line(y); y += 4;
+
+                // Discount / Other Info / Delivery Date
+                const usableW = W - margin * 2;
+                bold(7);
+                txt('Discount %', margin, y + 4);
+                rect(margin, y + 6, 22, 10);
+                if (discount) { normal(8); txt(discount, margin + 11, y + 12, { align: 'center' }); }
+
+                txt('Other Information', margin + 30, y + 4);
+                rect(margin + 30, y + 6, 100, 10);
+                if (otherInfo) { normal(7); txt(otherInfo, margin + 31, y + 11, { maxWidth: 98 }); }
+
+                txt('Delivery Date', margin + 140, y + 4);
+                rect(margin + 140, y + 6, 50, 10);
+                if (deliveryDate) { normal(8); txt(new Date(deliveryDate).toLocaleDateString('en-IN'), margin + 145, y + 12); }
+
+                y += 20; line(y); y += 4;
+
+                // Fine print
+                normal(6.5);
+                bold(6.5);
+                txt('* Orders once placed cannot be cancelled.', margin, y);
+                y += 4; normal(6.5);
+                txt('I accept to receive the above mentioned consignment and the payment will be made on or before ____/____/202___.', margin, y);
+                y += 5;
+                bold(8);
+                txt('for SAMSEL', W - margin, y, { align: 'right' });
+
+                // Signature lines
+                y += 12;
+                line(y - 6);
+                const sigLineLen = 60;
+                doc.line(margin, y, margin + sigLineLen, y);
+                normal(7);
+                txt('Signature of the Head of the Institution', margin, y + 4);
+                txt('with Seal', margin, y + 8);
+                doc.line(W - margin - sigLineLen, y, W - margin, y);
+                txt('(Authorised Signatory)', W - margin - sigLineLen, y + 4);
+
+                // ─── Convert to base64 ───
+                const pdfBase64 = doc.output('datauristring');
+
+                // ─── Send to backend ───
+                fetch('/order/submit/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+                    body: JSON.stringify({
+                        pdf_base64: pdfBase64,
+                        school_name: school,
+                        mobile: mobile
+                    })
+                })
+                    .then(r => r.json())
+                    .then(data => {
+                        document.getElementById('submit-overlay').classList.remove('active');
+                        if (data.success) {
+                            showToast('✅ Order submitted! PDF sent to SAMSEL.', 'success');
+                        } else {
+                            showToast('❌ ' + (data.error || 'Submission failed.'), 'error');
+                        }
+                    })
+                    .catch(() => {
+                        document.getElementById('submit-overlay').classList.remove('active');
+                        showToast('❌ Network error. Please try again.', 'error');
+                    });
+
+            } catch (err) {
+                document.getElementById('submit-overlay').classList.remove('active');
+                showToast('❌ PDF generation failed: ' + err.message, 'error');
+                console.error(err);
+            }
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <h3 class="footer-logo">SAMSEL Publications</h3>
+            <p class="footer-text">© 2026 SAMSEL PUBLICATIONS. All Rights Reserved.<br>Shaping Digital Minds since 2001.
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

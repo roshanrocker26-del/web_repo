@@ -1,0 +1,1935 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SAMSEL | Products</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
+
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <!-- MAIN HEADER -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- LOGO (LEFT) -->
+            <div class="logo">
+                <a href="/">
+                    <div class="logo-text-group">
+                        <span class="logo-main">SAMSEL</span>
+                        <span class="logo-sub">Publications</span>
+                    </div>
+                    <div class="logo-tagline">Shaping Digital Minds since 2001</div>
+                </a>
+            </div>
+
+            <!-- BUTTON (RIGHT) -->
+            <div class="header-action" style="display: flex; gap: 15px;">
+                <a href="{% url 'contact' %}" class="inquiry-btn">
+                    WHAT'S YOUR QUERY <span class="icon"></span>
+                </a>
+                <a href="{% url 'request_demo' %}" class="demo-btn">
+                    REQUEST DEMO <span class="icon"></span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- TOP NAVBAR (Centered) -->
+    <nav class="top-navbar">
+        <ul class="top-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li class="dropdown">
+                <a href="{% url 'products' %}" class="active">Products <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu wide-dropdown">
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ibot-series' %}">I-Bot Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-1' %}">Class
+                                    1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-2' %}">Class
+                                    2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-3' %}">Class
+                                    3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-4' %}">Class
+                                    4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-5' %}">Class
+                                    5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-6' %}">Class
+                                    6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-7' %}">Class
+                                    7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-8' %}">Class
+                                    8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-9' %}">Class
+                                    9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ismart-series' %}">I-Smart Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-1' %}">Standard 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-2' %}">Standard 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-3' %}">Standard 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-4' %}">Standard 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-5' %}">Standard 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-6' %}">Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-7' %}">Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-8' %}">Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-9' %}">Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='iwhizz-series' %}">I-Whizz Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-1' %}">Standard 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-2' %}">Standard 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-3' %}">Standard 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-4' %}">Standard 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-5' %}">Standard 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-6' %}">Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-7' %}">Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-8' %}">Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-9' %}">Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='young-wizard-series' %}">Young Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-1' %}">Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-2' %}">Level 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-3' %}">Level 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-4' %}">Level 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-5' %}">Level 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='little-wizard-series' %}">Little Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-1' %}">Kids Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-2' %}">Kids Level 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2016-series' %}">Application 2016 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2016-series' book_slug='word' %}">MS-Word</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='excel' %}">MS-Excel</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='app2016-series' book_slug='ppt' %}">MS-PowerPoint</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2007-series' %}">Application 2007 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='office-2007' %}">MS-Office
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='word-2007' %}">MS-Word
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='excel-2007' %}">MS-Excel
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='ppt-2007' %}">MS-PowerPoint
+                                    2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='access-2007' %}">MS-Access
+                                    2007</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='programming-series' %}">Programming Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-1' %}">C++ Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-2' %}">C Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-3' %}">Multimedia Flash</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-4' %}">Learning HTML</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='my-computer-series' %}">My Computer Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-1' %}">Grade 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-2' %}">Grade 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-3' %}">Grade 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-4' %}">Grade 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-5' %}">Grade 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='right-click-series' %}">Right-Click Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-6' %}">ICT Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-7' %}">ICT Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-8' %}">ICT Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-9' %}">ICT Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}">English Cursive Writing
+                            <span class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='lkg' %}">LKG</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='ukg' %}">UKG</a>
+                            </li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-1' %}">Level 1</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-2' %}">Level 2</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-3' %}">Level 3</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-4' %}">Level 4</a></li>
+                            <li><a
+                                    href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-5' %}">Level 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}">Tamil Copy Writing <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-1' %}">L.K.G</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-2' %}">U.K.G</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-3' %}">முதல் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-4' %}">இரண்டாம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-5' %}">மூன்றாம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-6' %}">நான்காம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-7' %}">ஐந்தாம் நிலை</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+
+            <li class="dropdown">
+                <a href="#">Login <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'school_login' %}">School Login</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- PRODUCTS HERO SECTION -->
+    <section class="hero-section reveal-up">
+        <h1
+            style="font-family: 'Playfair Display', serif; font-size: clamp(4rem, 9vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;">
+            <span class="accent-word no-underline">Our Premium Collections</span>
+        </h1>
+        <p class="about-hero-subtitle"
+            style="color: white; text-align: left; max-width: 800px; margin: 0 auto; font-size: 1.25rem; margin-bottom: 20px;">
+            Our core collections include the I-Bot series, Application series 2016, I-Smart series, I-Whizz series,
+            Young wizard series, Programming series, My computer series, Right click series, Little wizard series, and
+            My first stroke series.
+        </p>
+        <p class="about-hero-subtitle"
+            style="color: white; text-align: left; max-width: 800px; margin: 0 auto; font-size: 1.25rem;">
+            Each series has been designed for students of different grades and a wide range of classes, with on-demand
+            updates and a syllabus aligned with emerging trends in the diversified IT sector, aiming for superlative
+            academic excellence.
+        </p>
+    </section>
+
+    <!-- ================= IBOT SERIES ================= -->
+    <div class="series-wrapper">
+
+        <section class="series-section reveal-up" id="ibot-series">
+            <div class="series-container">
+                <a href="{% url 'series_detail' series_slug='ibot-series' %}" style="text-decoration: none;">
+                    <h1 class="series-title" style="view-transition-name: series-title-ibot-series;">I-BOT SERIES</h1>
+                </a>
+                <div class="premium-bookshelf">
+                    <!-- Book 1 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-1' %}"
+                        class="premium-book-card delay1" id="ibot-class-1" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img src="{% static 'images/ibot1.jpg' %}" alt="Standard 1"
+                                    style="view-transition-name: book-image-ibot-series-class-1;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 1</h3>
+                                <p>Introduces young learners to smart machines, basic computer parts, and early coding
+                                    concepts using ScratchJr.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 2 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-2' %}"
+                        class="premium-book-card delay2" id="ibot-class-2" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img src="{% static 'images/ibot2.jpg' %}" alt="Standard 2"
+                                    style="view-transition-name: book-image-ibot-series-class-2;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 2</h3>
+                                <p>Building on basics, exploring input/output devices, and intermediate creative
+                                    projects.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 3 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-3' %}"
+                        class="premium-book-card delay3" id="ibot-class-3" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img src="{% static 'images/ibot3.jpg' %}" alt="Standard 3"
+                                    style="view-transition-name: book-image-ibot-series-class-3;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 3</h3>
+                                <p>Understanding OS environments, word processing, and an introduction to computational
+                                    thinking.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 4 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-4' %}"
+                        class="premium-book-card delay4" id="ibot-class-4" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img src="{% static 'images/ibot4.jpg' %}" alt="Standard 4"
+                                    style="view-transition-name: book-image-ibot-series-class-4;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 4</h3>
+                                <p>Advanced word processing, safe internet browsing, and block-based programming
+                                    exercises.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 5 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-5' %}"
+                        class="premium-book-card delay5" id="ibot-class-5" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img src="{% static 'images/ibot5.jpg' %}" alt="Standard 5"
+                                    style="view-transition-name: book-image-ibot-series-class-5;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 5</h3>
+                                <p>Presentations, spreadsheets basics, and developing algorithms using visual coding
+                                    tools.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 6 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-6' %}"
+                        class="premium-book-card delay1" id="ibot-class-6" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img loading="lazy" src="{% static 'images/ibot6.jpg' %}" alt="Standard 6"
+                                    style="view-transition-name: book-image-ibot-series-class-6;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 6</h3>
+                                <p>Deep dive into robotics principles, electronics basics, and intro to Python syntax.
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 7 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-7' %}"
+                        class="premium-book-card delay2" id="ibot-class-7" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img loading="lazy" src="{% static 'images/ibot7.jpg' %}" alt="Standard 7"
+                                    style="view-transition-name: book-image-ibot-series-class-7;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 7</h3>
+                                <p>AI concepts, intermediate Python programming, and hardware integration projects.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 8 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-8' %}"
+                        class="premium-book-card delay3" id="ibot-class-8" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img loading="lazy" src="{% static 'images/ibot8.jpg' %}" alt="Standard 8"
+                                    style="view-transition-name: book-image-ibot-series-class-8;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 8</h3>
+                                <p>Advanced robotics, IoT fundamentals, and machine learning basics.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Book 9 -->
+                    <a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-9' %}"
+                        class="premium-book-card delay4" id="ibot-class-9" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front">
+                                <img loading="lazy" src="{% static 'images/ibot9.jpg' %}" alt="Standard 9"
+                                    style="view-transition-name: book-image-ibot-series-class-9;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 9</h3>
+                                <p>Comprehensive IT matrix, app development, and specialized AI/ML problem solving.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= ISMART SERIES ================= -->
+        <section class="series-section reveal-up" id="ismart-series">
+            <div class="series-container">
+                <a href="{% url 'series_detail' series_slug='ismart-series' %}" style="text-decoration: none;">
+                    <h1 class="series-title" style="view-transition-name: series-title-ismart-series;">I-SMART SERIES
+                    </h1>
+                </a>
+                <div class="premium-bookshelf">
+                    <!-- Books 1-9 -->
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-1' %}"
+                        class="premium-book-card delay1" id="ismart-level-1" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img loading="lazy" src="{% static 'images/ism1.jpg' %}" alt="Standard 1"
+                                    style="view-transition-name: book-image-ismart-series-level-1;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Standard 1</h3>
+                                <p>Foundations of smart learning and digital literacy.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-2' %}"
+                        class="premium-book-card delay2" id="ismart-level-2" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism2.jpg' %}" alt="Standard 2"
+                                    style="view-transition-name: book-image-ismart-series-level-2;"></div>
+                            <div class="book-back">
+                                <h3>Standard 2</h3>
+                                <p>Interactive exercises building core IT competencies.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-3' %}"
+                        class="premium-book-card delay3" id="ismart-level-3" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism3.jpg' %}" alt="Standard 3"
+                                    style="view-transition-name: book-image-ismart-series-level-3;"></div>
+                            <div class="book-back">
+                                <h3>Standard 3</h3>
+                                <p>Exploring creative software and basic problem solving.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-4' %}"
+                        class="premium-book-card delay4" id="ismart-level-4" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism4.jpg' %}" alt="Standard 4"
+                                    style="view-transition-name: book-image-ismart-series-level-4;"></div>
+                            <div class="book-back">
+                                <h3>Standard 4</h3>
+                                <p>Introduction to connected devices and cyber safety.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-5' %}"
+                        class="premium-book-card delay5" id="ismart-level-5" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism5.jpg' %}" alt="Standard 5"
+                                    style="view-transition-name: book-image-ismart-series-level-5;"></div>
+                            <div class="book-back">
+                                <h3>Standard 5</h3>
+                                <p>Advanced office tools and beginner coding loops.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-6' %}"
+                        class="premium-book-card delay1" id="ismart-level-6" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism6.jpg' %}" alt="Standard 6"
+                                    style="view-transition-name: book-image-ismart-series-level-6;"></div>
+                            <div class="book-back">
+                                <h3>Standard 6</h3>
+                                <p>Structuring ideas and intermediate algorithmic logic.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-7' %}"
+                        class="premium-book-card delay2" id="ismart-level-7" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism7.jpg' %}" alt="Standard 7"
+                                    style="view-transition-name: book-image-ismart-series-level-7;"></div>
+                            <div class="book-back">
+                                <h3>Standard 7</h3>
+                                <p>Web technologies and introductory networking.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-8' %}"
+                        class="premium-book-card delay3" id="ismart-level-8" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism8.jpg' %}" alt="Standard 8"
+                                    style="view-transition-name: book-image-ismart-series-level-8;"></div>
+                            <div class="book-back">
+                                <h3>Standard 8</h3>
+                                <p>Data handling, analysis, and programming constructs.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-9' %}"
+                        class="premium-book-card delay4" id="ismart-level-9" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/ism9.jpg' %}" alt="Standard 9"
+                                    style="view-transition-name: book-image-ismart-series-level-9;"></div>
+                            <div class="book-back">
+                                <h3>Standard 9</h3>
+                                <p>Comprehensive system design and applied technology projects.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= I-WHIZZ SERIES ================= -->
+        <section class="series-section reveal-up" id="iwhizz-series">
+            <div class="series-container">
+                <a href="{% url 'series_detail' series_slug='iwhizz-series' %}" style="text-decoration: none;">
+                    <h1 class="series-title" style="view-transition-name: series-title-iwhizz-series;">I-WHIZZ SERIES
+                    </h1>
+                </a>
+                <div class="premium-bookshelf">
+                    <!-- Books 1-9 -->
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-1' %}"
+                        class="premium-book-card delay1" id="iwhizz-class-1" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img loading="lazy" src="{% static 'images/iwhizz1.jpg' %}" alt="Standard 1"
+                                    style="view-transition-name: book-image-iwhizz-series-class-1;"></div>
+                            <div class="book-back">
+                                <h3>Standard 1</h3>
+                                <p>Early steps into the world of tech and logic.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-2' %}"
+                        class="premium-book-card delay2" id="iwhizz-class-2" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz2.jpg' %}" alt="Standard 2"
+                                    style="view-transition-name: book-image-iwhizz-series-class-2;"></div>
+                            <div class="book-back">
+                                <h3>Standard 2</h3>
+                                <p>Building foundational computer operation skills.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-3' %}"
+                        class="premium-book-card delay3" id="iwhizz-class-3" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz3.jpg' %}" alt="Standard 3"
+                                    style="view-transition-name: book-image-iwhizz-series-class-3;"></div>
+                            <div class="book-back">
+                                <h3>Standard 3</h3>
+                                <p>Logical puzzles and introducing digital creativity.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-4' %}"
+                        class="premium-book-card delay4" id="iwhizz-class-4" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz4.jpg' %}" alt="Standard 4"
+                                    style="view-transition-name: book-image-iwhizz-series-class-4;"></div>
+                            <div class="book-back">
+                                <h3>Standard 4</h3>
+                                <p>Word processing and exploring the internet safely.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-5' %}"
+                        class="premium-book-card delay5" id="iwhizz-class-5" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz5.jpg' %}" alt="Standard 5"
+                                    style="view-transition-name: book-image-iwhizz-series-class-5;"></div>
+                            <div class="book-back">
+                                <h3>Standard 5</h3>
+                                <p>Presentation tools and beginning programming principles.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-6' %}"
+                        class="premium-book-card delay1" id="iwhizz-class-6" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz6.jpg' %}" alt="Standard 6"
+                                    style="view-transition-name: book-image-iwhizz-series-class-6;"></div>
+                            <div class="book-back">
+                                <h3>Standard 6</h3>
+                                <p>Deeper dive into software apps and coding techniques.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-7' %}"
+                        class="premium-book-card delay2" id="iwhizz-class-7" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz7.jpg' %}" alt="Standard 7"
+                                    style="view-transition-name: book-image-iwhizz-series-class-7;"></div>
+                            <div class="book-back">
+                                <h3>Standard 7</h3>
+                                <p>Advanced digital tools and structured logic building.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-8' %}"
+                        class="premium-book-card delay3" id="iwhizz-class-8" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz8.jpg' %}" alt="Standard 8"
+                                    style="view-transition-name: book-image-iwhizz-series-class-8;"></div>
+                            <div class="book-back">
+                                <h3>Standard 8</h3>
+                                <p>Web design basics and advanced conceptual frameworks.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-9' %}"
+                        class="premium-book-card delay4" id="iwhizz-class-9" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/iwhizz9.jpg' %}" alt="Standard 9"
+                                    style="view-transition-name: book-image-iwhizz-series-class-9;"></div>
+                            <div class="book-back">
+                                <h3>Standard 9</h3>
+                                <p>Comprehensive studies in modern computing architectures.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- ================= YOUNG WIZARD SERIES ================= -->
+        <section class="series-section reveal-up" id="young-wizard-series">
+            <div class="series-container">
+                <a href="{% url 'series_detail' series_slug='young-wizard-series' %}" style="text-decoration: none;">
+                    <h1 class="series-title" style="view-transition-name: series-title-young-wizard-series;">YOUNG
+                        WIZARD SERIES</h1>
+                </a>
+                <div class="premium-bookshelf">
+                    <a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-1' %}"
+                        class="premium-book-card delay1" id="young-wizard-1" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/young1.jpg' %}" alt="Level 1"
+                                     style="view-transition-name: book-image-young-wizard-series-level-1;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Level 1</h3>
+                                <p>Magical introduction to computers.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-2' %}"
+                        class="premium-book-card delay2" id="young-wizard-2" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/young2.jpg' %}" alt="Level 2"
+                                     style="view-transition-name: book-image-young-wizard-series-level-2;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Level 2</h3>
+                                <p>Exploring creative tech tools.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-3' %}"
+                        class="premium-book-card delay3" id="young-wizard-3" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/young3.jpg' %}" alt="Level 3"
+                                     style="view-transition-name: book-image-young-wizard-series-level-3;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Level 3</h3>
+                                <p>Building logic through fun exercises.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-4' %}"
+                        class="premium-book-card delay4" id="young-wizard-4" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/young4.jpg' %}" alt="Level 4"
+                                     style="view-transition-name: book-image-young-wizard-series-level-4;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Level 4</h3>
+                                <p>Intermediate magical computing tasks.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-5' %}"
+                        class="premium-book-card delay5" id="young-wizard-5" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/young5.jpg' %}" alt="Level 5"
+                                     style="view-transition-name: book-image-young-wizard-series-level-5;">
+                            </div>
+                            <div class="book-back">
+                                <h3>Level 5</h3>
+                                <p>Advanced puzzles and digital mastery.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= LITTLE WIZARD SERIES ================= -->
+        <section class="series-section reveal-up" id="little-wizard-series">
+            <div class="series-container">
+                <a href="{% url 'series_detail' series_slug='little-wizard-series' %}" style="text-decoration: none;">
+                    <h1 class="series-title" style="view-transition-name: series-title-little-wizard-series;">LITTLE
+                        WIZARD SERIES</h1>
+                </a>
+                <div class="premium-bookshelf">
+                    <a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-1' %}"
+                        class="premium-book-card delay1" id="little-wizard-1" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/Kids level 1 wrapper.jpg' %}"
+                                    alt="Standard 1"
+                                    style="view-transition-name: book-image-little-wizard-series-level-1;"></div>
+                            <div class="book-back">
+                                <h3>Standard 1</h3>
+                                <p>Colorful shapes and mouse control.</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-2' %}"
+                        class="premium-book-card delay2" id="little-wizard-2" style="text-decoration: none;">
+                        <div class="book-flipper">
+                            <div class="book-front"><img src="{% static 'images/Kids level 2 wrapper.jpg' %}"
+                                    alt="Standard 2"
+                                    style="view-transition-name: book-image-little-wizard-series-level-2;"></div>
+                            <div class="book-back">
+                                <h3>Standard 2</h3>
+                                <p>Typing games and early logic.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ================= TAMIL WRITING BOOKS ================= -->
+            <section class="series-section reveal-up" id="tamil-writing-books">
+                <div class="series-container">
+                    <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}"
+                        style="text-decoration: none;">
+                        <h1 class="series-title" style="view-transition-name: series-title-tamil-writing-books;">TAMIL COPY WRITING SERIES</h1>
+                    </a>
+                    <div class="premium-bookshelf">
+                        <!-- Book 1 -->
+                        <a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-1' %}"
+                            class="premium-book-card delay1" id="tamil-level-1" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/tamil1.jpg' %}"
+                                        alt="L.K.G"
+                                        style="view-transition-name: book-image-tamil-writing-books-level-1;"></div>
+                                <div class="book-back">
+                                    <h3>L.K.G</h3>
+                                    <p>அடிப்படை தமிழ் எழுத்து வடிவங்கள் மற்றும் உயிர் எழுத்துக்களின் அறிமுகம்.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Book 2 -->
+                        <a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-2' %}"
+                            class="premium-book-card delay2" id="tamil-level-2" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/tamil2.jpg' %}"
+                                        alt="U.K.G"
+                                        style="view-transition-name: book-image-tamil-writing-books-level-2;"></div>
+                                <div class="book-back">
+                                    <h3>U.K.G</h3>
+                                    <p>தமிழ் உயிர் எழுத்துகள் மற்றும் அடிப்படை மெய் எழுத்துகளை எழுதுவதற்கான படிப்படியான வழிகாட்டுதல்.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Book 3 -->
+                        <a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-3' %}"
+                            class="premium-book-card delay3" id="tamil-level-3" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/tamil3.jpg' %}"
+                                        alt="முதல் நிலை"
+                                        style="view-transition-name: book-image-tamil-writing-books-level-3;"></div>
+                                <div class="book-back">
+                                    <h3>முதல் நிலை</h3>
+                                    <p>பயிற்சி கட்டங்களுடன் அடிப்படை உயிர்மெய் எழுத்துக்களின் சேர்க்கையை கற்றல்.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Book 4 -->
+                        <a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-4' %}"
+                            class="premium-book-card delay4" id="tamil-level-4" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/tamil4.jpg' %}"
+                                        alt="இரண்டாம் நிலை"
+                                        style="view-transition-name: book-image-tamil-writing-books-level-4;"></div>
+                                <div class="book-back">
+                                    <h3>இரண்டாம் நிலை</h3>
+                                    <p>சொற்களை உருவாக்குதல் மற்றும் பொதுவான வாக்கிய அமைப்புகளில் கவனம்.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Book 5 -->
+                        <a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-5' %}"
+                            class="premium-book-card delay5" id="tamil-level-5" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/tamil5.jpg' %}"
+                                        alt="மூன்றாம் நிலை"
+                                        style="view-transition-name: book-image-tamil-writing-books-level-5;"></div>
+                                <div class="book-back">
+                                    <h3>மூன்றாம் நிலை</h3>
+                                    <p>சிறுகதைகள் மற்றும் தமிழ் சொற்களஞ்சியத்துடன் சரளமான கையெழுத்தை வளர்த்தல்.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Book 6 -->
+                        <a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-6' %}"
+                            class="premium-book-card delay1" id="tamil-level-6" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/tamil6.jpg' %}"
+                                        alt="நான்காம் நிலை"
+                                        style="view-transition-name: book-image-tamil-writing-books-level-6;"></div>
+                                <div class="book-back">
+                                    <h3>நான்காம் நிலை</h3>
+                                    <p>சிக்கலான எழுத்துகள் மற்றும் பாரம்பரிய தமிழ் இலக்கியத் துணுக்குகள் அடங்கிய மேம்பட்ட பயிற்சி.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Book 7 -->
+                        <a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-7' %}"
+                            class="premium-book-card delay2" id="tamil-level-7" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/tamil7.jpg' %}"
+                                        alt="ஐந்தாம் நிலை"
+                                        style="view-transition-name: book-image-tamil-writing-books-level-7;"></div>
+                                <div class="book-back">
+                                    <h3>ஐந்தாம் நிலை</h3>
+                                    <p>கலைநயமிக்க எழுத்துருக்களுடன் தொழில்முறை தமிழ் கையெழுத்தை முழுமையாக்குதல்.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= CURSIVE WRITING BOOKS ================= -->
+            <section class="series-section reveal-up" id="cursive-writing-books">
+                <div class="series-container" style="position: relative;">
+                    <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}"
+                        style="text-decoration: none;">
+                        <h1 class="series-title" style="view-transition-name: series-title-cursive-writing-books;">
+                            CURSIVE WRITING BOOKS</h1>
+                    </a>
+                    <!-- Decorative Icon 5 -->
+                    <div class="decorative-icon absolute-right">
+                        <img src="{% static 'images/icon1.png' %}" alt="Decoration">
+                    </div>
+                    <div class="premium-bookshelf">
+                        <!-- LKG -->
+                        <a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='lkg' %}"
+                            class="premium-book-card delay1" id="cursive-lkg" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/cursive-lkg.jpg' %}"
+                                        alt="Cursive LKG"
+                                        style="view-transition-name: book-image-cursive-writing-books-lkg;"></div>
+                                <div class="book-back">
+                                    <h3>Cursive Writing LKG</h3>
+                                    <p>Building early motor skills with patterns and basic cursive arcs.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- UKG -->
+                        <a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='ukg' %}"
+                            class="premium-book-card delay2" id="cursive-ukg" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/cursive-ukg.jpg' %}"
+                                        alt="Cursive UKG"
+                                        style="view-transition-name: book-image-cursive-writing-books-ukg;"></div>
+                                <div class="book-back">
+                                    <h3>Cursive Writing UKG</h3>
+                                    <p>Introduction to lowercase cursive letters and connecting loops.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Level 1 -->
+                        <a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-1' %}"
+                            class="premium-book-card delay3" id="cursive-level-1" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Level 1.jpg' %}"
+                                        alt="Level 1"
+                                        style="view-transition-name: book-image-cursive-writing-books-level-1;"></div>
+                                <div class="book-back">
+                                    <h3>Level 1</h3>
+                                    <p>Mastering uppercase letters and foundational word connectivity.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Level 2 -->
+                        <a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-2' %}"
+                            class="premium-book-card delay4" id="cursive-level-2" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Level 2.jpg' %}"
+                                        alt="Level 2"
+                                        style="view-transition-name: book-image-cursive-writing-books-level-2;"></div>
+                                <div class="book-back">
+                                    <h3>Level 2</h3>
+                                    <p>Practicing cursive sentences with focus on spacing and slant.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Level 3 -->
+                        <a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-3' %}"
+                            class="premium-book-card delay5" id="cursive-level-3" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Level 3.jpg' %}"
+                                        alt="Level 3"
+                                        style="view-transition-name: book-image-cursive-writing-books-level-3;"></div>
+                                <div class="book-back">
+                                    <h3>Level 3</h3>
+                                    <p>Developing speed and consistency in handwriting through engaging paragraphs.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Level 4 -->
+                        <a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-4' %}"
+                            class="premium-book-card delay1" id="cursive-level-4" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Level 4.jpg' %}"
+                                        alt="Level 4"
+                                        style="view-transition-name: book-image-cursive-writing-books-level-4;"></div>
+                                <div class="book-back">
+                                    <h3>Level 4</h3>
+                                    <p>Advanced practice using inspirational quotes and creative writing prompts.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Level 5 -->
+                        <a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-5' %}"
+                            class="premium-book-card delay2" id="cursive-level-5" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Level 5.jpg' %}"
+                                        alt="Level 5"
+                                        style="view-transition-name: book-image-cursive-writing-books-level-5;"></div>
+                                <div class="book-back">
+                                    <h3>Level 5</h3>
+                                    <p>Perfecting neatness and style for academic excellence and long-form writing.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <!-- ================= APPLICATION SERIES 2016 ================= -->
+            <section class="series-section reveal-up" id="app2016-series">
+                <div class="series-container">
+                    <a href="{% url 'series_detail' series_slug='app2016-series' %}" style="text-decoration: none;">
+                        <h1 class="series-title" style="view-transition-name: series-title-app2016-series;">APPLICATION 2016 SERIES</h1>
+                    </a>
+                    <div class="premium-bookshelf">
+                        <a href="{% url 'book_detail' series_slug='app2016-series' book_slug='word' %}"
+                            class="premium-book-card delay1" id="app2016-word" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/2016 word.png' %}" alt="MS-Word 2016"
+                                        style="view-transition-name: book-image-app2016-series-word;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-Word 2016</h3>
+                                    <p>Professional document creation and formatting.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='app2016-series' book_slug='excel' %}"
+                            class="premium-book-card delay2" id="app2016-excel" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/2016 excel.png' %}" alt="MS-Excel 2016"
+                                        style="view-transition-name: book-image-app2016-series-excel;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-Excel 2016</h3>
+                                    <p>Data analysis, charting, and advanced functions.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='app2016-series' book_slug='ppt' %}"
+                            class="premium-book-card delay3" id="app2016-ppt" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/2016 ppt.png' %}"
+                                        alt="MS-PowerPoint 2016"
+                                        style="view-transition-name: book-image-app2016-series-ppt;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-PowerPoint 2016</h3>
+                                    <p>Create stunning presentations with modern tools.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ================= APPLICATION SERIES 2007 ================= -->
+            <section class="series-section reveal-up" id="app2007-series">
+                <div class="series-container">
+                    <a href="{% url 'series_detail' series_slug='app2007-series' %}" style="text-decoration: none;">
+                        <h1 class="series-title" style="view-transition-name: series-title-app2007-series;">APPLICATION 2007 SERIES</h1>
+                    </a>
+                    <div class="premium-bookshelf">
+                        <a href="{% url 'book_detail' series_slug='app2007-series' book_slug='office-2007' %}"
+                            class="premium-book-card delay1" id="app2007-office" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/App4.jpg' %}" alt="MS-Office 2007"
+                                        style="view-transition-name: book-image-app2007-series-office-2007;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-Office 2007</h3>
+                                    <p>Foundations of Office 2007 applications.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='app2007-series' book_slug='word-2007' %}"
+                            class="premium-book-card delay2" id="app2007-word" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/App1.jpg' %}" alt="MS-Word 2007"
+                                        style="view-transition-name: book-image-app2007-series-word-2007;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-Word 2007</h3>
+                                    <p>Intermediate skills in Word and formatting.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='app2007-series' book_slug='excel-2007' %}"
+                            class="premium-book-card delay3" id="app2007-excel" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/App3.jpg' %}" alt="MS-Excel 2007"
+                                        style="view-transition-name: book-image-app2007-series-excel-2007;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-Excel 2007</h3>
+                                    <p>Advanced formulas and spreadsheets.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='app2007-series' book_slug='ppt-2007' %}"
+                            class="premium-book-card delay4" id="app2007-ppt" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/App5.jpg' %}" alt="MS-PowerPoint 2007"
+                                        style="view-transition-name: book-image-app2007-series-ppt-2007;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-PowerPoint 2007</h3>
+                                    <p>Creating dynamic presentations.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='app2007-series' book_slug='access-2007' %}"
+                            class="premium-book-card delay5" id="app2007-access" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/App2.jpg' %}" alt="MS-Access 2007"
+                                        style="view-transition-name: book-image-app2007-series-access-2007;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>MS-Access 2007</h3>
+                                    <p>Database management introduction.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+            <!-- ================= PROGRAMMING SERIES ================= -->
+            <section class="series-section reveal-up" id="programming-series">
+                <div class="series-container">
+                    <a href="{% url 'series_detail' series_slug='programming-series' %}" style="text-decoration: none;">
+                        <h1 class="series-title" style="view-transition-name: series-title-programming-series;">
+                            PROGRAMMING SERIES</h1>
+                    </a>
+                    <div class="premium-bookshelf">
+                        <a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-1' %}"
+                            class="premium-book-card delay1" id="programming-level-1" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Pro1 New.jpg' %}"
+                                        alt="C++ Programming"
+                                        style="view-transition-name: book-image-programming-series-level-1;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>C++ Programming</h3>
+                                    <p>The fundamentals of coding and syntax.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-2' %}"
+                            class="premium-book-card delay2" id="programming-level-2" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Pro2.jpg' %}" alt="C Programming"
+                                        style="view-transition-name: book-image-programming-series-level-2;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>C Programming</h3>
+                                    <p>Data structures and algorithms introduction.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-3' %}"
+                            class="premium-book-card delay3" id="programming-level-3" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Pro3.jpg' %}" alt="Multimedia Flash"
+                                        style="view-transition-name: book-image-programming-series-level-3;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>Multimedia Flash</h3>
+                                    <p>Object-oriented concepts and design.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-4' %}"
+                            class="premium-book-card delay4" id="programming-level-4" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/Pro4 New.jpg' %}"
+                                        alt="Learning HTML"
+                                        style="view-transition-name: book-image-programming-series-level-4;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>Learning HTML</h3>
+                                    <p>Advanced applied programming techniques.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ================= MY COMPUTER SERIES ================= -->
+            <section class="series-section reveal-up" id="my-computer-series">
+                <div class="series-container">
+                    <a href="{% url 'series_detail' series_slug='my-computer-series' %}" style="text-decoration: none;">
+                        <h1 class="series-title" style="view-transition-name: series-title-my-computer-series;">MY
+                            COMPUTER SERIES</h1>
+                    </a>
+                    <div class="premium-bookshelf">
+                        <a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-1' %}"
+                            class="premium-book-card delay1" id="mycomputer-level-1" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/my1.jpg' %}" alt="Grade 1"
+                                        style="view-transition-name: book-image-my-computer-series-level-1;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>Grade 1</h3>
+                                    <p>Exploring your first PC.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-2' %}"
+                            class="premium-book-card delay2" id="mycomputer-level-2" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/my2.jpg' %}" alt="Grade 2"
+                                        style="view-transition-name: book-image-my-computer-series-level-2;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>Grade 2</h3>
+                                    <p>Handling files and folders safely.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-3' %}"
+                            class="premium-book-card delay3" id="mycomputer-level-3" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/my3.jpg' %}" alt="Grade 3"
+                                        style="view-transition-name: book-image-my-computer-series-level-3;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>Grade 3</h3>
+                                    <p>Navigating operating systems.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-4' %}"
+                            class="premium-book-card delay4" id="mycomputer-level-4" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/my4.jpg' %}" alt="Grade 4"
+                                        style="view-transition-name: book-image-my-computer-series-level-4;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>Grade 4</h3>
+                                    <p>Settings, customization, and tools.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-5' %}"
+                            class="premium-book-card delay5" id="mycomputer-level-5" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/my5.jpg' %}" alt="Grade 5"
+                                        style="view-transition-name: book-image-my-computer-series-level-5;">
+                                </div>
+                                <div class="book-back">
+                                    <h3>Grade 5</h3>
+                                    <p>System maintenance and troubleshooting.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= RIGHT-CLICK SERIES ================= -->
+            <section class="series-section reveal-up" id="right-click-series">
+                <div class="series-container">
+                    <a href="{% url 'series_detail' series_slug='right-click-series' %}" style="text-decoration: none;">
+                        <h1 class="series-title" style="view-transition-name: series-title-right-click-series;">
+                            RIGHT-CLICK SERIES</h1>
+                    </a>
+                    <div class="premium-bookshelf">
+                        <a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-6' %}"
+                            class="premium-book-card delay1" id="ict-level-6" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/ict6.jpg' %}" alt="ICT Standard 6"
+                                        style="view-transition-name: book-image-right-click-series-level-6;"></div>
+                                <div class="book-back">
+                                    <h3>ICT Standard 6</h3>
+                                    <p>Information and Communication Tech basics.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-7' %}"
+                            class="premium-book-card delay2" id="ict-level-7" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/ict7.jpg' %}" alt="ICT Standard 7"
+                                        style="view-transition-name: book-image-right-click-series-level-7;"></div>
+                                <div class="book-back">
+                                    <h3>ICT Standard 7</h3>
+                                    <p>Networks and data communication.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-8' %}"
+                            class="premium-book-card delay3" id="ict-level-8" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/ict8.jpg' %}" alt="ICT Standard 8"
+                                        style="view-transition-name: book-image-right-click-series-level-8;"></div>
+                                <div class="book-back">
+                                    <h3>ICT Standard 8</h3>
+                                    <p>Applied IT systems in the real world.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-9' %}"
+                            class="premium-book-card delay4" id="ict-level-9" style="text-decoration: none;">
+                            <div class="book-flipper">
+                                <div class="book-front"><img src="{% static 'images/ict9.jpg' %}" alt="ICT Standard 9"
+                                        style="view-transition-name: book-image-right-click-series-level-9;"></div>
+                                <div class="book-back">
+                                    <h3>ICT Standard 9</h3>
+                                    <p>Comprehensive technology integration.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+
+    </div> <!-- End of series-wrapper -->
+
+
+    <!-- ================= ORDER REQUEST SECTION ================= -->
+    <section class="container reveal-up delay-100" id="purchase">
+        <div class="demo-card"
+            style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 4rem; display: flex; gap: 4rem; align-items: center; box-shadow: var(--shadow-md);">
+            <!-- Left Side / Content -->
+            <div class="demo-content" style="flex: 1;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary);">Purchase Request</h2>
+                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
+                    Ready to bring <span class="brand-text">SAMSEL</span> to your school? Choose your preferred method
+                    below to request a quote or place
+                    an order.
+                </p>
+
+                <!-- Toggle -->
+                <div class="purchase-toggle" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button class="btn-primary toggle-btn active" onclick="showPurchase('whatsapp')"
+                        style="flex: 1; padding: 12px; font-size: 0.95rem;">WhatsApp Order</button>
+                    <button class="btn-secondary toggle-btn" onclick="showPurchase('email')"
+                        style="flex: 1; padding: 12px; font-size: 0.95rem;">Email Request</button>
+                </div>
+
+                <!-- Forms Container -->
+                <div class="purchase-box-wrapper" style="position: relative; min-height: 250px;">
+                    <!-- Email Form -->
+                    <div id="email-box" class="purchase-box form-container fade-layer">
+                        <form class="demo-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <input type="text" class="form-control" placeholder="Contact Person Name" required>
+                            <input type="text" class="form-control" placeholder="School Name" required>
+                            <input type="email" class="form-control" placeholder="Mail ID" required>
+                            <textarea class="form-control" placeholder="Your Request (Books & Quantity)" rows="3"
+                                required></textarea>
+                            <button type="submit" class="btn-primary" style="align-self: flex-start;">Send
+                                Request</button>
+                        </form>
+                    </div>
+
+                    <!-- WhatsApp Info -->
+                    <div id="whatsapp-box" class="purchase-box active fade-layer">
+                        <div
+                            style="background: rgba(23, 187, 85, 0.1); border: 1px solid #17bb55; padding: 1.5rem; border-radius: var(--radius-md); display: flex; align-items: center; gap: 1.5rem;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://wa.me/919884392953"
+                                alt="WhatsApp QR"
+                                style="width: 120px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); background: #fff; padding: 5px;">
+                            <div>
+                                <h3 style="color: #17bb55; font-size: 1.25rem; margin-bottom: 0.5rem;">Scan & Order</h3>
+                                <p style="font-size: 0.95rem; margin-bottom: 1rem;">Scan the code or click below to
+                                    message us directly on WhatsApp with your requirements.</p>
+                                <a href="https://wa.me/919884392953" class="btn-primary"
+                                    style="background: #17bb55; padding: 10px 20px; font-size: 0.9rem; color: #fff; border:none; border-radius: 30px; display:inline-block; text-align:center; box-shadow: 0 4px 6px rgba(23,187,85,0.2);">Open
+                                    WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-section-body">
+
+                <!-- Left: WhatsApp quick contact -->
+                <div class="order-whatsapp-side">
+                    <div class="whatsapp-card">
+                        <div class="whatsapp-icon-wrap">
+                            <svg viewBox="0 0 32 32" width="40" height="40" fill="#25D366"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.736 5.476 2.02 7.782L0 32l8.468-2.001A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.762-1.848l-.484-.287-5.024 1.186 1.22-4.888-.317-.503A13.24 13.24 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.28-9.92c-.4-.2-2.36-1.164-2.727-1.297-.366-.133-.633-.2-.9.2-.267.4-1.033 1.297-1.267 1.563-.233.267-.466.3-.866.1-.4-.2-1.688-.623-3.214-1.98-1.188-1.055-1.99-2.359-2.224-2.759-.234-.4-.025-.616.175-.815.18-.178.4-.467.6-.7.2-.233.267-.4.4-.667.133-.266.067-.5-.033-.7-.1-.2-.9-2.167-1.233-2.967-.325-.78-.655-.673-.9-.686l-.766-.013c-.267 0-.7.1-1.067.5-.367.4-1.4 1.367-1.4 3.333s1.433 3.867 1.633 4.133c.2.267 2.82 4.3 6.833 6.033.954.413 1.7.66 2.283.844.96.305 1.833.262 2.524.159.77-.115 2.36-.965 2.693-1.897.333-.933.333-1.733.233-1.9-.1-.166-.367-.266-.767-.466z"/></svg>
+                        </div>
+                        <h3>Quick WhatsApp Order</h3>
+                        <p>Scan the QR or tap the button to chat with us directly on WhatsApp.</p>
+                        <img src="{% static 'images/whatsapp.jpeg' %}" alt="WhatsApp QR Code" class="whatsapp-qr">
+                        <a href="https://wa.me/919841234567" target="_blank" class="whatsapp-btn">
+                            Open WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="order-divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Right: OTP Auth Portal -->
+                <div class="order-otp-side">
+                    <div class="otp-portal">
+                        <h3>Authenticated Order Form</h3>
+                        <p>Verify your school & mobile to access the official order form.</p>
+
+                        <!-- Step 1: Collect info -->
+                        <div id="otp-step1">
+                            <div class="otp-field-group">
+                                <label>School Name <span class="req">*</span></label>
+                                <input type="text" id="otp-school" class="form-control" placeholder="Enter your school name">
+                            </div>
+                            <div class="otp-field-group">
+                                <label>Mobile Number <span class="req">*</span></label>
+                                <div class="phone-input-wrap">
+                                    <span class="phone-prefix">+91</span>
+                                    <input type="tel" id="otp-mobile" class="form-control" placeholder="10-digit mobile number" maxlength="10">
+                                </div>
+                            </div>
+                            <button class="otp-send-btn" onclick="sendOTP()">
+                                <span id="send-otp-text">Send OTP</span>
+                                <span id="send-otp-spinner" class="btn-spinner hidden"></span>
+                            </button>
+                            <p id="otp-error" class="otp-msg error hidden"></p>
+                        </div>
+
+                        <!-- Step 2: Enter OTP -->
+                        <div id="otp-step2" class="hidden">
+                            <p class="otp-sent-msg">✅ OTP sent to <strong id="masked-mobile"></strong></p>
+                            <div class="otp-input-row">
+                                <input type="text" maxlength="1" class="otp-digit" id="d1" oninput="otpInputMove(this,'d2')">
+                                <input type="text" maxlength="1" class="otp-digit" id="d2" oninput="otpInputMove(this,'d3')" onkeydown="otpBackspace(event,this,'d1')">
+                                <input type="text" maxlength="1" class="otp-digit" id="d3" oninput="otpInputMove(this,'d4')" onkeydown="otpBackspace(event,this,'d2')">
+                                <input type="text" maxlength="1" class="otp-digit" id="d4" oninput="otpInputMove(this,'d5')" onkeydown="otpBackspace(event,this,'d3')">
+                                <input type="text" maxlength="1" class="otp-digit" id="d5" oninput="otpInputMove(this,'d6')" onkeydown="otpBackspace(event,this,'d4')">
+                                <input type="text" maxlength="1" class="otp-digit" id="d6" onkeydown="otpBackspace(event,this,'d5')">
+                            </div>
+                            <button class="otp-send-btn" onclick="verifyOTP()">
+                                <span id="verify-otp-text">Verify OTP</span>
+                                <span id="verify-otp-spinner" class="btn-spinner hidden"></span>
+                            </button>
+                            <p id="otp-verify-error" class="otp-msg error hidden"></p>
+                            <button class="otp-resend-link" onclick="backToStep1()">← Use a different number</button>
+                        </div>
+
+                        <!-- Step 3: Success + Continue -->
+                        <div id="otp-step3" class="hidden">
+                            <div class="otp-success-box">
+                                <div class="otp-success-icon">✔</div>
+                                <h4>Verified Successfully!</h4>
+                                <p id="verified-school-name"></p>
+                                <a id="continue-to-order" href="#" class="otp-continue-btn">Continue to Order Form →</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+    .order-section-card {
+        background: var(--card-bg);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        overflow: hidden;
+        border: 1px solid rgba(0,0,0,0.06);
+    }
+    .order-section-header {
+        padding: 2.5rem 3rem 1.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .order-section-header h2 {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 0.4rem;
+    }
+    .order-section-header p {
+        color: var(--text-muted);
+        font-size: 1rem;
+        margin: 0;
+    }
+    .order-section-body {
+        display: flex;
+        gap: 0;
+        min-height: 400px;
+    }
+    .order-whatsapp-side {
+        flex: 1;
+        padding: 2rem 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border-right: 1px solid rgba(37,211,102,0.2);
+    }
+    .whatsapp-card {
+        text-align: center;
+        max-width: 280px;
+    }
+    .whatsapp-icon-wrap {
+        background: #25D366;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        box-shadow: 0 4px 15px rgba(37,211,102,0.35);
+    }
+    .whatsapp-icon-wrap svg { fill: #fff; }
+    .whatsapp-card h3 {
+        font-size: 1.25rem;
+        color: #166534;
+        margin-bottom: 0.5rem;
+    }
+    .whatsapp-card p {
+        font-size: 0.9rem;
+        color: #15803d;
+        margin-bottom: 1rem;
+    }
+    .whatsapp-qr {
+        width: 120px;
+        border-radius: 12px;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin: 0 auto 1.2rem;
+    }
+    .whatsapp-btn {
+        display: inline-block;
+        background: #25D366;
+        color: #fff;
+        padding: 12px 28px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 12px rgba(37,211,102,0.35);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .whatsapp-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+        color: #fff;
+    }
+    .order-divider {
+        width: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        flex-shrink: 0;
+    }
+    .order-divider::before {
+        content: '';
+        position: absolute;
+        top: 0; bottom: 0;
+        left: 50%;
+        width: 1px;
+        background: rgba(0,0,0,0.08);
+    }
+    .order-divider span {
+        background: #fff;
+        padding: 8px 4px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        position: relative;
+        z-index: 1;
+        letter-spacing: 1px;
+    }
+    .order-otp-side {
+        flex: 1;
+        padding: 2rem 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .otp-portal {
+        width: 100%;
+        max-width: 380px;
+    }
+    .otp-portal h3 {
+        font-size: 1.3rem;
+        color: var(--primary);
+        margin-bottom: 0.4rem;
+    }
+    .otp-portal > p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+    .otp-field-group {
+        margin-bottom: 1.2rem;
+    }
+    .otp-field-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: var(--text-main);
+        margin-bottom: 0.4rem;
+    }
+    .req { color: #e53e3e; }
+    .phone-input-wrap {
+        display: flex;
+        align-items: center;
+        border: 1px solid #e2e8f0;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+    }
+    .phone-prefix {
+        padding: 14px 12px;
+        background: #f8fafc;
+        font-weight: 600;
+        color: var(--text-muted);
+        border-right: 1px solid #e2e8f0;
+        font-size: 0.95rem;
+    }
+    .phone-input-wrap .form-control {
+        border: none;
+        border-radius: 0;
+        flex: 1;
+    }
+    .otp-send-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(to right, var(--primary), var(--primary-light));
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        transition: opacity 0.2s, transform 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .otp-send-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .otp-msg {
+        font-size: 0.88rem;
+        margin-top: 0.75rem;
+        padding: 8px 12px;
+        border-radius: 6px;
+    }
+    .otp-msg.error { background: #fff5f5; color: #c53030; border: 1px solid #fed7d7; }
+    .otp-msg.success { background: #f0fff4; color: #276749; border: 1px solid #c6f6d5; }
+    .otp-sent-msg { font-size: 0.9rem; color: #276749; margin-bottom: 1.2rem; }
+    .otp-input-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 1.2rem;
+    }
+    .otp-digit {
+        width: 48px;
+        height: 56px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        color: var(--primary);
+        transition: border-color 0.2s;
+        outline: none;
+    }
+    .otp-digit:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,59,102,0.1); }
+    .otp-resend-link {
+        background: none; border: none;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        cursor: pointer;
+        margin-top: 0.75rem;
+        display: block;
+        text-align: center;
+        transition: color 0.2s;
+    }
+    .otp-resend-link:hover { color: var(--primary); }
+    .otp-success-box {
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+    .otp-success-icon {
+        width: 64px; height: 64px;
+        background: #276749;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 1.8rem;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 1rem;
+        box-shadow: 0 4px 15px rgba(39,103,73,0.3);
+        animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .otp-success-box h4 { font-size: 1.3rem; color: #276749; margin-bottom: 0.4rem; }
+    .otp-success-box p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .otp-continue-btn {
+        display: inline-block;
+        background: linear-gradient(to right, #0d3b66, #165b9e);
+        color: #fff;
+        padding: 14px 32px;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1rem;
+        box-shadow: 0 4px 15px rgba(13,59,102,0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+        animation: slideUp 0.5s ease;
+    }
+    .otp-continue-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(13,59,102,0.4);
+        color: #fff;
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .btn-spinner {
+        width: 18px; height: 18px;
+        border: 2px solid rgba(255,255,255,0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hidden { display: none !important; }
+    @media (max-width: 768px) {
+        .order-section-body { flex-direction: column; }
+        .order-whatsapp-side { border-right: none; border-bottom: 1px solid rgba(37,211,102,0.2); }
+        .order-divider { width: 100%; height: 50px; flex-direction: row; }
+        .order-divider::before { top: 50%; bottom: auto; left: 0; right: 0; width: 100%; height: 1px; }
+        .order-section-header { padding: 1.5rem; }
+        .order-otp-side { padding: 1.5rem; }
+    }
+    </style>
+
+    <script src="{% static 'js/global.js' %}"></script>
+    <script src="{% static 'js/products.js' %}"></script>
+    <script>
+    function getCookie(name) {
+        let c = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+        return c ? c.pop() : '';
+    }
+    function sendOTP() {
+        const school = document.getElementById('otp-school').value.trim();
+        const mobile = document.getElementById('otp-mobile').value.trim();
+        const errEl = document.getElementById('otp-error');
+        errEl.classList.add('hidden');
+        if (!school) { errEl.textContent = 'Please enter your school name.'; errEl.classList.remove('hidden'); return; }
+        if (!/^\d{10}$/.test(mobile)) { errEl.textContent = 'Please enter a valid 10-digit mobile number.'; errEl.classList.remove('hidden'); return; }
+        document.getElementById('send-otp-text').classList.add('hidden');
+        document.getElementById('send-otp-spinner').classList.remove('hidden');
+        fetch('/order/send-otp/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+            body: JSON.stringify({ school_name: school, mobile: mobile })
+        }).then(r => r.json()).then(data => {
+            document.getElementById('send-otp-text').classList.remove('hidden');
+            document.getElementById('send-otp-spinner').classList.add('hidden');
+            if (data.success) {
+                document.getElementById('masked-mobile').textContent = '+91 XXXXXX' + mobile.slice(-4);
+                document.getElementById('otp-step1').classList.add('hidden');
+                document.getElementById('otp-step2').classList.remove('hidden');
+                document.getElementById('d1').focus();
+            } else {
+                errEl.textContent = data.error || 'Failed to send OTP. Try again.';
+                errEl.classList.remove('hidden');
+            }
+        }).catch(() => {
+            document.getElementById('send-otp-text').classList.remove('hidden');
+            document.getElementById('send-otp-spinner').classList.add('hidden');
+            errEl.textContent = 'Network error. Please try again.';
+            errEl.classList.remove('hidden');
+        });
+    }
+    function verifyOTP() {
+        const digits = ['d1','d2','d3','d4','d5','d6'].map(id => document.getElementById(id).value).join('');
+        const errEl = document.getElementById('otp-verify-error');
+        errEl.classList.add('hidden');
+        if (digits.length < 6) { errEl.textContent = 'Please enter all 6 digits.'; errEl.classList.remove('hidden'); return; }
+        document.getElementById('verify-otp-text').classList.add('hidden');
+        document.getElementById('verify-otp-spinner').classList.remove('hidden');
+        fetch('/order/verify-otp/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+            body: JSON.stringify({ otp: digits })
+        }).then(r => r.json()).then(data => {
+            document.getElementById('verify-otp-text').classList.remove('hidden');
+            document.getElementById('verify-otp-spinner').classList.add('hidden');
+            if (data.success) {
+                document.getElementById('otp-step2').classList.add('hidden');
+                document.getElementById('otp-step3').classList.remove('hidden');
+                document.getElementById('verified-school-name').textContent = 'School: ' + data.school_name;
+                const link = document.getElementById('continue-to-order');
+                link.href = '/order-form/?school=' + encodeURIComponent(data.school_name) + '&mobile=' + encodeURIComponent(data.mobile);
+            } else {
+                errEl.textContent = data.error || 'Incorrect OTP. Please try again.';
+                errEl.classList.remove('hidden');
+            }
+        }).catch(() => {
+            document.getElementById('verify-otp-text').classList.remove('hidden');
+            document.getElementById('verify-otp-spinner').classList.add('hidden');
+            document.getElementById('otp-verify-error').textContent = 'Network error. Try again.';
+            document.getElementById('otp-verify-error').classList.remove('hidden');
+        });
+    }
+    function backToStep1() {
+        document.getElementById('otp-step2').classList.add('hidden');
+        document.getElementById('otp-step1').classList.remove('hidden');
+        ['d1','d2','d3','d4','d5','d6'].forEach(id => document.getElementById(id).value = '');
+    }
+    function otpInputMove(current, nextId) {
+        if (current.value && nextId) {
+            const next = document.getElementById(nextId);
+            if (next) next.focus();
+        }
+    }
+    function otpBackspace(event, current, prevId) {
+        if (event.key === 'Backspace' && !current.value && prevId) {
+            const prev = document.getElementById(prevId);
+            if (prev) { prev.value = ''; prev.focus(); }
+        }
+    }
+    document.getElementById('otp-mobile')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') sendOTP();
+    });
+    </script>
+
+
+
+    <!-- EDUCATION BOARDS SLIDER -->
+    <section class="boards-slider-container">
+        <div class="boards-track">
+            <!-- Set 1 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 2 for infinite loop -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 2 for infinite loop -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-links-grid">
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#counter-section">Our Heritage</a></li>
+                        <li><a href="{% url 'home' %}#india-presence">Digital Presence</a></li>
+                        <li><a href="{% url 'home' %}#sl-pillars">Digital Vision</a></li>
+                        <li><a href="{% url 'home' %}#featured-series">Innovative Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="{% url 'request_demo' %}">Request Demo</a></li>
+                        <li><a href="{% url 'contact' %}">Executive Query</a></li>
+                        <li><a href="{% url 'our_story' %}">The <span class="brand-text">SAMSEL</span> Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Growth & Impact</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#showcase-section">Educational Impact</a></li>
+                        <li><a href="{% url 'home' %}#trusted-schools">Premier Partners</a></li>
+                        <li><a href="{% url 'home' %}#boards-section">Academic Boards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ecosystem</h4>
+                    <ul>
+                        <li><a href="{% url 'school_login' %}">Institutional Access</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="footer-logo">
+                <span class="brand-text">SAMSEL</span>
+                <span class="brand-secondary">PUBLICATIONS</span>
+            </h3>
+            <p class="footer-copyright">&copy; 2026 <span class="brand-text">SAMSEL</span> Publications. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+</body>
+
+</html>

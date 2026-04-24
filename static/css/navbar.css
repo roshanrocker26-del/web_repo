@@ -1,0 +1,191 @@
+/* ================================
+   TOP NAVBAR (CENTERED, DARK BLUE)
+   ================================ */
+.top-navbar {
+    background-color: #0d3b66;
+    /* Deep blue similar to the reference image */
+    width: 100%;
+    padding: 10px 0;
+    position: relative;
+    z-index: 1000;
+}
+
+.top-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+}
+
+.top-menu li {
+    position: relative;
+}
+
+.top-menu li a {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+}
+
+.top-menu li a:hover {
+    color: #ffd700;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 10px;
+    background: #0d3b66;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li a {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+    color: #ffffff;
+}
+
+.dropdown-menu li:last-child a {
+    border-bottom: none;
+}
+
+.dropdown-menu li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ================================
+   MAIN HEADER (LOGO AND BUTTON)
+   ================================ */
+.main-header {
+    background: #ffffff;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+/* Logo */
+.logo a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+.logo a:hover {
+    transform: scale(1.02);
+}
+
+.logo-main {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 42px;
+    color: #e91e63;
+}
+
+.logo-sub {
+    font-family: 'Times New Roman', serif;
+    font-size: 24px;
+    color: #111;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Demo Button */
+.header-action .demo-btn {
+    background-color: #000000;
+    /* Black button */
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 14px 28px;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+.header-action .demo-btn:hover {
+    background-color: #333333;
+    transform: translateY(-2px);
+}
+
+.header-action .demo-btn .icon {
+    font-size: 18px;
+}
+
+/* Inquiry Button */
+.header-action .inquiry-btn {
+    background-color: #e91e63;
+    /* Red button */
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 14px 28px;
+    border-radius: 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+.header-action .inquiry-btn:hover {
+    background-color: #c2185b;
+    transform: translateY(-2px);
+}
+
+.header-action .inquiry-btn .icon {
+    font-size: 18px;
+}
+
+/* FOOTER */
+footer {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.7) 0%,
+            rgba(249, 249, 249, 0.6) 50%,
+            rgba(247, 247, 247, 0.5) 100%);
+    color: black;
+    text-align: center;
+    padding: 15px;
+}

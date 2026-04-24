@@ -1,0 +1,579 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Success Stories | SAMSEL PUBLICATIONS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <!-- Swiper JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        .reviews-hero {
+            position: relative;
+            padding: 80px 20px 40px;
+            text-align: center;
+            color: #0d3b66;
+            background: transparent;
+            margin-bottom: 40px;
+        }
+
+
+        .reviews-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1rem;
+            color: #0d3b66;
+        }
+
+        .reviews-hero p {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.8;
+            font-weight: 400;
+            color: #374151;
+        }
+
+        .reviews-list-container {
+            max-width: 1000px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            overflow-x: hidden;
+        }
+
+        .review-card-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            width: 85%;
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Alternate left and right */
+        .review-card-wrapper:nth-child(odd) {
+            align-self: flex-start;
+            transform: translateX(-100px);
+            border-bottom-left-radius: 60px;
+            border-top-right-radius: 60px;
+        }
+
+        .review-card-wrapper:nth-child(even) {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+            text-align: right;
+            transform: translateX(100px);
+            border-bottom-right-radius: 60px;
+            border-top-left-radius: 60px;
+        }
+
+        .review-card-wrapper.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reviewer-circle {
+            flex: 0 0 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid #fff;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            background: var(--primary-light, #f0f8ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reviewer-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .reviewer-circle:hover img {
+            transform: scale(1.1);
+        }
+
+        .review-text-column {
+            flex: 1;
+        }
+
+        .review-quote {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            color: var(--text-main, #4b5563);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            position: relative;
+        }
+
+        .review-stars {
+            color: #fbbf24;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .reviewer-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary, #0d3b66);
+            margin-bottom: 0.2rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        @media (max-width: 768px) {
+            .review-card-wrapper {
+                flex-direction: column !important;
+                text-align: center !important;
+                width: 100%;
+                gap: 1.5rem;
+                padding: 2rem;
+                border-radius: 20px !important;
+            }
+            .reviewer-circle {
+                flex: 0 0 120px;
+                height: 120px;
+            }
+            .review-quote {
+                font-size: 1.1rem;
+            }
+            .review-card-wrapper:nth-child(odd),
+            .review-card-wrapper:nth-child(even) {
+                transform: translateY(50px);
+            }
+            .review-card-wrapper.is-visible {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- MAIN HEADER -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/">
+                    <div class="logo-text-group">
+                        <span class="logo-main">SAMSEL</span>
+                        <span class="logo-sub">Publications</span>
+                    </div>
+                    <div class="logo-tagline">Shaping Digital Minds since 2001</div>
+                </a>
+            </div>
+
+            <div class="header-action" style="display: flex; gap: 15px;">
+                <a href="{% url 'contact' %}" class="inquiry-btn">
+                    WHAT'S YOUR QUERY <span class="icon"></span>
+                </a>
+                <a href="{% url 'request_demo' %}" class="demo-btn">
+                    REQUEST DEMO <span class="icon"></span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- TOP NAVBAR -->
+    <nav class="top-navbar">
+        <ul class="top-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li class="dropdown">
+                <a href="{% url 'products' %}">Products <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu wide-dropdown">
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ibot-series' %}">I-Bot Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-1' %}">Class 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-2' %}">Class 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-3' %}">Class 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-4' %}">Class 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-5' %}">Class 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-6' %}">Class 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-7' %}">Class 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-8' %}">Class 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ibot-series' book_slug='class-9' %}">Class 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='ismart-series' %}">I-Smart Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-1' %}">Standard 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-2' %}">Standard 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-3' %}">Standard 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-4' %}">Standard 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-5' %}">Standard 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-6' %}">Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-7' %}">Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-8' %}">Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='ismart-series' book_slug='level-9' %}">Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='iwhizz-series' %}">I-Whizz Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-1' %}">Standard 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-2' %}">Standard 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-3' %}">Standard 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-4' %}">Standard 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-5' %}">Standard 5</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-6' %}">Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-7' %}">Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-8' %}">Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='iwhizz-series' book_slug='class-9' %}">Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='young-wizard-series' %}">Young Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-1' %}">Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-2' %}">Level 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-3' %}">Level 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-4' %}">Level 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='young-wizard-series' book_slug='level-5' %}">Level 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='little-wizard-series' %}">Little Wizard Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-1' %}">Kids Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='little-wizard-series' book_slug='level-2' %}">Kids Level 2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2016-series' %}">Application 2016 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2016-series' book_slug='word' %}">MS-Word</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2016-series' book_slug='excel' %}">MS-Excel</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2016-series' book_slug='ppt' %}">MS-PowerPoint</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='app2007-series' %}">Application 2007 Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='office-2007' %}">MS-Office 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='word-2007' %}">MS-Word 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='excel-2007' %}">MS-Excel 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='ppt-2007' %}">MS-PowerPoint 2007</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='app2007-series' book_slug='access-2007' %}">MS-Access 2007</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='programming-series' %}">Programming Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-1' %}">C++ Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-2' %}">C Programming</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-3' %}">Multimedia Flash</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='programming-series' book_slug='level-4' %}">Learning HTML</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='my-computer-series' %}">My Computer Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-1' %}">Grade 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-2' %}">Grade 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-3' %}">Grade 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-4' %}">Grade 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='my-computer-series' book_slug='level-5' %}">Grade 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='right-click-series' %}">Right-Click Series <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-6' %}">ICT Standard 6</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-7' %}">ICT Standard 7</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-8' %}">ICT Standard 8</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-9' %}">ICT Standard 9</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='cursive-writing-books' %}">English Cursive Writing
+                            <span class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='lkg' %}">LKG</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='ukg' %}">UKG</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-1' %}">Level 1</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-2' %}">Level 2</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-3' %}">Level 3</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-4' %}">Level 4</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='cursive-writing-books' book_slug='level-5' %}">Level 5</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{% url 'series_detail' series_slug='tamil-writing-books' %}">Tamil Copy Writing <span
+                                class="side-arrow">▶</span></a>
+                        <ul class="submenu">
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-1' %}">L.K.G</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-2' %}">U.K.G</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-3' %}">முதல் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-4' %}">இரண்டாம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-5' %}">மூன்றாம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-6' %}">நான்காம் நிலை</a></li>
+                            <li><a href="{% url 'book_detail' series_slug='tamil-writing-books' book_slug='level-7' %}">ஐந்தாம் நிலை</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li class="dropdown">
+                <a href="#">Login <span class="arrow">▾</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'school_login' %}">School Login</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <section class="reviews-hero">
+        <h1 class="premium-headline">Voices of <span class="accent-word">Trust</span></h1>
+        <p>Discover how <span class="brand-text">SAMSEL</span> is transforming computer education across India through the words of our valued partners and educators.</p>
+    </section>
+
+    <div class="reviews-list-container">
+        <!-- Review 1 -->
+        <div class="review-card-wrapper">
+            <div class="reviewer-circle">
+                <img src="{% static 'images/male_pro.png' %}" alt="Hari Krishnan AS">
+            </div>
+            <div class="review-text-column">
+                <div class="review-stars">★★★★☆</div>
+                <p class="review-quote">"The i-Smart series is brilliantly structured. The technical depth provided in the chapters on advanced computing is unmatched, making it a favorite for our tech-savvy students."</p>
+                <h4 class="reviewer-name">Hari Krishnan AS</h4>
+            </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="review-card-wrapper">
+            <div class="reviewer-circle">
+                <img src="{% static 'images/female_pro.png' %}" alt="Raji KMW">
+            </div>
+            <div class="review-text-column">
+                <div class="review-stars">★★★★☆</div>
+                <p class="review-quote">"i-Bot has completely transformed how our students perceive robotics. The engagement levels are through the roof, and the hands-on approach is exactly what modern education needs."</p>
+                <h4 class="reviewer-name">Raji KMW</h4>
+            </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="review-card-wrapper">
+            <div class="reviewer-circle">
+                <img src="{% static 'images/male_pro.png' %}" alt="Rohit Valecha">
+            </div>
+            <div class="review-text-column">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-quote">"i-Whizz makes coding feel like play. The way it breaks down complex programming logic into accessible, fun activities is incredible and highly rewarding."</p>
+                <h4 class="reviewer-name">Rohit Valecha</h4>
+            </div>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="review-card-wrapper">
+            <div class="reviewer-circle">
+                <img src="{% static 'images/male_pro.png' %}" alt="Sasi Kumar Perumal">
+            </div>
+            <div class="review-text-column">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-quote">"Young Wizard is a masterpiece for early childhood learning. It introduces foundational concepts with such clarity that even our youngest learners are excited about technology."</p>
+                <h4 class="reviewer-name">Sasi Kumar Perumal</h4>
+            </div>
+        </div>
+
+        <!-- Review 5 -->
+        <div class="review-card-wrapper">
+            <div class="reviewer-circle">
+                <img src="{% static 'images/female_pro.png' %}" alt="Ajeetha Selvam">
+            </div>
+            <div class="review-text-column">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-quote">"The Application series bridges the gap between theory and real-world skills perfectly. It's refreshing to see a curriculum that focuses so heavily on practical coding techniques."</p>
+                <h4 class="reviewer-name">Ajeetha Selvam</h4>
+            </div>
+        </div>
+
+        <!-- Review 6 -->
+        <div class="review-card-wrapper">
+            <div class="reviewer-circle">
+                <img src="{% static 'images/male_pro.png' %}" alt="Ravi Kumar">
+            </div>
+            <div class="review-text-column">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-quote">"The QR-linked video demonstrations are a game-changer. Students can visualize practical concepts instantly, which has significantly improved their conceptual understanding."</p>
+                <h4 class="reviewer-name">Ravi Kumar</h4>
+            </div>
+        </div>
+
+        <!-- Review 7 -->
+        <div class="review-card-wrapper">
+            <div class="reviewer-circle">
+                <img src="{% static 'images/male_pro.png' %}" alt="Rajesh">
+            </div>
+            <div class="review-text-column">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-quote">"<span class="brand-text">Samsel's</span> alignment with NEP 2020 is impeccable. The curriculum is forward-thinking and perfectly suited for schools looking to implement the latest educational standards."</p>
+                <h4 class="reviewer-name">Rajesh</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDUCATION BOARDS SLIDER -->
+    <section class="boards-slider-container">
+        <div class="boards-track">
+            <!-- Set 1 -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+            <!-- Set 2 for infinite loop -->
+            <div class="board-set">
+                <div class="board-item">
+                    <img src="{% static 'images/boards/cbse.png' %}" alt="CBSE">
+                    <span>CBSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/tn.png' %}" alt="TN Board">
+                    <span>TN BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/ICSE2.png' %}" alt="ICSE">
+                    <span>ICSE</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/kerala.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KERALA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/karnataka.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>KA BOARD</span>
+                </div>
+                <div class="board-item">
+                    <img src="{% static 'images/boards/AP.png' %}"
+                        style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" alt="Mock Board">
+                    <span>AP BOARD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-links-grid">
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#counter-section">Our Heritage</a></li>
+                        <li><a href="{% url 'home' %}#india-presence">Digital Presence</a></li>
+                        <li><a href="{% url 'home' %}#sl-pillars">Digital Vision</a></li>
+                        <li><a href="{% url 'home' %}#featured-series">Innovative Showcase</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="{% url 'request_demo' %}">Request Demo</a></li>
+                        <li><a href="{% url 'contact' %}">Executive Query</a></li>
+                        <li><a href="{% url 'our_story' %}">The <span class="brand-text">SAMSEL</span> Story</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Growth & Impact</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}#showcase-section">Educational Impact</a></li>
+                        <li><a href="{% url 'home' %}#trusted-schools">Premier Partners</a></li>
+                        <li><a href="{% url 'home' %}#boards-section">Academic Boards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ecosystem</h4>
+                    <ul>
+                        <li><a href="{% url 'school_login' %}">Institutional Access</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 class="footer-logo">
+                <span class="brand-text">SAMSEL</span>
+                <span class="brand-secondary">PUBLICATIONS</span>
+            </h3>
+            <p class="footer-copyright">&copy; 2026 <span class="brand-text">SAMSEL</span> Publications. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <script src="{% static 'js/global.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.review-card-wrapper').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+
+</html>
