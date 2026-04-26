@@ -18,7 +18,7 @@
         <div class="sidebar-header">
             <div class="logo-container">
                 <div class="logo-icon">S</div>
-                <span class="brand-text">SAMSEL</span> <span class="brand-secondary">ADMIN</span>
+                <span class="brand-text">SAMSEL</span> <span class="brand-secondary" style="font-size: 14px;">SuperAdmin</span>
             </div>
             <button class="toggle-btn" id="toggleBtn">
                 <i class="fas fa-chevron-left"></i>
@@ -94,8 +94,8 @@
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
                 <div
                     style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
-                    <p style="color: #636e72; font-size: 14px; margin-bottom: 10px;">Total Series</p>
-                    <h3 style="font-size: 28px;">{{ series|length }}</h3>
+                    <p style="color: #636e72; font-size: 14px; margin-bottom: 10px;">Total Books</p>
+                    <h3 style="font-size: 28px;">{{ books|length }}</h3>
                 </div>
                 <div
                     style="background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
@@ -186,8 +186,8 @@
                             <th>School ID</th>
                             <th>School Name</th>
                             <th>Branch</th>
-                            <th>Contact</th>
-                            <th>Status</th>
+                            <th>Email</th>
+                            <th>Contact Person</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -197,11 +197,11 @@
                             <td>{{ school.school_id }}</td>
                             <td>{{ school.school_name }}</td>
                             <td>{{ school.branch|default:"-" }}</td>
-                            <td>{{ school.contact|default:"-" }}</td>
-                            <td><span class="status-badge status-active">Premium</span></td>
+                            <td>{{ school.email|default:"-" }}</td>
+                            <td>{{ school.contact_person|default:"-" }}</td>
                             <td class="actions">
                                 <button class="btn-icon btn-edit"
-                                    onclick="editSchool('{{ school.school_id }}', '{{ school.school_name }}', '{{ school.contact|escapejs }}', '{{ school.branch|escapejs }}')"><i
+                                    onclick="editSchool('{{ school.school_id }}', '{{ school.school_name }}', '{{ school.contact|escapejs }}', '{{ school.branch|escapejs }}', '{{ school.email|escapejs }}', '{{ school.contact_person|escapejs }}')"><i
                                         class="fas fa-edit"></i></button>
                                 <a href="{% url 'delete_school' school.school_id %}" class="btn-icon btn-delete"
                                     onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
@@ -242,34 +242,34 @@
                         <tr>
                             <th>Purchase ID</th>
                             <th>School Name</th>
-                            <th>Books Purchased</th>
                             <th>Validity</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for purchase in purchases %}
+                        {% for p in purchases %}
                         <tr>
-                            <td>{{ purchase.purchase.purchase_id }}</td>
-                            {% if purchase.purchase.school.school_name %}
-                            <td>{{ purchase.purchase.school.school_name }}</td>
-                            {% else %}
-                            <td>{{ purchase.purchase.school.school_id }}</td>
-                            {% endif %}
-                            <td>{{ purchase.book.book_id }}</td>
-                            <td>{{ purchase.valid_upto|date:"Y-m-d"|default:"-" }}</td>
+                            <td>{{ p.purchase_id }}</td>
+                            <td>{{ p.school.school_name }} ({{ p.school.school_id }})</td>
+                            <td>{{ p.valid_upto|date:"Y-m-d"|default:"-" }}</td>
                             <td class="actions">
-                                <a href="javascript:void(0);"
-                                    onclick="alert('Raw Data Modification locked. Delete and Re-Assign from Teachers menu.')"
-                                    class="btn-icon btn-edit"><i class="fas fa-edit"></i></a>
-                                <a href="{% url 'delete_purchase_super' purchase.id %}" class="btn-icon btn-delete"
-                                    onclick="return confirm('WARNING: This will revoke access for this school to this series. Are you sure?')"><i
+                                <button class="btn-icon btn-view" title="View Books"
+                                    onclick="viewPurchase('{{ p.purchase_id }}')" style="color: #2196F3;"><i
+                                        class="fas fa-eye"></i></button>
+                                <!-- Render a hidden div with the data to use in the modal -->
+                                <div id="data-purchase-{{ p.purchase_id }}" style="display: none;">
+                                    {% for item in p.items %}
+                                        <div class="book-item" data-series="{{ item.book.series_name }}" data-class="{{ item.book.class_field }}" data-ebook="{{ item.ebook_access|yesno:'true,false' }}" data-keybook="{{ item.keybook_access|yesno:'true,false' }}" data-qp="{{ item.question_paper_access|yesno:'true,false' }}"></div>
+                                    {% endfor %}
+                                </div>
+                                <a href="{% url 'delete_purchase_super' p.items.0.id %}" class="btn-icon btn-delete"
+                                    onclick="return confirm('WARNING: This will delete an item from this purchase. To delete all, please modify in admin panel. Are you sure?')"><i
                                         class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px; color: #636e72;">No purchase
+                            <td colspan="4" style="text-align: center; padding: 40px; color: #636e72;">No purchase
                                 records found.</td>
                         </tr>
                         {% endfor %}
@@ -290,9 +290,19 @@
             </div>
             <form id="schoolForm" action="{% url 'add_school' %}" method="POST">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label>School ID</label>
-                    <input type="text" name="school_id" class="form-input" placeholder="e.g. S001" required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label>School ID <span style="font-size:11px; color:#10b981;">(Auto-generated)</span></label>
+                        <input type="text" id="new_school_id_display" class="form-input" readonly
+                               style="background:#f0fdf4; color:#065f46; font-weight:700; cursor:not-allowed;" placeholder="Loading...">
+                        <input type="hidden" name="school_id" id="new_school_id_hidden">
+                    </div>
+                    <div class="form-group">
+                        <label>Purchase ID <span style="font-size:11px; color:#10b981;">(Auto-generated)</span></label>
+                        <input type="text" id="new_purchase_id_display" class="form-input" readonly
+                               style="background:#f0fdf4; color:#065f46; font-weight:700; cursor:not-allowed;" placeholder="Loading...">
+                        <input type="hidden" name="purchase_id" id="new_purchase_id_hidden">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>School Name</label>
@@ -307,12 +317,20 @@
                     <input type="text" name="branch" class="form-input" placeholder="Branch Name">
                 </div>
                 <div class="form-group">
+                    <label>Email ID</label>
+                    <input type="email" name="email" class="form-input" placeholder="School Email">
+                </div>
+                <div class="form-group">
+                    <label>Contact Person</label>
+                    <input type="text" name="contact_person" class="form-input" placeholder="Contact Person Name">
+                </div>
+                <div class="form-group">
                     <label>Password</label>
                     <input type="text" name="password_hash" class="form-input" placeholder="Set Password" required>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeModal('schoolModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save School</button>
+                    <button type="submit" class="btn btn-primary" id="saveSchoolBtn">Save School</button>
                 </div>
             </form>
         </div>
@@ -351,35 +369,94 @@
 
     <!-- Assign Book Modal for Purchase Management -->
     <div class="modal-overlay" id="assignBookModal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto;">
             <div class="modal-header">
                 <h2 id="assignBookModalTitle">Assign Book to School (Purchase)</h2>
                 <button class="close-modal" onclick="closeModal('assignBookModal')">&times;</button>
             </div>
-            <form id="assignBookForm" action="{% url 'assign_purchase_super' %}" method="POST">
+            <form id="assignBookForm" onsubmit="handleAssignBookSuper(event)">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label>Purchase ID</label>
-                    <input type="text" name="purchase_id" class="form-input" placeholder="e.g. P1001" required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Purchase ID</label>
+                        <input type="text" list="purchase_ids_list" name="purchase_id" id="purchase_id_input" class="form-input" placeholder="e.g. P1001" oninput="debounceFetchSchoolInfo()" required>
+                        <datalist id="purchase_ids_list">
+                            {% for pid in all_purchases %}
+                                <option value="{{ pid }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>School ID</label>
+                        <input type="text" name="school_id" id="school_id_input" class="form-input" placeholder="e.g. S001" oninput="debounceFetchSchoolInfo()" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>School ID</label>
-                    <input type="text" name="school_id" class="form-input" placeholder="e.g. S001" required>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>School Name</label>
+                        <input type="text" id="school_name_display" class="form-input" style="background: #f8fafc;" readonly>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Branch</label>
+                        <input type="text" id="branch_display" class="form-input" style="background: #f8fafc;" readonly>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Book ID</label>
-                    <input type="text" name="book_id" class="form-input" placeholder="e.g. ismart1" required>
-                </div>
+
                 <div class="form-group">
                     <label>Validity Upto</label>
                     <input type="date" name="valid_upto" class="form-input" required>
                 </div>
+                
+                <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                    <label style="font-weight: 600; margin-bottom: 12px; display: block;">Select Book Series</label>
+                    <div style="display: flex; gap: 15px;">
+                        <select id="series-dropdown" class="form-input">
+                            <option value="">-- Select Series --</option>
+                            <option value="I-Smart Series">I-Smart Series</option>
+                            <option value="I-Whizz Series">I-Whizz Series</option>
+                            <option value="Application 2007 Series">Application 2007 Series</option>
+                            <option value="I-Bot Series">I-Bot Series</option>
+                            <option value="Young Wizard Series">Young Wizard Series</option>
+                            <option value="Application 2016 Series">Application 2016 Series</option>
+                            <option value="Right-Click Series">Right-Click Series</option>
+                            <option value="Programming Series">Programming Series</option>
+                            <option value="My Computer Series">My Computer Series</option>
+                            <option value="Little Wizard Series">Little Wizard Series</option>
+                        </select>
+                        <button type="button" onclick="addSeriesSuper()" class="btn btn-primary"><i class="fas fa-plus"></i> Add</button>
+                    </div>
+                </div>
+
+                <div id="selected-series-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-bottom: 20px;"></div>
+
+                <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                    <label style="font-weight: 600; margin-bottom: 12px; display: block;">Additional Access</label>
+                    <div style="display: flex; gap: 20px;">
+                        <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" name="ebook_access" value="true" style="width:16px; height:16px;"> E-Books</label>
+                        <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" name="keybook_access" value="true" style="width:16px; height:16px;"> Key-Book</label>
+                        <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" name="question_paper_access" value="true" style="width:16px; height:16px;"> Question Paper</label>
+                    </div>
+                </div>
+
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary"
-                        onclick="closeModal('assignBookModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Assign Book</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('assignBookModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Assign Books</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- View Purchase Modal -->
+    <div class="modal-overlay" id="viewPurchaseModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 id="viewPurchaseTitle">Purchase Details</h2>
+                <button class="close-modal" onclick="closeModal('viewPurchaseModal')">&times;</button>
+            </div>
+            <div id="viewPurchaseContent">
+                <!-- Content injected via JS -->
+            </div>
         </div>
     </div>
 
@@ -409,16 +486,39 @@
         });
 
         // Modal Functions
-        function openModal(modalId) {
+        function openModal(modalId, isEdit = false) {
             document.getElementById(modalId).classList.add('active');
             // Reset forms when opening for "Add"
-            if (!modalId.includes('Edit')) {
+            if (!modalId.includes('Edit') && !isEdit) {
                 const form = document.getElementById(modalId).querySelector('form');
                 form.reset();
                 if (modalId === 'schoolModal') {
                     document.getElementById('schoolModalTitle').innerText = "Add New School";
                     form.action = "{% url 'add_school' %}";
-                    form.querySelector('input[name="school_id"]').readOnly = false;
+                    // Auto-fetch next School ID and Purchase ID
+                    const schoolDisplay = document.getElementById('new_school_id_display');
+                    const purchaseDisplay = document.getElementById('new_purchase_id_display');
+                    const schoolHidden = document.getElementById('new_school_id_hidden');
+                    const purchaseHidden = document.getElementById('new_purchase_id_hidden');
+                    schoolDisplay.value = 'Loading...';
+                    purchaseDisplay.value = 'Loading...';
+                    document.getElementById('saveSchoolBtn').disabled = true;
+                    fetch('/super-admin/get-next-ids/')
+                        .then(res => res.json())
+                        .then(data => {
+                            schoolDisplay.value = data.school_id;
+                            purchaseDisplay.value = data.purchase_id;
+                            schoolHidden.value = data.school_id;
+                            purchaseHidden.value = data.purchase_id;
+                            document.getElementById('saveSchoolBtn').disabled = false;
+                        })
+                        .catch(err => {
+                            schoolDisplay.value = 'Error';
+                            purchaseDisplay.value = 'Error';
+                            console.error('Failed to fetch next IDs:', err);
+                        });
+                    form.querySelector('input[name="password_hash"]').required = true;
+                    form.querySelector('input[name="password_hash"]').placeholder = "Set Password";
                 }
                 if (modalId === 'bookModal') {
                     document.getElementById('bookModalTitle').innerText = "Add New Book";
@@ -433,18 +533,26 @@
         }
 
         // Edit Functions
-        function editSchool(id, name, contact, branch) {
+        function editSchool(id, name, contact, branch, email, contact_person) {
             const form = document.getElementById('schoolForm');
             document.getElementById('schoolModalTitle').innerText = "Edit School: " + id;
             form.action = "/super-admin/school/edit/" + id + "/";
 
-            form.querySelector('input[name="school_id"]').value = id;
-            form.querySelector('input[name="school_id"]').readOnly = true;
+            // Update hidden field (actual submit value) and display field
+            document.getElementById('new_school_id_hidden').value = id;
+            document.getElementById('new_school_id_display').value = id;
+            document.getElementById('new_purchase_id_display').value = '(Existing - not changed)';
+            document.getElementById('new_purchase_id_hidden').value = '';
+
             form.querySelector('input[name="school_name"]').value = name;
             form.querySelector('input[name="contact"]').value = contact;
             form.querySelector('input[name="branch"]').value = branch || '';
+            form.querySelector('input[name="email"]').value = email || '';
+            form.querySelector('input[name="contact_person"]').value = contact_person || '';
+            form.querySelector('input[name="password_hash"]').required = false;
+            form.querySelector('input[name="password_hash"]').placeholder = "Leave blank to keep unchanged";
 
-            openModal('schoolModal');
+            openModal('schoolModal', true);
         }
 
         function editBook(id, series, cl) {
@@ -457,7 +565,7 @@
             form.querySelector('input[name="series_name"]').value = series;
             form.querySelector('input[name="class_field"]').value = cl;
 
-            openModal('bookModal');
+            openModal('bookModal', true);
         }
 
         // Switch Sections
@@ -556,6 +664,187 @@
                     tr[i].style.display = ""; // Show row
                 }
             }
+        }
+
+        let fetchTimeout;
+        function debounceFetchSchoolInfo() {
+            clearTimeout(fetchTimeout);
+            fetchTimeout = setTimeout(fetchSchoolInfo, 500);
+        }
+
+        function fetchSchoolInfo() {
+            const pid = document.getElementById('purchase_id_input').value.trim();
+            const sid = document.getElementById('school_id_input').value.trim();
+            const query = pid ? pid : sid;
+            
+            if (!query) {
+                document.getElementById('school_name_display').value = '';
+                document.getElementById('branch_display').value = '';
+                return;
+            }
+
+            fetch(`/super-admin/get-school-info/?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        if (pid && !sid) {
+                            document.getElementById('school_id_input').value = data.school_id;
+                        }
+                        document.getElementById('school_name_display').value = data.school_name;
+                        document.getElementById('branch_display').value = data.branch;
+                    } else {
+                        // Keep current if not found
+                    }
+                }).catch(err => console.error(err));
+        }
+
+        const addedSeriesSuper = new Set();
+        function addSeriesSuper() {
+            const dropdown = document.getElementById('series-dropdown');
+            const seriesName = dropdown.value;
+            if (!seriesName) return alert("Please select a series");
+            if (addedSeriesSuper.has(seriesName)) return alert("Series already added");
+
+            addedSeriesSuper.add(seriesName);
+
+            const seriesConfig = {
+                "I-Smart Series": [
+                    { id: "ismart1", label: "Standard 1" }, { id: "ismart2", label: "Standard 2" }, { id: "ismart3", label: "Standard 3" },
+                    { id: "ismart4", label: "Standard 4" }, { id: "ismart5", label: "Standard 5" }, { id: "ismart6", label: "Standard 6" },
+                    { id: "ismart7", label: "Standard 7" }, { id: "ismart8", label: "Standard 8" }, { id: "ismart9", label: "Standard 9" }
+                ],
+                "I-Whizz Series": [
+                    { id: "iwhizz1", label: "Standard 1" }, { id: "iwhizz2", label: "Standard 2" }, { id: "iwhizz3", label: "Standard 3" },
+                    { id: "iwhizz4", label: "Standard 4" }, { id: "iwhizz5", label: "Standard 5" }, { id: "iwhizz6", label: "Standard 6" },
+                    { id: "iwhizz7", label: "Standard 7" }, { id: "iwhizz8", label: "Standard 8" }, { id: "iwhizz9", label: "Standard 9" }
+                ],
+                "I-Bot Series": [
+                    { id: "ibot1", label: "Standard 1" }, { id: "ibot2", label: "Standard 2" }, { id: "ibot3", label: "Standard 3" },
+                    { id: "ibot4", label: "Standard 4" }, { id: "ibot5", label: "Standard 5" }, { id: "ibot6", label: "Standard 6" },
+                    { id: "ibot7", label: "Standard 7" }, { id: "ibot8", label: "Standard 8" }, { id: "ibot9", label: "Standard 9" }
+                ],
+                "Application 2007 Series": [
+                    { id: "app2007_office", label: "MS-Office 2007" }, { id: "app2007_word", label: "MS-Word 2007" },
+                    { id: "app2007_excel", label: "MS-Excel 2007" }, { id: "app2007_ppt", label: "MS-PowerPoint 2007" },
+                    { id: "app2007_access", label: "MS-Access 2007" }
+                ],
+                "Young Wizard Series": [
+                    { id: "yw1", label: "Level 1" }, { id: "yw2", label: "Level 2" }, { id: "yw3", label: "Level 3" },
+                    { id: "yw4", label: "Level 4" }, { id: "yw5", label: "Level 5" }
+                ],
+                "Application 2016 Series": [
+                    { id: "app2016_word", label: "MS-Word 2016" }, { id: "app2016_excel", label: "MS-Excel 2016" },
+                    { id: "app2016_ppt", label: "MS-PowerPoint 2016" }
+                ],
+                "Right-Click Series": [
+                    { id: "rc6", label: "Right-Click Standard 6" }, { id: "rc7", label: "Right-Click Standard 7" }, { id: "rc8", label: "Right-Click Standard 8" }, { id: "rc9", label: "Right-Click Standard 9" }
+                ],
+                "Programming Series": [
+                    { id: "prog_cpp", label: "C++ Programming" }, { id: "prog_c", label: "C Programming" },
+                    { id: "prog_multi", label: "Multimedia Flash" }, { id: "prog_html", label: "Learning HTML" }
+                ],
+                "My Computer Series": [
+                    { id: "mc1", label: "Grade 1" }, { id: "mc2", label: "Grade 2" }, { id: "mc3", label: "Grade 3" },
+                    { id: "mc4", label: "Grade 4" }, { id: "mc5", label: "Grade 5" }
+                ],
+                "Little Wizard Series": [
+                    { id: "lwA", label: "Book A" }, { id: "lwB", label: "Book B" }
+                ]
+            };
+
+            const books = seriesConfig[seriesName] || [];
+            const container = document.getElementById('selected-series-container');
+            const seriesBlock = document.createElement('div');
+            seriesBlock.style.background = "#fff";
+            seriesBlock.style.padding = "15px";
+            seriesBlock.style.borderRadius = "8px";
+            seriesBlock.style.border = "1px solid #e2e8f0";
+
+            seriesBlock.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="margin: 0; font-size: 16px;">${seriesName}</h3>
+                <button type="button" onclick="removeSeriesSuper('${seriesName}', this)" style="background: none; color: #ef4444; border: none; cursor: pointer;">✕ Remove</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px;">
+                ${books.map(book => `
+                    <label style="font-size: 13px; display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" value="${book.id}" class="book-cb-super"> ${book.label}
+                    </label>
+                `).join('')}
+            </div>
+            `;
+            container.appendChild(seriesBlock);
+            dropdown.value = "";
+        }
+
+        function removeSeriesSuper(seriesName, btn) {
+            addedSeriesSuper.delete(seriesName);
+            btn.parentElement.parentElement.remove();
+        }
+
+        function handleAssignBookSuper(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            const bookCbs = document.querySelectorAll('.book-cb-super:checked');
+            if (bookCbs.length === 0) {
+                alert("Please select at least one book.");
+                return;
+            }
+            bookCbs.forEach(cb => formData.append('book_ids', cb.value));
+
+            fetch('{% url "assign_purchase_super" %}', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.reload();
+                } else {
+                    alert("Error: " + data.error);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("An error occurred.");
+            });
+        }
+
+        function viewPurchase(pid) {
+            const dataDiv = document.getElementById('data-purchase-' + pid);
+            if (!dataDiv) return;
+            
+            const items = dataDiv.querySelectorAll('.book-item');
+            let contentHtml = `<p><strong>Purchase ID:</strong> ${pid}</p><ul>`;
+            
+            let ebook = false, keybook = false, qp = false;
+            
+            items.forEach(item => {
+                const series = item.getAttribute('data-series');
+                const cls = item.getAttribute('data-class');
+                if (item.getAttribute('data-ebook') === 'true') ebook = true;
+                if (item.getAttribute('data-keybook') === 'true') keybook = true;
+                if (item.getAttribute('data-qp') === 'true') qp = true;
+                
+                contentHtml += `<li>${series} - Class ${cls}</li>`;
+            });
+            contentHtml += `</ul>`;
+            
+            contentHtml += `<div style="margin-top: 15px; padding: 10px; background: #f8fafc; border-radius: 8px;">
+                <strong>Included Features:</strong><br>
+                <div style="display:flex; gap:15px; margin-top:5px;">
+                    <span style="color: ${ebook ? '#10b981' : '#ef4444'};"><i class="fas ${ebook ? 'fa-check-circle' : 'fa-times-circle'}"></i> E-Books</span>
+                    <span style="color: ${keybook ? '#10b981' : '#ef4444'};"><i class="fas ${keybook ? 'fa-check-circle' : 'fa-times-circle'}"></i> Key-Book</span>
+                    <span style="color: ${qp ? '#10b981' : '#ef4444'};"><i class="fas ${qp ? 'fa-check-circle' : 'fa-times-circle'}"></i> Question Paper</span>
+                </div>
+            </div>`;
+            
+            document.getElementById('viewPurchaseContent').innerHTML = contentHtml;
+            openModal('viewPurchaseModal');
         }
     </script>
 </body>

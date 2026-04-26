@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from .models import School, Books, Purchase, PurchaseItems
+from .models import School, Books, Purchase, PurchaseItems, Syllabus, SharedQuestionPaper, OtherDetails, TeacherLog
 from datetime import datetime
 def home(request): return render(request, 'home.html')
 def about(request): return render(request, 'about.html')
@@ -17,6 +17,13 @@ def school_login(request):
         
         school = School.objects.filter(school_name=school_name, school_id=school_id, password_hash=password).first()
         if school:
+            teacher_name = request.POST.get('teacher_name')
+            # Log the teacher login
+            TeacherLog.objects.create(
+                teacher_name=teacher_name,
+                school_name=school.school_name,
+                branch=school.branch
+            )
             request.session['school_id'] = school.school_id
             return redirect('school_dashboard')
         else:
@@ -35,13 +42,26 @@ def school_dashboard(request):
     purchases = PurchaseItems.objects.filter(purchase__school=school).select_related('book')
     
     from collections import defaultdict
+    import datetime
     series_dict = defaultdict(list)
     ebooks = []
+    keybooks = []
     purchased_series_set = set()
+    
+    has_keybook_access = False
+    has_qp_access = False
+
+    today = datetime.date.today()
 
     for p in purchases:
         series_dict[p.book.series_name].append(p.book.class_field)
         purchased_series_set.add(p.book.series_name)
+        
+        # Check permissions
+        if p.keybook_access:
+            has_keybook_access = True
+        if p.question_paper_access:
+            has_qp_access = True
         
         book_path = p.book.path if p.book.path else ''
         if book_path:
@@ -53,12 +73,23 @@ def school_dashboard(request):
                 view_url = f"/media/{book_path.lstrip('/')}"
         else:
             view_url = '#'
+            
+        is_expired = False
+        if p.valid_upto and p.valid_upto < today:
+            is_expired = True
         
-        ebooks.append({
+        ebook_data = {
             'title': f"{p.book.series_name} - Class {p.book.class_field}",
             'view_url': view_url,
-            'valid_upto': p.valid_upto
-        })
+            'valid_upto': p.valid_upto,
+            'is_expired': is_expired
+        }
+        if p.sent_to_school:
+            ebooks.append(ebook_data)
+        
+        # Add to keybooks if they have access
+        if p.keybook_access:
+            keybooks.append(ebook_data) # Reusing similar structure for keybooks for now
         
     books = []
     for sname, classes in series_dict.items():
@@ -66,12 +97,21 @@ def school_dashboard(request):
         
     purchased_series = [{'value': s, 'label': s} for s in purchased_series_set]
     
+    syllabuses = Syllabus.objects.filter(school=school).order_by('-uploaded_at')
+    shared_qps = SharedQuestionPaper.objects.filter(school=school).order_by('-uploaded_at')
+    other_details = OtherDetails.objects.filter(school=school).order_by('-uploaded_at')
+    
     return render(request, 'school_dashboard.html', {
         'school': school,
         'books': books,
         'ebooks': ebooks,
+        'keybooks': keybooks,
         'purchased_series': purchased_series,
-        'announcements': []
+        'has_keybook_access': has_keybook_access,
+        'has_qp_access': has_qp_access,
+        'syllabuses': syllabuses,
+        'shared_qps': shared_qps,
+        'other_details': other_details,
     })
 def admin_login(request):
     if request.method == 'POST':
@@ -127,22 +167,57 @@ def admin_dashboard(request):
     series_labels = json.dumps(['I-Smart', 'I-Whizz', 'I-Bot'])
     series_data = json.dumps([30, 20, 50])
     
+    syllabuses = Syllabus.objects.select_related('school').all().order_by('-uploaded_at')
+    other_details = OtherDetails.objects.select_related('school').all().order_by('-uploaded_at')
+    teacher_logs = TeacherLog.objects.all().order_by('-login_time')
+    
     return render(request, 'admin_dashboard.html', {
         'total_schools': total_schools,
         'total_books_assigned': total_books_assigned,
         'schools_autocomplete': schools_autocomplete,
+        'all_schools': schools,
         'page_obj': page_obj,
         'trend_labels': trend_labels,
         'trend_data': trend_data,
         'series_labels': series_labels,
-        'series_data': series_data
+        'series_data': series_data,
+        'syllabuses': syllabuses,
+        'other_details': other_details,
+        'teacher_logs': teacher_logs,
     })
+
+@csrf_exempt
+def delete_teacher_log(request, pk):
+    if request.method == 'POST':
+        log = get_object_or_404(TeacherLog, pk=pk)
+        log.delete()
+        messages.success(request, 'Teacher log deleted successfully.')
+    return redirect('admin_dashboard')
 def super_admin(request):
     books = Books.objects.all()
     schools = School.objects.all()
-    purchases = PurchaseItems.objects.all().select_related('purchase', 'book', 'purchase__school')
+    purchases_qs = PurchaseItems.objects.all().select_related('purchase', 'book', 'purchase__school')
+    
+    # Group by purchase_id
+    grouped_purchases = {}
+    for item in purchases_qs:
+        pid = item.purchase.purchase_id
+        if pid not in grouped_purchases:
+            grouped_purchases[pid] = {
+                'purchase_id': pid,
+                'school': item.purchase.school,
+                'valid_upto': item.valid_upto,
+                'items': []
+            }
+        grouped_purchases[pid]['items'].append(item)
+    
+    purchases = list(grouped_purchases.values())
+    
+    # Get all distinct purchase IDs for autocomplete
+    all_purchases = Purchase.objects.values_list('purchase_id', flat=True).distinct()
+    
     return render(request, 'super_admin.html', {
-        'books': books, 'schools': schools, 'purchases': purchases
+        'books': books, 'schools': schools, 'purchases': purchases, 'all_purchases': all_purchases
     })
 def super_admin_login(request):
     if request.method == 'POST':
@@ -161,18 +236,61 @@ def school_logout(request):
         del request.session['school_id']
     return redirect('school_login')
 
+def get_next_registration_ids(request):
+    """Returns the next auto-generated school_id and purchase_id."""
+    import re
+    existing_ids = School.objects.values_list('school_id', flat=True)
+    max_num = 0
+    for sid in existing_ids:
+        match = re.fullmatch(r'S(\d+)', sid, re.IGNORECASE)
+        if match:
+            num = int(match.group(1))
+            if num > max_num:
+                max_num = num
+    next_num = max_num + 1
+    next_school_id = f'S{next_num:02d}'
+    next_purchase_id = f'p{next_school_id}'
+    return JsonResponse({'school_id': next_school_id, 'purchase_id': next_purchase_id})
+
 def add_school(request):
     if request.method == 'POST':
-        school_id = request.POST.get('school_id')
+        import re
+        # Auto-generate school_id if not provided or regenerate to ensure continuity
+        school_id = request.POST.get('school_id', '').strip()
+        purchase_id = request.POST.get('purchase_id', '').strip()
+
+        # Fallback: regenerate if somehow blank
+        if not school_id:
+            existing_ids = School.objects.values_list('school_id', flat=True)
+            max_num = 0
+            for sid in existing_ids:
+                match = re.fullmatch(r'S(\d+)', sid, re.IGNORECASE)
+                if match:
+                    num = int(match.group(1))
+                    if num > max_num:
+                        max_num = num
+            next_num = max_num + 1
+            school_id = f'S{next_num:02d}'
+            purchase_id = f'p{school_id}'
+
         school_name = request.POST.get('school_name')
         contact = request.POST.get('contact')
         branch = request.POST.get('branch')
+        email = request.POST.get('email')
+        contact_person = request.POST.get('contact_person')
         password_hash = request.POST.get('password_hash')
-        School.objects.create(
+        school = School.objects.create(
             school_id=school_id, school_name=school_name,
-            contact=contact, branch=branch, password_hash=password_hash
+            contact=contact, branch=branch, email=email,
+            contact_person=contact_person, password_hash=password_hash
         )
-        messages.success(request, 'School added successfully.')
+        # Auto-create the linked Purchase record
+        if purchase_id:
+            Purchase.objects.get_or_create(
+                purchase_id=purchase_id,
+                defaults={'school': school, 'purchase_date': datetime.now().date()}
+            )
+        messages.success(request, f'School {school_id} added successfully with Purchase ID {purchase_id}.')
     return redirect('super_admin')
 
 def edit_school(request, pk):
@@ -181,6 +299,13 @@ def edit_school(request, pk):
         school.school_name = request.POST.get('school_name')
         school.contact = request.POST.get('contact')
         school.branch = request.POST.get('branch')
+        school.email = request.POST.get('email')
+        school.contact_person = request.POST.get('contact_person')
+        
+        password_hash = request.POST.get('password_hash')
+        if password_hash:
+            school.password_hash = password_hash
+            
         school.save()
         messages.success(request, 'School updated successfully.')
     return redirect('super_admin')
@@ -270,22 +395,189 @@ def assign_purchase_super(request):
     if request.method == 'POST':
         purchase_id = request.POST.get('purchase_id')
         school_id = request.POST.get('school_id')
-        book_id = request.POST.get('book_id')
+        book_ids = request.POST.getlist('book_ids')
         valid_upto = request.POST.get('valid_upto')
         
+        # New checkboxes
+        ebook_access = request.POST.get('ebook_access') == 'true'
+        keybook_access = request.POST.get('keybook_access') == 'true'
+        question_paper_access = request.POST.get('question_paper_access') == 'true'
+        
         school = get_object_or_404(School, pk=school_id)
-        book = get_object_or_404(Books, pk=book_id)
         
         purchase, created = Purchase.objects.get_or_create(
             purchase_id=purchase_id,
             defaults={'school': school, 'purchase_date': datetime.now().date()}
         )
         
-        PurchaseItems.objects.create(
-            purchase=purchase, book=book, valid_upto=valid_upto, sent_to_school=True
-        )
-        messages.success(request, 'Book assigned successfully.')
-    return redirect('super_admin')
+        assigned_count = 0
+        for book_id in book_ids:
+            try:
+                book = Books.objects.get(pk=book_id)
+                PurchaseItems.objects.update_or_create(
+                    purchase=purchase, book=book,
+                    defaults={
+                        'valid_upto': valid_upto, 
+                        'sent_to_school': False,
+                        'ebook_access': ebook_access,
+                        'keybook_access': keybook_access,
+                        'question_paper_access': question_paper_access
+                    }
+                )
+                assigned_count += 1
+            except Books.DoesNotExist:
+                continue
+                
+        return JsonResponse({'success': True, 'message': f'{assigned_count} books assigned successfully to {school.school_name}'})
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+def get_school_info(request):
+    search_val = request.GET.get('q', '').strip()
+    if not search_val:
+        return JsonResponse({'success': False, 'error': 'No query provided'})
+    
+    # Check if it's a purchase ID
+    purchase = Purchase.objects.filter(purchase_id=search_val).first()
+    if purchase:
+        return JsonResponse({
+            'success': True, 
+            'school_id': purchase.school.school_id,
+            'school_name': purchase.school.school_name,
+            'branch': purchase.school.branch or 'N/A'
+        })
+        
+    # Check if it's a school ID
+    school = School.objects.filter(school_id=search_val).first()
+    if school:
+        return JsonResponse({
+            'success': True, 
+            'school_id': school.school_id,
+            'school_name': school.school_name,
+            'branch': school.branch or 'N/A'
+        })
+        
+    return JsonResponse({'success': False, 'error': 'Not found'})
+
+def get_order_summary(request):
+    school_id = request.GET.get('school_id')
+    if not school_id:
+        return JsonResponse({'success': False, 'error': 'No school_id provided'})
+    
+    school = School.objects.filter(school_id=school_id).first()
+    if not school:
+        return JsonResponse({'success': False, 'error': 'School not found'})
+        
+    purchases = PurchaseItems.objects.filter(purchase__school=school).select_related('book')
+    ebook_count = purchases.count()
+    keybook_access = purchases.filter(keybook_access=True).exists()
+    qp_access = purchases.filter(question_paper_access=True).exists()
+    already_sent = purchases.filter(sent_to_school=True).exists()
+
+    books_list = []
+    for p in purchases:
+        books_list.append(f"{p.book.series_name} (Class {p.book.class_field})")
+        
+    return JsonResponse({
+        'success': True,
+        'ebook_count': ebook_count,
+        'keybook_access': keybook_access,
+        'question_paper_access': qp_access,
+        'already_sent': already_sent,
+        'books_list': books_list
+    })
+
+@csrf_exempt
+def send_ebooks_to_school(request):
+    if request.method == 'POST':
+        school_id = request.POST.get('school_id')
+        if not school_id:
+            return JsonResponse({'success': False, 'error': 'School ID required'})
+        school = School.objects.filter(school_id=school_id).first()
+        if not school:
+            return JsonResponse({'success': False, 'error': 'School not found'})
+            
+        purchases = PurchaseItems.objects.filter(purchase__school=school)
+        if purchases.exists():
+            purchases.update(sent_to_school=True)
+            return JsonResponse({'success': True, 'message': f'E-books successfully sent to {school.school_name}.'})
+        else:
+            return JsonResponse({'success': False, 'error': 'No books assigned to this school yet.'})
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+@csrf_exempt
+def upload_syllabus(request):
+    if request.method == 'POST':
+        school_ids = request.POST.getlist('school_ids')
+        file = request.FILES.get('file')
+        if not school_ids or not file:
+            messages.error(request, 'Please select at least one school and upload a file.')
+            return redirect('admin_dashboard')
+            
+        schools = School.objects.filter(school_id__in=school_ids)
+        for school in schools:
+            Syllabus.objects.create(school=school, file=file)
+        messages.success(request, f'Syllabus sent to {schools.count()} schools successfully.')
+    return redirect('admin_dashboard')
+
+@csrf_exempt
+def revoke_syllabus(request, pk):
+    if request.method == 'POST':
+        syllabus = get_object_or_404(Syllabus, pk=pk)
+        school_name = syllabus.school.school_name
+        syllabus.delete()
+        messages.success(request, f'Syllabus revoked for {school_name}.')
+    return redirect('admin_dashboard')
+
+@csrf_exempt
+def upload_question_paper(request):
+    if request.method == 'POST':
+        exam_type = request.POST.get('exam_type')
+        school_ids = request.POST.getlist('school_ids')
+        file = request.FILES.get('file')
+        
+        if not exam_type or not school_ids or not file:
+            messages.error(request, 'Exam type, schools, and file are required.')
+            return redirect('admin_dashboard')
+            
+        count = 0
+        for sid in school_ids:
+            school = School.objects.filter(pk=sid).first()
+            if school:
+                SharedQuestionPaper.objects.create(school=school, exam_type=exam_type, file=file)
+                count += 1
+                
+        messages.success(request, f'Question paper sent to {count} schools successfully.')
+    return redirect('admin_dashboard')
+
+@csrf_exempt
+def upload_other_details(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        school_ids = request.POST.getlist('school_ids')
+        file = request.FILES.get('file')
+        
+        if not title or not school_ids or not file:
+            messages.error(request, 'Title, schools, and file are required.')
+            return redirect('admin_dashboard')
+            
+        count = 0
+        for sid in school_ids:
+            school = School.objects.filter(pk=sid).first()
+            if school:
+                OtherDetails.objects.create(school=school, title=title, file=file)
+                count += 1
+                
+        messages.success(request, f'Other Details sent to {count} schools successfully.')
+    return redirect('admin_dashboard')
+
+@csrf_exempt
+def revoke_other_details(request, pk):
+    if request.method == 'POST':
+        detail = get_object_or_404(OtherDetails, pk=pk)
+        school_name = detail.school.school_name
+        detail.delete()
+        messages.success(request, f'Other Details revoked for {school_name}.')
+    return redirect('admin_dashboard')
 
 def get_book_chapters(request): return JsonResponse({'success': True})
 

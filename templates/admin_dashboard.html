@@ -81,25 +81,49 @@
             <li class="menu-item">
                 <a href="#" class="menu-link active" data-section="overview">
                     <i class="fas fa-chart-pie"></i>
-                    <span>Executive Overview</span>
+                    <span>Business Overview</span>
                 </a>
             </li>
             <li class="menu-item">
                 <a href="#" class="menu-link" data-section="books">
-                    <i class="fas fa-book-open"></i>
-                    <span>School Book Selection</span>
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Order Summary</span>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#" class="menu-link" data-section="profile">
-                    <i class="fas fa-user-shield"></i>
-                    <span>Admin Profile</span>
+                <a href="#" class="menu-link" data-section="syllabus">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Syllabus</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="question_paper">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Question Paper</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="other">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <span>Other Details</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="teacher_logs">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Logs</span>
                 </a>
             </li>
             <li class="menu-item">
                 <a href="#" class="menu-link" data-section="purchases">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Purchase Information</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="profile">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin Profile</span>
                 </a>
             </li>
         </ul>
@@ -116,7 +140,7 @@
     <main class="main-content">
         <div class="header-section">
             <div class="welcome-text">
-                <h1 id="section-title">Executive Overview</h1>
+                <h1 id="section-title">Business Overview</h1>
                 <p>Welcome back, Admin! Management console is ready.</p>
             </div>
             <div class="action-header">
@@ -176,102 +200,436 @@
             </div>
         </div>
 
-        <!-- BOOKS SECTION -->
-        <div id="books" class="dashboard-section">
+        <!-- SYLLABUS SECTION -->
+        <div id="syllabus" class="dashboard-section">
             <div
                 style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
-                <form id="book-selection-form" onsubmit="handleBookSubmit(event)">
+                <h3 style="margin-top: 0; color: #1e293b; margin-bottom: 20px; font-weight: 600;">Distribute Syllabus
+                </h3>
+                <form action="{% url 'upload_syllabus' %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
-                        <div class="form-group" style="margin-bottom: 0; position: relative;">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">School
-                                Name</label>
-                            <input type="text" name="school_name" id="school_name_input" required
-                                placeholder="Enter School Name" autocomplete="off" spellcheck="false"
-                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.3s;"
-                                onfocus="this.style.borderColor='#2196F3'"
-                                onblur="setTimeout(() => hideAutocomplete('name'), 200)"
-                                oninput="handleAutocompleteInput(this, 'name')">
-                            <div id="autocomplete_name_list"
-                                style="position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); z-index: 1000; display: none; max-height: 200px; overflow-y: auto;">
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 0; position: relative;">
-                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">School
-                                ID</label>
-                            <input type="text" name="school_id" id="school_id_input" required
-                                placeholder="Enter School ID" autocomplete="off" spellcheck="false"
-                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.3s;"
-                                onfocus="this.style.borderColor='#2196F3'"
-                                onblur="setTimeout(() => hideAutocomplete('id'), 200)"
-                                oninput="handleAutocompleteInput(this, 'id')">
-                            <div id="autocomplete_id_list"
-                                style="position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); z-index: 1000; display: none; max-height: 200px; overflow-y: auto;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NEW BRANCH FIELD -->
-                    <div style="margin-bottom: 30px;">
+                    <div style="margin-bottom: 25px;">
                         <div class="form-group" style="margin-bottom: 0;">
                             <label
-                                style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Branch</label>
-                            <input type="text" name="branch" id="branch_input" readonly
-                                placeholder="Select a school to see branch"
-                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; background: #f8fafc; color: #64748b; cursor: not-allowed;">
+                                style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Syllabus
+                                File</label>
+                            <input type="file" name="file" accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg" required
+                                style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; background: #f8fafc;">
                         </div>
                     </div>
 
-                    <div
-                        style="background: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
-                        <label
-                            style="font-size: 16px; margin-bottom: 12px; display: block; font-weight: 600; color: #2d3748;">Select
-                            Book Series</label>
-                        <div style="display: flex; gap: 15px;">
-                            <select id="series-dropdown"
-                                style="flex: 1; padding: 12px 15px; border-radius: 8px; border: 1px solid #cbd5e1; font-size: 15px; outline: none;">
-                                <option value="">-- Select Series --</option>
-                                <option value="Series 1">I-Smart Series</option>
-                                <option value="Series 2">I-Whizz Series</option>
-                                <option value="Series 3">Application 2007 Series</option>
-                                <option value="Series 4">I-Bot Series</option>
-                                <option value="Series 5">Young Wizard Series</option>
-                                <option value="Series 6">Application 2016 Series</option>
-                                <option value="Series 7">Right-Click Series</option>
-                                <option value="Series 8">Programming Series</option>
-                                <option value="Series 9">My Computer Series</option>
-                                <option value="Series 10">Little Wizard Series</option>
-                            </select>
-                            <button type="button" onclick="addSeries()" class="btn btn-primary"
-                                style="padding: 12px 25px; border-radius: 8px; font-weight: 600;">
-                                <i class="fas fa-plus"></i> Add Series
-                            </button>
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Select
+                            Schools</label>
+                        <div class="custom-dropdown" style="position: relative; width: 100%;">
+                            <div class="dropdown-header" onclick="toggleDropdown('syllabus-school-dropdown')"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; background: #f8fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+                                <span id="syllabus-dropdown-text"
+                                    style="color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 10px;">Select
+                                    Schools...</span>
+                                <i class="fas fa-chevron-down" style="color: #94a3b8;"></i>
+                            </div>
+                            <div id="syllabus-school-dropdown"
+                                style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-top: 5px; max-height: 250px; overflow-y: auto; z-index: 100;">
+                                {% for s in all_schools %}
+                                <label
+                                    style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; background: white; margin: 0; transition: background 0.2s;"
+                                    onmouseover="this.style.background='#f8fafc'"
+                                    onmouseout="this.style.background='white'">
+                                    <input type="checkbox" name="school_ids" value="{{ s.school_id }}"
+                                        class="syllabus-school-checkbox" onchange="updateSyllabusDropdownText()"
+                                        style="accent-color: #2196F3; width: 16px; height: 16px; margin: 0;">
+                                    <span style="font-size: 14px; color: #475569;">{{ s.school_name }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
-
-                    <div id="selected-series-container"
-                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
-                        <!-- Dynamic series blocks -->
-                    </div>
-
-                    <div
-                        style="margin-top: 30px; padding: 25px; background: #e0f2fe; border-radius: 12px; border-left: 5px solid #0ea5e9;">
-                        <h3 style="margin-top: 0; color: #0369a1; font-size: 18px; margin-bottom: 15px;">Order Summary
-                        </h3>
-                        <ul id="total-summary-list"
-                            style="list-style: none; padding-left: 0; margin: 0; color: #0c4a6e;">
-                            <li>No books selected yet.</li>
-                        </ul>
                     </div>
 
                     <button type="submit"
-                        style="margin-top: 30px; width: 100%; padding: 18px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);"
-                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(37, 99, 235, 0.4)'"
-                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(37, 99, 235, 0.3)'">
-                        <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Send To School
+                        style="width: 100%; padding: 18px; border-radius: 12px; background: linear-gradient(135deg, #2196F3, #1565C0); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(33, 150, 243, 0.3);">
+                        <i class="fas fa-upload" style="margin-right: 8px;"></i> Send Syllabus
                     </button>
                 </form>
+            </div>
+
+            <!-- Manage Syllabus -->
+            <div
+                style="margin-top: 30px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <h3 style="margin-top: 0; color: #1e293b; margin-bottom: 20px; font-weight: 600;">Manage Syllabus</h3>
+                <div class="table-responsive">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #f1f5f9; text-align: left;">
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">School</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">File</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600; text-align: center;">Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in syllabuses %}
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 12px; color: #334155;">{{ s.school.school_name }}</td>
+                                <td style="padding: 12px;"><a href="{{ s.file.url }}" target="_blank"
+                                        style="color: #2196F3; text-decoration: none;"><i class="fas fa-download"></i>
+                                        View</a></td>
+                                <td style="padding: 12px; text-align: center;">
+                                    <form action="{% url 'revoke_syllabus' s.pk %}" method="POST"
+                                        style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                            style="background: #fff1f2; color: #e11d48; border: 1px solid #fda4af; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Revoke</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" style="padding: 20px; text-align: center; color: #94a3b8;">No syllabus
+                                    shared yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION PAPER SECTION -->
+        <div id="question_paper" class="dashboard-section">
+            <div
+                style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <h3 style="margin-top: 0; color: #1e293b; margin-bottom: 20px; font-weight: 600;">Distribute Question
+                    Paper</h3>
+                <form action="{% url 'upload_question_paper' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 25px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Select
+                                Exam</label>
+                            <select name="exam_type" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none;">
+                                <option value="">-- Choose Exam --</option>
+                                <option value="Term 1">Term 1</option>
+                                <option value="Term 2">Term 2</option>
+                                <option value="Half Yearly">Half Yearly</option>
+                                <option value="Annual">Annual</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Question
+                                Paper File</label>
+                            <input type="file" name="file" accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg" required
+                                style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; background: #f8fafc;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Select
+                            Schools</label>
+                        <div class="custom-dropdown" style="position: relative; width: 100%;">
+                            <div class="dropdown-header" onclick="toggleDropdown('qp-school-dropdown')"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; background: #f8fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+                                <span id="qp-dropdown-text"
+                                    style="color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 10px;">Select
+                                    Schools...</span>
+                                <i class="fas fa-chevron-down" style="color: #94a3b8;"></i>
+                            </div>
+                            <div id="qp-school-dropdown"
+                                style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-top: 5px; max-height: 250px; overflow-y: auto; z-index: 100;">
+                                {% for s in all_schools %}
+                                <label
+                                    style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; background: white; margin: 0; transition: background 0.2s;"
+                                    onmouseover="this.style.background='#f8fafc'"
+                                    onmouseout="this.style.background='white'">
+                                    <input type="checkbox" name="school_ids" value="{{ s.school_id }}"
+                                        class="qp-school-checkbox" onchange="updateQPDropdownText()"
+                                        style="accent-color: #10b981; width: 16px; height: 16px; margin: 0;">
+                                    <span style="font-size: 14px; color: #475569;">{{ s.school_name }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        style="width: 100%; padding: 18px; border-radius: 12px; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
+                        <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Send Question Paper
+                    </button>
+                </form>
+            </div>
+
+            <!-- Manage Question Papers -->
+            <div
+                style="margin-top: 30px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <h3 style="margin-top: 0; color: #1e293b; margin-bottom: 20px; font-weight: 600;">Manage Question Papers
+                </h3>
+                <div class="table-responsive">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #f1f5f9; text-align: left;">
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">Exam</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">School</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">File</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600; text-align: center;">Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for qp in shared_qps %}
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 12px; color: #334155;">{{ qp.exam_type }}</td>
+                                <td style="padding: 12px; color: #334155;">{{ qp.school.school_name }}</td>
+                                <td style="padding: 12px;"><a href="{{ qp.file.url }}" target="_blank"
+                                        style="color: #10b981; text-decoration: none;"><i class="fas fa-download"></i>
+                                        View</a></td>
+                                <td style="padding: 12px; text-align: center;">
+                                    <form action="{% url 'revoke_question_paper' qp.pk %}" method="POST"
+                                        style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                            style="background: #fff1f2; color: #e11d48; border: 1px solid #fda4af; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Revoke</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" style="padding: 20px; text-align: center; color: #94a3b8;">No question
+                                    papers shared yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTHER DETAILS SECTION -->
+        <div id="other" class="dashboard-section">
+            <div
+                style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <h3 style="margin-top: 0; color: #1e293b; margin-bottom: 20px; font-weight: 600;">Distribute Other
+                    Details</h3>
+                <form action="{% url 'upload_other_details' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 25px;">
+                        <div class="form-group">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Title</label>
+                            <input type="text" name="title" placeholder="e.g. Exam Schedule, Holiday List" required
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none;">
+                        </div>
+                        <div class="form-group">
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">File</label>
+                            <input type="file" name="file" accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg" required
+                                style="width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; background: #f8fafc;">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Select
+                            Schools</label>
+                        <div class="custom-dropdown" style="position: relative; width: 100%;">
+                            <div class="dropdown-header" onclick="toggleDropdown('other-school-dropdown')"
+                                style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; background: #f8fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+                                <span id="other-dropdown-text"
+                                    style="color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 10px;">Select
+                                    Schools...</span>
+                                <i class="fas fa-chevron-down" style="color: #94a3b8;"></i>
+                            </div>
+                            <div id="other-school-dropdown"
+                                style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-top: 5px; max-height: 250px; overflow-y: auto; z-index: 100;">
+                                {% for s in all_schools %}
+                                <label
+                                    style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; background: white; margin: 0; transition: background 0.2s;"
+                                    onmouseover="this.style.background='#f8fafc'"
+                                    onmouseout="this.style.background='white'">
+                                    <input type="checkbox" name="school_ids" value="{{ s.school_id }}"
+                                        class="other-school-checkbox" onchange="updateOtherDropdownText()"
+                                        style="accent-color: #6366f1; width: 16px; height: 16px; margin: 0;">
+                                    <span style="font-size: 14px; color: #475569;">{{ s.school_name }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        style="width: 100%; padding: 18px; border-radius: 12px; background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);">
+                        <i class="fas fa-share-square" style="margin-right: 8px;"></i> Send Details
+                    </button>
+                </form>
+            </div>
+
+            <!-- Manage Other Details -->
+            <div
+                style="margin-top: 30px; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <h3 style="margin-top: 0; color: #1e293b; margin-bottom: 20px; font-weight: 600;">Manage Other Details
+                </h3>
+                <div class="table-responsive">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #f1f5f9; text-align: left;">
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">Title</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">School</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">File</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600; text-align: center;">Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in other_details %}
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 12px; color: #334155;">{{ item.title }}</td>
+                                <td style="padding: 12px; color: #334155;">{{ item.school.school_name }}</td>
+                                <td style="padding: 12px;"><a href="{{ item.file.url }}" target="_blank"
+                                        style="color: #6366f1; text-decoration: none;"><i class="fas fa-download"></i>
+                                        View</a></td>
+                                <td style="padding: 12px; text-align: center;">
+                                    <form action="{% url 'revoke_other_details' item.pk %}" method="POST"
+                                        style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                            style="background: #fff1f2; color: #e11d48; border: 1px solid #fda4af; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Revoke</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" style="padding: 20px; text-align: center; color: #94a3b8;">No other
+                                    details shared yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEACHER LOGS SECTION -->
+        <div id="teacher_logs" class="dashboard-section">
+            <div
+                style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <h3 style="margin-top: 0; color: #1e293b; margin-bottom: 20px; font-weight: 600;">Teacher Login Records
+                </h3>
+                <div class="table-responsive">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #f1f5f9; text-align: left;">
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">Teacher Name</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">School</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">Branch</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600;">Login Time</th>
+                                <th style="padding: 12px; color: #64748b; font-weight: 600; text-align: center;">Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in teacher_logs %}
+                            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;"
+                                onmouseover="this.style.background='#f8fafc'"
+                                onmouseout="this.style.background='white'">
+                                <td style="padding: 12px; color: #334155; font-weight: 500;">{{ log.teacher_name }}</td>
+                                <td style="padding: 12px; color: #475569;">{{ log.school_name }}</td>
+                                <td style="padding: 12px; color: #64748b;">{{ log.branch|default:"-" }}</td>
+                                <td style="padding: 12px; color: #64748b; font-size: 13px;">{{ log.login_time|date:"d M Y, h:i A" }}</td>
+                                <td style="padding: 12px; text-align: center;">
+                                    <form action="{% url 'delete_teacher_log' log.pk %}" method="POST"
+                                        style="display:inline;"
+                                        onsubmit="return confirm('Are you sure you want to delete this log?');">
+                                        {% csrf_token %}
+                                        <button type="submit"
+                                            style="background: #fff1f2; color: #e11d48; border: 1px solid #fda4af; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" style="padding: 30px; text-align: center; color: #94a3b8;"><i
+                                        class="fas fa-info-circle"></i> No teacher logs found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOKS SECTION / ORDER SUMMARY -->
+        <div id="books" class="dashboard-section">
+            <div
+                style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <div style="margin-bottom: 30px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #4a5568;">Select
+                            School</label>
+                        <select id="school_id_input" onchange="handleSchoolSelect(this)"
+                            style="width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.3s;">
+                            <option value="">-- Choose School --</option>
+                            {% for s in all_schools %}
+                            <option value="{{ s.school_id }}" data-name="{{ s.school_name }}">{{ s.school_name }} ({{ s.school_id }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Order Summary Container -->
+                <div id="order-summary-container"
+                    style="display: none; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 25px;">
+                    <h3
+                        style="margin-top: 0; color: #1e293b; font-size: 20px; font-weight: 600; border-bottom: 1px solid #cbd5e1; padding-bottom: 15px; margin-bottom: 20px;">
+                        Order Summary for <span id="summary-school-name" style="color: #2563eb;"></span>
+                    </h3>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                        <div
+                            style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center;">
+                            <div style="font-size: 32px; color: #3b82f6; margin-bottom: 10px;"><i
+                                    class="fas fa-book-reader"></i></div>
+                            <h4 style="margin: 0 0 5px 0; color: #64748b; font-size: 14px;">E-Books Access</h4>
+                            <div id="summary-ebook-count" style="font-size: 24px; font-weight: 700; color: #1e293b;">0
+                            </div>
+                        </div>
+                        <div
+                            style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center;">
+                            <div style="font-size: 32px; color: #10b981; margin-bottom: 10px;"><i
+                                    class="fas fa-key"></i></div>
+                            <h4 style="margin: 0 0 5px 0; color: #64748b; font-size: 14px;">Keybook Access</h4>
+                            <div id="summary-keybook-status"
+                                style="font-size: 16px; font-weight: 600; color: #10b981; padding-top: 5px;">-</div>
+                        </div>
+                        <div
+                            style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0; text-align: center;">
+                            <div style="font-size: 32px; color: #f59e0b; margin-bottom: 10px;"><i
+                                    class="fas fa-file-signature"></i></div>
+                            <h4 style="margin: 0 0 5px 0; color: #64748b; font-size: 14px;">Q.Paper Access</h4>
+                            <div id="summary-qp-status"
+                                style="font-size: 16px; font-weight: 600; color: #f59e0b; padding-top: 5px;">-</div>
+                        </div>
+                    </div>
+
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                        <h4 style="margin-top: 0; color: #475569; font-size: 15px; margin-bottom: 10px;">Purchased Books
+                            List</h4>
+                        <ul id="summary-books-list"
+                            style="margin: 0; padding-left: 20px; color: #334155; line-height: 1.6;">
+                        </ul>
+                    </div>
+
+                    <button type="button" id="send-ebooks-btn" onclick="sendEbooks()"
+                        style="margin-top: 25px; width: 100%; padding: 18px; border-radius: 12px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border: none; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);">
+                        <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Send Features to School Dashboard
+                    </button>
+                    <p id="already-sent-msg"
+                        style="display: none; text-align: center; color: #10b981; margin-top: 15px; font-weight: 600;">
+                        <i class="fas fa-check-circle"></i> Features have already been sent to this school.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -307,7 +665,8 @@
         <div id="purchases" class="dashboard-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="margin: 0; font-size: 20px; color: #1e293b;">Purchase Records</h2>
-                <form method="GET" action="{% url 'admin_dashboard' %}" style="display: flex; gap: 10px; align-items: center;">
+                <form method="GET" action="{% url 'admin_dashboard' %}"
+                    style="display: flex; gap: 10px; align-items: center;">
                     <div style="position: relative;">
                         <i class="fas fa-search"
                             style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0;"></i>
@@ -355,11 +714,15 @@
                             <td style="padding: 16px 20px;">
                                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                                     {% for sname, classes in item.series.items %}
-                                    <div style="background: #f8fafc; padding: 6px 16px; border-radius: 50px; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; gap: 12px;">
-                                        <span style="font-weight: 700; color: #475569; font-size: 14px;">{{sname}}</span>
+                                    <div
+                                        style="background: #f8fafc; padding: 6px 16px; border-radius: 50px; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; gap: 12px;">
+                                        <span
+                                            style="font-weight: 700; color: #475569; font-size: 14px;">{{sname}}</span>
                                         <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                                             {% for cls in classes %}
-                                            <span style="background: #2563eb; color: white; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 700;">Class {{cls}}</span>
+                                            <span
+                                                style="background: #2563eb; color: white; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 700;">Class
+                                                {{cls}}</span>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -413,63 +776,17 @@
             </div>
         </div>
 
-
-
     </main>
-
     <script>
-        // --- AUTOCOMPLETE LOGIC ---
-        const ALL_SCHOOLS = JSON.parse('{{ schools_autocomplete|escapejs }}' || '[]');
-
-        function handleAutocompleteInput(input, type) {
-            const val = input.value.trim().toLowerCase();
-            const list = document.getElementById(`autocomplete_${type}_list`);
-            list.innerHTML = '';
-
-            if (val.length < 1) {
-                list.style.display = 'none';
+        // --- ORDER SUMMARY LOGIC ---
+        function handleSchoolSelect(selectElement) {
+            const schoolId = selectElement.value;
+            if (!schoolId) {
+                document.getElementById('order-summary-container').style.display = 'none';
                 return;
             }
-
-            const matches = ALL_SCHOOLS.filter(s => {
-                const searchVal = (type === 'name') ? s.school_name : s.school_id;
-                return searchVal.toLowerCase().includes(val);
-            });
-
-            if (matches.length > 0) {
-                list.style.display = 'block';
-                matches.forEach(s => {
-                    const div = document.createElement('div');
-                    div.style.padding = '12px 15px';
-                    div.style.cursor = 'pointer';
-                    div.style.borderBottom = '1px solid #f1f5f9';
-                    div.style.userSelect = 'none';
-                    div.innerHTML = `<strong>${s.school_name}</strong> <span style="color: #94a3b8; font-size: 12px;">(${s.school_id})</span>`;
-
-                    div.onmouseover = () => div.style.background = '#f8fafc';
-                    div.onmouseout = () => div.style.background = 'white';
-
-                    // Use mousedown to prevent input from losing focus before the selection is made
-                    div.onmousedown = (e) => {
-                        e.preventDefault();
-                    };
-
-                    div.onclick = () => {
-                        document.getElementById('school_name_input').value = s.school_name;
-                        document.getElementById('school_id_input').value = s.school_id;
-                        document.getElementById('branch_input').value = s.branch || 'N/A';
-                        list.style.display = 'none';
-                    };
-                    list.appendChild(div);
-                });
-            } else {
-                list.style.display = 'none';
-            }
-        }
-
-        function hideAutocomplete(type) {
-            const list = document.getElementById(`autocomplete_${type}_list`);
-            if (list) list.style.display = 'none';
+            const schoolName = selectElement.options[selectElement.selectedIndex].getAttribute('data-name');
+            fetchOrderSummary(schoolId, schoolName);
         }
 
 
@@ -524,10 +841,25 @@
                     sectionTitle.innerText = "Executive Overview";
                     break;
                 case 'books':
-                    sectionTitle.innerText = "School Book Selection";
+                    sectionTitle.innerText = "Order Summary";
                     break;
                 case 'profile':
                     sectionTitle.innerText = "Admin Profile";
+                    break;
+                case 'purchases':
+                    sectionTitle.innerText = "Purchase Information";
+                    break;
+                case 'syllabus':
+                    sectionTitle.innerText = "Syllabus";
+                    break;
+                case 'question_paper':
+                    sectionTitle.innerText = "Question Paper";
+                    break;
+                case 'other':
+                    sectionTitle.innerText = "Other Details";
+                    break;
+                case 'teacher_logs':
+                    sectionTitle.innerText = "Teacher Logs";
                     break;
                 case 'purchases':
                     sectionTitle.innerText = "Purchase Information";
@@ -610,196 +942,97 @@
             });
         });
 
-        // Books Logic
-        const addedSeries = new Set();
+        // --- ORDER SUMMARY LOGIC ---
+        function fetchOrderSummary(schoolId, schoolName) {
+            document.getElementById('summary-school-name').innerText = schoolName;
 
-        function addSeries() {
-            const dropdown = document.getElementById('series-dropdown');
-            if (!dropdown.value) return alert("Please select a series");
-            const seriesName = dropdown.options[dropdown.selectedIndex].text.trim();
+            fetch(`/manage/get-order-summary/?school_id=${schoolId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('order-summary-container').style.display = 'block';
+                        document.getElementById('summary-ebook-count').innerText = data.ebook_count;
+                        document.getElementById('summary-keybook-status').innerText = data.keybook_access ? 'Granted' : 'Not Granted';
+                        document.getElementById('summary-keybook-status').style.color = data.keybook_access ? '#10b981' : '#64748b';
+                        document.getElementById('summary-qp-status').innerText = data.question_paper_access ? 'Granted' : 'Not Granted';
+                        document.getElementById('summary-qp-status').style.color = data.question_paper_access ? '#f59e0b' : '#64748b';
 
-            if (!seriesName) return alert("Please select a series");
-            if (addedSeries.has(seriesName)) return alert("Series already added");
+                        const listUl = document.getElementById('summary-books-list');
+                        listUl.innerHTML = '';
+                        if (data.books_list.length > 0) {
+                            data.books_list.forEach(book => {
+                                const li = document.createElement('li');
+                                li.innerHTML = `<i class="fas fa-check" style="color: #3b82f6; margin-right: 8px;"></i> ${book}`;
+                                listUl.appendChild(li);
+                            });
+                        } else {
+                            listUl.innerHTML = '<li style="color: #94a3b8;">No books purchased for this school yet.</li>';
+                        }
 
-            addedSeries.add(seriesName);
-
-            const summaryList = document.getElementById('total-summary-list');
-            if (summaryList.innerText.includes("No books selected yet.")) {
-                summaryList.innerHTML = '';
-            }
-
-            const seriesConfig = {
-                "I-Smart Series": [
-                    { id: "ismart1", label: "Standard 1" }, { id: "ismart2", label: "Standard 2" }, { id: "ismart3", label: "Standard 3" },
-                    { id: "ismart4", label: "Standard 4" }, { id: "ismart5", label: "Standard 5" }, { id: "ismart6", label: "Standard 6" },
-                    { id: "ismart7", label: "Standard 7" }, { id: "ismart8", label: "Standard 8" }, { id: "ismart9", label: "Standard 9" }
-                ],
-                "I-Whizz Series": [
-                    { id: "iwhizz1", label: "Standard 1" }, { id: "iwhizz2", label: "Standard 2" }, { id: "iwhizz3", label: "Standard 3" },
-                    { id: "iwhizz4", label: "Standard 4" }, { id: "iwhizz5", label: "Standard 5" }, { id: "iwhizz6", label: "Standard 6" },
-                    { id: "iwhizz7", label: "Standard 7" }, { id: "iwhizz8", label: "Standard 8" }, { id: "iwhizz9", label: "Standard 9" }
-                ],
-                "I-Bot Series": [
-                    { id: "ibot1", label: "Standard 1" }, { id: "ibot2", label: "Standard 2" }, { id: "ibot3", label: "Standard 3" },
-                    { id: "ibot4", label: "Standard 4" }, { id: "ibot5", label: "Standard 5" }, { id: "ibot6", label: "Standard 6" },
-                    { id: "ibot7", label: "Standard 7" }, { id: "ibot8", label: "Standard 8" }, { id: "ibot9", label: "Standard 9" }
-                ],
-                "Application 2007 Series": [
-                    { id: "app2007_office", label: "MS-Office 2007" }, { id: "app2007_word", label: "MS-Word 2007" },
-                    { id: "app2007_excel", label: "MS-Excel 2007" }, { id: "app2007_ppt", label: "MS-PowerPoint 2007" },
-                    { id: "app2007_access", label: "MS-Access 2007" }
-                ],
-                "Young Wizard Series": [
-                    { id: "yw1", label: "Level 1" }, { id: "yw2", label: "Level 2" }, { id: "yw3", label: "Level 3" },
-                    { id: "yw4", label: "Level 4" }, { id: "yw5", label: "Level 5" }
-                ],
-                "Application 2016 Series": [
-                    { id: "app2016_word", label: "MS-Word 2016" }, { id: "app2016_excel", label: "MS-Excel 2016" },
-                    { id: "app2016_ppt", label: "MS-PowerPoint 2016" }
-                ],
-                "Right-Click Series": [
-                    { id: "rc6", label: "Right-Click Standard 6" }, { id: "rc7", label: "Right-Click Standard 7" }, { id: "rc8", label: "Right-Click Standard 8" }, { id: "rc9", label: "Right-Click Standard 9" }
-                ],
-                "Programming Series": [
-                    { id: "prog_cpp", label: "C++ Programming" }, { id: "prog_c", label: "C Programming" },
-                    { id: "prog_multi", label: "Multimedia Flash" }, { id: "prog_html", label: "Learning HTML" }
-                ],
-                "My Computer Series": [
-                    { id: "mc1", label: "Grade 1" }, { id: "mc2", label: "Grade 2" }, { id: "mc3", label: "Grade 3" },
-                    { id: "mc4", label: "Grade 4" }, { id: "mc5", label: "Grade 5" }
-                ],
-                "Little Wizard Series": [
-                    { id: "lwA", label: "Book A" }, { id: "lwB", label: "Book B" }
-                ]
-            };
-
-            const books = seriesConfig[seriesName] || [];
-
-            const container = document.getElementById('selected-series-container');
-            const seriesBlock = document.createElement('div');
-            seriesBlock.className = 'series-card';
-            seriesBlock.style.background = "#fff";
-            seriesBlock.style.padding = "20px";
-            seriesBlock.style.borderRadius = "16px";
-            seriesBlock.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
-            seriesBlock.style.border = "1px solid #e2e8f0";
-
-            seriesBlock.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
-                <h3 style="margin: 0; color: #334155; font-size: 18px; font-weight: 600;">${seriesName}</h3>
-                <button type="button" onclick="removeSeries('${seriesName}', this)" style="background: #fee2e2; color: #ef4444; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; transition: background 0.2s;" onmouseover="this.style.background='#fecaca'" onmouseout="this.style.background='#fee2e2'">✕ Remove</button>
-            </div>
-            <div class="checkbox-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px;">
-                ${books.map(book => `
-                    <label class="checkbox-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 6px 4px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-                        <input type="checkbox" onchange="updateTotals()" value="${book.id}" class="book-checkbox" data-series="${seriesName}" style="accent-color: #3b82f6; width: 16px; height: 16px;"> 
-                        <span style="font-size: 14px; color: #475569;">${book.label}</span>
-                    </label>
-                `).join('')}
-            </div>
-            <div style="margin-top: 15px; font-size: 13px; color: #64748b; text-align: right; font-weight: 500;">
-                <span class="series-total">Selected: 0</span>
-            </div>
-            `;
-            container.appendChild(seriesBlock);
-            dropdown.value = "";
-        }
-
-        function removeSeries(seriesName, btn) {
-            addedSeries.delete(seriesName);
-            btn.parentElement.parentElement.remove();
-            updateTotals();
-            if (addedSeries.size === 0) {
-                document.getElementById('total-summary-list').innerHTML = '<li>No books selected yet.</li>';
-            }
-        }
-
-        function updateTotals() {
-            const summaryList = document.getElementById('total-summary-list');
-            summaryList.innerHTML = '';
-            const seriesCards = document.querySelectorAll('.series-card');
-            let hasSelection = false;
-
-            seriesCards.forEach(card => {
-                const seriesName = card.querySelector('h3').innerText;
-                const checkboxes = card.querySelectorAll('input[type="checkbox"]:checked');
-                const count = checkboxes.length;
-
-                card.querySelector('.series-total').innerText = `Selected: ${count}`;
-
-                if (count > 0) {
-                    hasSelection = true;
-                    const li = document.createElement('li');
-                    li.innerHTML = `<i class="fas fa-check-circle" style="color: #10b981; margin-right: 8px;"></i> ${seriesName}: <strong>${count} Books</strong>`;
-                    li.style.marginBottom = "8px";
-                    summaryList.appendChild(li);
-                }
-            });
-
-            if (!hasSelection && addedSeries.size > 0) {
-                summaryList.innerHTML = '<li>No books checked yet.</li>';
-            } else if (addedSeries.size === 0) {
-                summaryList.innerHTML = '<li>No books selected yet.</li>';
-            }
-        }
-
-        function handleBookSubmit(e) {
-            e.preventDefault();
-
-            const schoolId = document.querySelector('input[name="school_id"]').value.trim();
-            const schoolName = document.querySelector('input[name="school_name"]').value.trim();
-
-            if (!schoolId) {
-                alert("Please enter a School ID");
-                return;
-            }
-
-            const bookIds = [];
-            document.querySelectorAll('.series-card').forEach(card => {
-                card.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-                    if (cb.value) {
-                        bookIds.push(cb.value);
+                        const btn = document.getElementById('send-ebooks-btn');
+                        const msg = document.getElementById('already-sent-msg');
+                        if (data.already_sent) {
+                            btn.style.display = 'none';
+                            msg.style.display = 'block';
+                        } else if (data.ebook_count > 0) {
+                            btn.style.display = 'block';
+                            msg.style.display = 'none';
+                        } else {
+                            btn.style.display = 'none';
+                            msg.style.display = 'none';
+                        }
+                    } else {
+                        alert("Error: " + data.error);
+                        document.getElementById('order-summary-container').style.display = 'none';
                     }
+                })
+                .catch(err => {
+                    console.error("Error fetching order summary:", err);
+                    alert("Failed to fetch order summary.");
                 });
-            });
+        }
 
-            if (bookIds.length === 0) {
-                alert("Please select at least one valid book.");
+        function sendEbooks() {
+            const schoolId = document.getElementById('school_id_input').value.trim();
+            if (!schoolId) {
+                alert("Please select a school first.");
                 return;
             }
 
             const formData = new FormData();
             formData.append('school_id', schoolId);
-            bookIds.forEach(id => formData.append('book_ids', id));
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            // Assuming csrf_token is available in the form/page
+            const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (!csrfTokenElement) {
+                alert("CSRF Token not found.");
+                return;
+            }
 
-            fetch('/admin/assign-books/', {
+            fetch('/manage/send-ebooks/', {
                 method: 'POST',
-                headers: { 'X-CSRFToken': csrfToken },
+                headers: { 'X-CSRFToken': csrfTokenElement.value },
                 body: formData
             })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
                         alert(data.message);
-                        document.getElementById('book-selection-form').reset();
-                        document.getElementById('selected-series-container').innerHTML = '';
-                        document.getElementById('total-summary-list').innerHTML = '<li>No books selected yet.</li>';
-                        addedSeries.clear();
+                        document.getElementById('send-ebooks-btn').style.display = 'none';
+                        document.getElementById('already-sent-msg').style.display = 'block';
                     } else {
                         alert("Error: " + data.error);
                     }
                 })
                 .catch(err => {
-                    alert("Network error. Please try again.");
-                    console.error(err);
+                    console.error("Error sending ebooks:", err);
+                    alert("Failed to send E-books.");
                 });
         }
 
         function confirmRevoke(schoolId) {
             if (confirm("Are you sure you want to revoke e-book access for ALL books for this school? (This will NOT delete the subscription record)")) {
                 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                fetch(`/admin/delete-school-purchases/${schoolId}/`, {
+                fetch(`/manage/delete-school-purchases/${schoolId}/`, {
                     method: 'POST',
                     headers: { 'X-CSRFToken': csrfToken }
                 })
@@ -846,6 +1079,59 @@
                 }
             }
         }
+        // Custom Dropdown Logic
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateSyllabusDropdownText() {
+            const checkboxes = document.querySelectorAll('.syllabus-school-checkbox:checked');
+            const dropdownText = document.getElementById('syllabus-dropdown-text');
+            if (checkboxes.length === 0) {
+                dropdownText.textContent = 'Select Schools...';
+            } else if (checkboxes.length === 1) {
+                dropdownText.textContent = checkboxes[0].nextElementSibling.textContent;
+            } else {
+                dropdownText.textContent = checkboxes.length + ' schools selected';
+            }
+        }
+
+        function updateQPDropdownText() {
+            const checkboxes = document.querySelectorAll('.qp-school-checkbox:checked');
+            const dropdownText = document.getElementById('qp-dropdown-text');
+            if (checkboxes.length === 0) {
+                dropdownText.textContent = 'Select Schools...';
+            } else if (checkboxes.length === 1) {
+                dropdownText.textContent = checkboxes[0].nextElementSibling.textContent;
+            } else {
+                dropdownText.textContent = checkboxes.length + ' schools selected';
+            }
+        }
+
+        function updateOtherDropdownText() {
+            const checkboxes = document.querySelectorAll('.other-school-checkbox:checked');
+            const dropdownText = document.getElementById('other-dropdown-text');
+            if (checkboxes.length === 0) {
+                dropdownText.textContent = 'Select Schools...';
+            } else if (checkboxes.length === 1) {
+                dropdownText.textContent = checkboxes[0].nextElementSibling.textContent;
+            } else {
+                dropdownText.textContent = checkboxes.length + ' schools selected';
+            }
+        }
+
+        // Close dropdowns when clicking outside
+        window.addEventListener('click', function (e) {
+            if (!e.target.closest('.custom-dropdown')) {
+                const syllabusDropdown = document.getElementById('syllabus-school-dropdown');
+                if (syllabusDropdown) syllabusDropdown.style.display = 'none';
+                const qpDropdown = document.getElementById('qp-school-dropdown');
+                if (qpDropdown) qpDropdown.style.display = 'none';
+                const otherDropdown = document.getElementById('other-school-dropdown');
+                if (otherDropdown) otherDropdown.style.display = 'none';
+            }
+        });
     </script>
 </body>
 
