@@ -163,18 +163,16 @@
         }
 
         .ebook-card-premium {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            position: relative;
+            overflow: hidden;
         }
 
         .ebook-card-premium:hover {
@@ -392,6 +390,139 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Locked Section Overlay */
+        .locked-section-container {
+            position: relative;
+            min-height: 400px;
+        }
+
+        .premium-lock-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            text-align: center;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            pointer-events: all; /* Block clicks to elements below */
+        }
+
+        .lock-animation {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 35px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .premium-lock-overlay h3 {
+            font-size: 24px;
+            color: #2d3436;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .premium-lock-overlay p {
+            color: #64748b;
+            font-size: 16px;
+            margin-bottom: 30px;
+            max-width: 400px;
+        }
+
+        .contact-box {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #edf2f7;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .contact-item i {
+            color: var(--accent-color);
+            background: #f0f4f8;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .btn-disabled-premium {
+            background: #e2e8f0;
+            color: #a0aec0;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 500;
+            display: inline-block;
+            cursor: not-allowed;
+            text-align: center;
+        }
+
+        /* QP Toggle Buttons */
+        .qp-toggle-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: #64748b;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .qp-toggle-btn:hover {
+            border-color: #a29bfe;
+            color: #6c5ce7;
+        }
+
+        .qp-toggle-btn.active {
+            background: #6c5ce7;
+            border-color: #6c5ce7;
+            color: white;
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
+        }
+
+        .ebook-expiry {
+            margin-top: 15px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .expiry-expired { color: #ff7675; }
+        .expiry-active  { color: #64748b; }
     </style>
 </head>
 
@@ -424,9 +555,29 @@
             </li>
 
             <li class="menu-item">
-                <a href="#question" class="menu-link" data-section="question">
-                    <i class="fas fa-edit"></i>
-                    <span>Question Generator</span>
+                <a href="#keybooks" class="menu-link" data-section="keybooks">
+                    <i class="fas fa-key"></i>
+                    <span>KeyBooks</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="#question_paper" class="menu-link" data-section="question_paper">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Question Paper Download</span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="#syllabus" class="menu-link" data-section="syllabus">
+                    <i class="fas fa-scroll"></i>
+                    <span>Syllabus</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#other" class="menu-link" data-section="other">
+                    <i class="fas fa-ellipsis-h"></i>
+                    <span>Other Details</span>
                 </a>
             </li>
 
@@ -479,8 +630,20 @@
                             <span class="info-value"><i class="fas fa-school"></i> {{ school.school_name }}</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Contact Number</span>
-                            <span class="info-value"><i class="fas fa-phone-alt"></i> {{ school.contact }}</span>
+                            <span class="info-label">Branch</span>
+                            <span class="info-value"><i class="fas fa-map-marker-alt"></i> {{ school.branch|default:"Not Provided" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Contact Person</span>
+                            <span class="info-value"><i class="fas fa-user"></i> {{ school.contact_person|default:"Not Provided" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Mobile</span>
+                            <span class="info-value"><i class="fas fa-phone-alt"></i> {{ school.contact|default:"Not Provided" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email ID</span>
+                            <span class="info-value"><i class="fas fa-envelope"></i> {{ school.email|default:"Not Provided" }}</span>
                         </div>
                     </div>
 
@@ -523,7 +686,7 @@
                 <p style="color: #64748b; font-size: 14px;">Access all your digital textbooks here.</p>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
                 {% if ebooks %}
                 {% for book in ebooks %}
                 <div class="ebook-card-premium">
@@ -531,10 +694,16 @@
                         <i class="fas fa-book"></i>
                     </div>
                     <h3 class="ebook-title">{{ book.title }}</h3>
-                    <a href="{{ book.view_url }}" target="_blank" class="btn-download-premium">
-                        <i class="fas fa-eye"></i> View Book
-                    </a>
-                    <div style="margin-top: 15px; font-size: 13px; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    {% if book.is_expired %}
+                        <div class="btn-disabled-premium">
+                            <i class="fas fa-lock"></i> Need to purchase again to access this book
+                        </div>
+                    {% else %}
+                        <a href="{{ book.view_url }}" target="_blank" class="btn-download-premium">
+                            <i class="fas fa-eye"></i> View Book
+                        </a>
+                    {% endif %}
+                    <div class="ebook-expiry {% if book.is_expired %}expiry-expired{% else %}expiry-active{% endif %}">
                         <i class="fas fa-calendar-alt"></i>
                         <span>Expires on: <strong>{{ book.valid_upto|date:"F d, Y" }}</strong></span>
                     </div>
@@ -550,170 +719,124 @@
             </div>
         </div>
 
-        <!-- SYLLABUS SECTION -->
-        <div id="syllabus" class="dashboard-section">
-            <div class="section-header">
-                <h2>Download Syllabus</h2>
+        <!-- KEYBOOKS SECTION -->
+        <div id="keybooks" class="dashboard-section locked-section-container">
+            {% if not has_keybook_access %}
+            <div class="premium-lock-overlay">
+                <div class="lock-animation">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>KeyBook Access Locked</h3>
+                <p>Contact our Distributor to avail this feature and unlock comprehensive answer keys for your selected series.</p>
+                <div class="contact-box">
+                    <div class="contact-item"><i class="fas fa-phone"></i> +91 98765 43210</div>
+                    <div class="contact-item"><i class="fas fa-envelope"></i> distributor@samsel.com</div>
+                </div>
             </div>
-            <div
-                style="text-align: center; padding: 50px; background: rgba(255,255,255,0.7); border-radius: 20px; max-width: 500px; margin: 0 auto; border: 1px solid var(--glass-border);">
-                <i class="fas fa-file-pdf" style="font-size: 60px; color: #ff7675; margin-bottom: 25px;"></i>
-                <h3 style="margin-bottom: 15px; font-size: 20px;">Latest Curriculum Syllabus</h3>
-                <p style="color: #64748b; margin-bottom: 30px;">Download the up-to-date syllabus guidelines for all
-                    classes.</p>
-                <a href="#" class="btn-download-premium"
-                    style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #d63031;">
-                    <i class="fas fa-download"></i> Download PDF
-                </a>
+            {% endif %}
+
+            <div class="section-header">
+                <h2>KeyBooks</h2>
+                <p style="color: #64748b; font-size: 14px;">Access answer keys and teacher resources here.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; position: relative; z-index: 10;">
+                {% if keybooks %}
+                {% for book in keybooks %}
+                <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);" 
+                     onmouseover="this.style.borderColor='#74b9ff'; this.style.transform='translateY(-5px)';" 
+                     onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)';">
+                    <i class="fas fa-file-pdf" style="font-size: 40px; color: #ff7675; margin-bottom: 15px;"></i>
+                    <h4 style="font-size: 15px; color: #2d3436; margin-bottom: 5px; font-weight: 600;">{{ book.title }}</h4>
+                    <p style="font-size: 12px; color: #a0aec0; margin-bottom: 15px;">KeyBook Document</p>
+                    <a href="{{ book.view_url }}" target="_blank" class="qp-toggle-btn" style="padding: 8px 15px; font-size: 13px; text-decoration: none; width: 100%; border-radius: 8px; color: #0984e3; border-color: #74b9ff;">
+                        <i class="fas fa-eye"></i> View PDF
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div
+                    style="grid-column: 1/-1; text-align: center; padding: 60px; background: rgba(255,255,255,0.5); border-radius: 20px; border: 1px dashed #cbd5e1;">
+                    <i class="fas fa-key" style="font-size: 40px; color: #94a3b8; margin-bottom: 15px;"></i>
+                    <p style="color: #64748b; font-size: 16px;">No keybooks assigned to you yet.</p>
+                </div>
+                {% endif %}
             </div>
         </div>
 
-        <!-- QUESTION GENERATOR SECTION -->
-        <div id="question" class="dashboard-section">
+        <!-- QUESTION PAPER DOWNLOAD SECTION -->
+        <div id="question_paper" class="dashboard-section locked-section-container">
+            {% if not has_qp_access %}
+            <div class="premium-lock-overlay">
+                <div class="lock-animation" style="background: linear-gradient(135deg, #ff7675 0%, #d63031 100%); box-shadow: 0 15px 30px rgba(214, 48, 49, 0.3);">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Question Papers Locked</h3>
+                <p>Contact our Distributor to avail this feature and download pre-generated question papers.</p>
+                <div class="contact-box">
+                    <div class="contact-item"><i class="fas fa-phone"></i> +91 98765 43210</div>
+                    <div class="contact-item"><i class="fas fa-envelope"></i> distributor@samsel.com</div>
+                </div>
+            </div>
+            {% endif %}
+
             <div class="section-header">
-                <h2>Question Paper Generator</h2>
+                <h2>Question Paper Download</h2>
+                <p style="color: #64748b; font-size: 14px;">Download question papers shared by the administration.</p>
             </div>
 
-            <div class="glass-panel">
-                <form method="POST" action="{% url 'generate_paper' %}" class="qp-form-premium" id="qpForm">
-                    {% csrf_token %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; position: relative; z-index: 10;">
+                {% if shared_qps %}
+                {% for qp in shared_qps %}
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 25px; text-align: center; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02);"
+                     onmouseover="this.style.borderColor='#a29bfe'; this.style.transform='translateY(-5px)';" 
+                     onmouseout="this.style.borderColor='#e2e8f0'; this.style.transform='translateY(0)';">
+                    <i class="fas fa-file-pdf" style="font-size: 45px; color: #ff7675; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 17px; margin-bottom: 8px; color: #2d3436; font-weight: 600;">{{ qp.exam_type|title }} - {{ qp.term|default:"" }}</h3>
+                    <p style="color: #64748b; font-size: 13px; margin-bottom: 10px;">{{ qp.file_name }}</p>
+                    <p style="color: #a0aec0; font-size: 12px; margin-bottom: 20px;"><i class="fas fa-clock"></i> Shared: {{ qp.shared_at|date:"M d, Y" }}</p>
+                    
+                    <a href="{{ qp.file.url }}" target="_blank" class="btn-download-premium" style="display: block; width: 100%; box-sizing: border-box;">
+                        <i class="fas fa-download"></i> Download PDF
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px; background: rgba(255,255,255,0.5); border-radius: 20px; border: 1px dashed #cbd5e1;">
+                    <i class="fas fa-file-alt" style="font-size: 40px; color: #94a3b8; margin-bottom: 15px;"></i>
+                    <p style="color: #64748b; font-size: 16px;">No question papers shared with your school yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
 
-                    <!-- Basic Options -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <label>Standard</label>
-                            <select name="standard">
-                                <option value="1">Standard 1</option>
-                                <option value="2">Standard 2</option>
-                                <option value="3">Standard 3</option>
-                                <option value="4">Standard 4</option>
-                                <option value="5">Standard 5</option>
-                                <option value="6">Standard 6</option>
-                                <option value="7">Standard 7</option>
-                                <option value="8">Standard 8</option>
-                                <option value="9">Standard 9</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Book Series</label>
-                            {% if purchased_series %}
-                            <select name="series" id="series_select">
-                                {% for s in purchased_series %}
-                                <option value="{{ s.value }}">{{ s.label }}</option>
-                                {% endfor %}
-                            </select>
-                            {% else %}
-                            <div style="background:#fef3c7; border:1px solid #f59e0b; border-radius:12px; padding:12px 16px; font-size:13px; color:#92400e; margin-bottom:20px;">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                No series purchased yet. Contact your administrator to assign book series.
-                            </div>
-                            <input type="hidden" name="series" value="">
-                            {% endif %}
-                        </div>
+        <!-- SYLLABUS SECTION -->
+        <div id="syllabus" class="dashboard-section">
+            <div class="section-header">
+                <h2>Syllabus</h2>
+                <p style="color: #64748b; font-size: 14px;">Download your latest curriculum syllabus.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+                {% if syllabuses %}
+                {% for item in syllabuses %}
+                <div class="ebook-card-premium">
+                    <div class="ebook-icon" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                        <i class="fas fa-file-pdf"></i>
                     </div>
-
-                    <!-- Chapters -->
-
-                    <label>Select Chapters</label>
-                    <div class="chapter-box-premium">
-                        <label><input type="checkbox" name="chapters" value="1"> Chapter 1</label>
-                        <label><input type="checkbox" name="chapters" value="2"> Chapter 2</label>
-                        <label><input type="checkbox" name="chapters" value="3"> Chapter 3</label>
-                        <label><input type="checkbox" name="chapters" value="4"> Chapter 4</label>
-                        <label><input type="checkbox" name="chapters" value="5"> Chapter 5</label>
-                        <label><input type="checkbox" name="chapters" value="6"> Chapter 6</label>
-                        <label><input type="checkbox" name="chapters" value="7"> Chapter 7</label>
-                        <label><input type="checkbox" name="chapters" value="8"> Chapter 8</label>
-                        <label><input type="checkbox" name="chapters" value="9"> Chapter 9</label>
-                    </div>
-
-                    <!-- Section Question Count Configuration -->
-                    <div style="margin-bottom: 8px; font-size: 14px; font-weight: 700; color: #2d3436; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-sliders-h" style="color: #6c5ce7;"></i>
-                        Customize Questions per Section
-                    </div>
-                    <p style="font-size: 12px; color: #94a3b8; margin-bottom: 18px;">Set how many questions appear in each section. Sections 1–3 are 1 mark each.</p>
-
-                    <!-- Section 1: Fill in the Missing Letters -->
-                    <div class="section-config-card">
-                        <h4><i class="fas fa-pen-nib"></i> I. Fill in the Missing Letters <span class="badge-1mark">1 mark each</span></h4>
-                        <div class="field-wrap">
-                            <label for="fill_count">Number of Questions</label>
-                            <input type="number" id="fill_count" name="fill_count" min="0" max="20" value="4" placeholder="e.g. 4">
-                        </div>
-                    </div>
-
-                    <!-- Section 2: MCQ -->
-                    <div class="section-config-card">
-                        <h4><i class="fas fa-mouse-pointer"></i> II. Choose the Correct Option <span class="badge-1mark">1 mark each</span></h4>
-                        <div class="field-wrap">
-                            <label for="mcq_count">Number of Questions</label>
-                            <input type="number" id="mcq_count" name="mcq_count" min="0" max="20" value="0" placeholder="e.g. 4">
-                        </div>
-                    </div>
-
-                    <!-- Section 3: Put Tick or Cross -->
-                    <div class="section-config-card">
-                        <h4><i class="fas fa-check-double"></i> III. Put ✔ or ✖ for the Following <span class="badge-1mark">1 mark each</span></h4>
-                        <div class="field-wrap">
-                            <label for="tf_count">Number of Questions</label>
-                            <input type="number" id="tf_count" name="tf_count" min="0" max="20" value="4" placeholder="e.g. 4">
-                        </div>
-                    </div>
-
-                    <!-- Section 4: Match the Following -->
-                    <div class="section-config-card">
-                        <h4><i class="fas fa-link"></i> IV. Match the Following <span class="badge-1mark">1 mark each</span></h4>
-                        <div class="field-wrap">
-                            <label for="match_count">Number of Questions</label>
-                            <input type="number" id="match_count" name="match_count" min="0" max="20" value="5" placeholder="e.g. 5">
-                        </div>
-                    </div>
-
-                    <!-- Section 5: Full Forms -->
-                    <div class="section-config-card">
-                        <h4><i class="fas fa-spell-check"></i> V. Write the Full Forms <span class="badge-1mark">1 mark each</span></h4>
-                        <div class="field-wrap">
-                            <label for="full_count">Number of Questions</label>
-                            <input type="number" id="full_count" name="full_count" min="0" max="20" value="0" placeholder="e.g. 0">
-                        </div>
-                    </div>
-
-                    <!-- Section 6: Answer the Following -->
-                    <div class="section-config-card" style="border-color: #a29bfe;">
-                        <h4><i class="fas fa-pencil-alt"></i> VI. Answer the Following</h4>
-                        <div class="section-config-row">
-                            <div class="field-wrap">
-                                <label for="answer_count">Number of Questions</label>
-                                <input type="number" id="answer_count" name="answer_count" min="0" max="20" value="4" placeholder="e.g. 4">
-                            </div>
-                            <div class="field-wrap">
-                                <label>Marks per Question</label>
-                                <div class="marks-toggle">
-                                    <input type="radio" name="answer_marks" id="marks3" value="3">
-                                    <label for="marks3">3 Marks</label>
-                                    <input type="radio" name="answer_marks" id="marks4" value="4" checked>
-                                    <label for="marks4">4 Marks</label>
-                                    <input type="radio" name="answer_marks" id="marks6" value="6">
-                                    <label for="marks6">6 Marks</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="total-marks-preview" style="margin-top: 4px; font-size: 13px; color: #6c5ce7; font-weight: 600;"></div>
-                    </div>
-
-                    <!-- Live Total Marks Display -->
-                    <div id="live-total" style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; border-radius: 14px; padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 14px; font-weight: 600;"><i class="fas fa-calculator"></i>&nbsp; Total Marks</span>
-                        <span id="live-total-value" style="font-size: 22px; font-weight: 800;">17</span>
-                    </div>
-                    <!-- Hidden field holds computed total_marks -->
-                    <input type="hidden" name="total_marks" id="computed_total_marks" value="17">
-
-                    <button type="submit" class="btn-submit-premium">
-                        <i class="fas fa-magic"></i> Generate Question Paper
-                    </button>
-                </form>
+                    <h3 class="ebook-title">{{ item.file_name }}</h3>
+                    <p style="font-size: 13px; color: #64748b; margin-bottom: 15px;">Uploaded on {{ item.uploaded_at|date:"M d, Y" }}</p>
+                    <a href="{{ item.file.url }}" target="_blank" class="btn-download-premium" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%); color: #d63031;">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px; background: rgba(255,255,255,0.5); border-radius: 20px; border: 1px dashed #cbd5e1;">
+                    <i class="fas fa-folder-open" style="font-size: 40px; color: #94a3b8; margin-bottom: 15px;"></i>
+                    <p style="color: #64748b; font-size: 16px;">No syllabus uploaded for your school yet.</p>
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -743,7 +866,7 @@
                             <button class="btn-file-select" type="button">
                                 <i class="fas fa-file-alt"></i> Browse Files...
                             </button>
-                            <input type="file" name="file" accept=".pdf,.jpg,.jpeg,.png" required onchange="document.querySelector('.btn-file-select').innerHTML = '<i class=\'fas fa-check\'></i> ' + this.files[0].name;">
+                            <input type="file" name="file" accept=".pdf,.doc,.docx,.zip,.jpg,.jpeg,.png" required onchange="document.querySelector('.btn-file-select').innerHTML = '<i class=\'fas fa-check\'></i> ' + this.files[0].name;">
                         </div>
                     </div>
 
@@ -793,6 +916,48 @@
             </div>
         </div>
 
+        <!-- OTHER DETAILS SECTION -->
+        <div id="other" class="dashboard-section">
+            <div class="section-header">
+                <h2>Other Details</h2>
+                <p style="color: #64748b; font-size: 14px;">Additional documents and information shared by the administrator.</p>
+            </div>
+            
+            <div style="background: white; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); overflow: hidden;">
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th style="padding: 15px; text-align: left;">Title</th>
+                            <th style="padding: 15px; text-align: left;">Shared On</th>
+                            <th style="padding: 15px; text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if other_details %}
+                        {% for item in other_details %}
+                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                            <td style="padding: 15px; color: #334155;"><strong>{{ item.title }}</strong></td>
+                            <td style="padding: 15px; color: #64748b;">{{ item.uploaded_at|date:"F d, Y" }}</td>
+                            <td style="padding: 15px; text-align: center;">
+                                <a href="{{ item.file.url }}" target="_blank" class="btn-download-premium" style="display: inline-flex; width: auto; padding: 8px 20px;">
+                                    <i class="fas fa-download"></i> View File
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 40px; color: #94a3b8;">
+                                <i class="fas fa-info-circle" style="font-size: 32px; margin-bottom: 10px;"></i>
+                                <p>No additional details have been shared yet.</p>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -817,7 +982,6 @@
                     targetLink.click();
                 }
             }
-            updateLiveTotal();
         });
 
         // Switch Sections
@@ -856,47 +1020,25 @@
                 case 'ebooks':
                     sectionTitle.innerText = "Interactive E-Books";
                     break;
+                case 'keybooks':
+                    sectionTitle.innerText = "KeyBooks";
+                    break;
+                case 'question_paper':
+                    sectionTitle.innerText = "Question Paper Download";
+                    break;
                 case 'syllabus':
                     sectionTitle.innerText = "Download Syllabus";
                     break;
-                case 'question':
-                    sectionTitle.innerText = "Question Paper Generator";
-                    break;
                 case 'announcements':
                     sectionTitle.innerText = "School Announcements";
+                    break;
+                case 'other':
+                    sectionTitle.innerText = "Other Details";
                     break;
                 default:
                     sectionTitle.innerText = "Dashboard Overview";
             }
         }
-
-        // ---- Live Total Marks Calculator ----
-        function updateLiveTotal() {
-            const fill  = parseInt(document.getElementById('fill_count').value)  || 0;
-            const mcq   = parseInt(document.getElementById('mcq_count').value)   || 0;
-            const tf    = parseInt(document.getElementById('tf_count').value)    || 0;
-            const match = parseInt(document.getElementById('match_count').value) || 0;
-            const full  = parseInt(document.getElementById('full_count').value)  || 0;
-            const ans   = parseInt(document.getElementById('answer_count').value)|| 0;
-            const marksRadio = document.querySelector('input[name="answer_marks"]:checked');
-            const marksEach = marksRadio ? parseInt(marksRadio.value) : 4;
-
-            const total = fill + mcq + tf + match + full + (ans * marksEach);
-            document.getElementById('live-total-value').textContent = total;
-            document.getElementById('computed_total_marks').value = total;
-
-            // Preview text inside Answer section
-            document.getElementById('total-marks-preview').textContent =
-                `${ans} questions × ${marksEach} marks = ${ans * marksEach} marks`;
-        }
-
-        // Attach listeners
-        ['fill_count', 'mcq_count', 'tf_count', 'match_count', 'full_count', 'answer_count'].forEach(id => {
-            document.getElementById(id).addEventListener('input', updateLiveTotal);
-        });
-        document.querySelectorAll('input[name="answer_marks"]').forEach(radio => {
-            radio.addEventListener('change', updateLiveTotal);
-        });
 
         // Mobile responsive toggle (via hamburger if needed)
         // Add basic touch support

@@ -39,8 +39,8 @@
 
             <!-- BUTTON (RIGHT) -->
             <div class="header-action" style="display: flex; gap: 15px;">
-                <a href="{% url 'contact' %}" class="inquiry-btn">
-                    WHAT'S YOUR QUERY <span class="icon"></span>
+                <a href="{% url 'products' %}#purchase" class="inquiry-btn">
+                    PURCHASE REQUEST <span class="icon"></span>
                 </a>
                 <a href="{% url 'request_demo' %}" class="demo-btn">
                     REQUEST DEMO <span class="icon"></span>
@@ -1241,7 +1241,6 @@
                                     <p>Networks and data communication.</p>
                                 </div>
                             </div>
-                        </a>
                         <a href="{% url 'book_detail' series_slug='right-click-series' book_slug='level-8' %}"
                             class="premium-book-card delay3" id="ict-level-8" style="text-decoration: none;">
                             <div class="book-flipper">
@@ -1275,60 +1274,18 @@
     <!-- ================= ORDER REQUEST SECTION ================= -->
     <section class="container reveal-up delay-100" id="purchase">
         <div class="demo-card"
-            style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 4rem; display: flex; gap: 4rem; align-items: center; box-shadow: var(--shadow-md);">
-            <!-- Left Side / Content -->
-            <div class="demo-content" style="flex: 1;">
+            style="background: var(--card-bg); border-radius: var(--radius-lg); padding: 4rem; display: flex; flex-direction: column; align-items: center; box-shadow: var(--shadow-md);">
+            
+            <div class="section-header" style="text-align: center; margin-bottom: 3rem; max-width: 800px;">
                 <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary);">Purchase Request</h2>
-                <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem;">
+                <p style="font-size: 1.1rem; color: var(--text-muted);">
                     Ready to bring <span class="brand-text">SAMSEL</span> to your school? Choose your preferred method
                     below to request a quote or place
                     an order.
                 </p>
-
-                <!-- Toggle -->
-                <div class="purchase-toggle" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                    <button class="btn-primary toggle-btn active" onclick="showPurchase('whatsapp')"
-                        style="flex: 1; padding: 12px; font-size: 0.95rem;">WhatsApp Order</button>
-                    <button class="btn-secondary toggle-btn" onclick="showPurchase('email')"
-                        style="flex: 1; padding: 12px; font-size: 0.95rem;">Email Request</button>
-                </div>
-
-                <!-- Forms Container -->
-                <div class="purchase-box-wrapper" style="position: relative; min-height: 250px;">
-                    <!-- Email Form -->
-                    <div id="email-box" class="purchase-box form-container fade-layer">
-                        <form class="demo-form" style="display: flex; flex-direction: column; gap: 1rem;">
-                            <input type="text" class="form-control" placeholder="Contact Person Name" required>
-                            <input type="text" class="form-control" placeholder="School Name" required>
-                            <input type="email" class="form-control" placeholder="Mail ID" required>
-                            <textarea class="form-control" placeholder="Your Request (Books & Quantity)" rows="3"
-                                required></textarea>
-                            <button type="submit" class="btn-primary" style="align-self: flex-start;">Send
-                                Request</button>
-                        </form>
-                    </div>
-
-                    <!-- WhatsApp Info -->
-                    <div id="whatsapp-box" class="purchase-box active fade-layer">
-                        <div
-                            style="background: rgba(23, 187, 85, 0.1); border: 1px solid #17bb55; padding: 1.5rem; border-radius: var(--radius-md); display: flex; align-items: center; gap: 1.5rem;">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://wa.me/919884392953"
-                                alt="WhatsApp QR"
-                                style="width: 120px; border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); background: #fff; padding: 5px;">
-                            <div>
-                                <h3 style="color: #17bb55; font-size: 1.25rem; margin-bottom: 0.5rem;">Scan & Order</h3>
-                                <p style="font-size: 0.95rem; margin-bottom: 1rem;">Scan the code or click below to
-                                    message us directly on WhatsApp with your requirements.</p>
-                                <a href="https://wa.me/919884392953" class="btn-primary"
-                                    style="background: #17bb55; padding: 10px 20px; font-size: 0.9rem; color: #fff; border:none; border-radius: 30px; display:inline-block; text-align:center; box-shadow: 0 4px 6px rgba(23,187,85,0.2);">Open
-                                    WhatsApp</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <div class="order-section-body">
+            <div class="order-section-body" style="width: 100%; max-width: 1000px; margin: 0 auto; border-radius: 15px; overflow: hidden; border: 1px solid rgba(0,0,0,0.08);">
 
                 <!-- Left: WhatsApp quick contact -->
                 <div class="order-whatsapp-side">
@@ -1336,7 +1293,7 @@
                         <div class="whatsapp-icon-wrap">
                             <svg viewBox="0 0 32 32" width="40" height="40" fill="#25D366"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.736 5.476 2.02 7.782L0 32l8.468-2.001A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.762-1.848l-.484-.287-5.024 1.186 1.22-4.888-.317-.503A13.24 13.24 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.28-9.92c-.4-.2-2.36-1.164-2.727-1.297-.366-.133-.633-.2-.9.2-.267.4-1.033 1.297-1.267 1.563-.233.267-.466.3-.866.1-.4-.2-1.688-.623-3.214-1.98-1.188-1.055-1.99-2.359-2.224-2.759-.234-.4-.025-.616.175-.815.18-.178.4-.467.6-.7.2-.233.267-.4.4-.667.133-.266.067-.5-.033-.7-.1-.2-.9-2.167-1.233-2.967-.325-.78-.655-.673-.9-.686l-.766-.013c-.267 0-.7.1-1.067.5-.367.4-1.4 1.367-1.4 3.333s1.433 3.867 1.633 4.133c.2.267 2.82 4.3 6.833 6.033.954.413 1.7.66 2.283.844.96.305 1.833.262 2.524.159.77-.115 2.36-.965 2.693-1.897.333-.933.333-1.733.233-1.9-.1-.166-.367-.266-.767-.466z"/></svg>
                         </div>
-                        <h3>Quick WhatsApp Order</h3>
+                        <h3>WhatsApp Order</h3>
                         <p>Scan the QR or tap the button to chat with us directly on WhatsApp.</p>
                         <img src="{% static 'images/whatsapp.jpeg' %}" alt="WhatsApp QR Code" class="whatsapp-qr">
                         <a href="https://wa.me/919841234567" target="_blank" class="whatsapp-btn">
@@ -1353,7 +1310,7 @@
                 <!-- Right: OTP Auth Portal -->
                 <div class="order-otp-side">
                     <div class="otp-portal">
-                        <h3>Authenticated Order Form</h3>
+                        <h3>Order Form</h3>
                         <p>Verify your school & mobile to access the official order form.</p>
 
                         <!-- Step 1: Collect info -->
