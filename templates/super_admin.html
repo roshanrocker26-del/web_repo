@@ -50,6 +50,12 @@
                     <span>Purchases Management</span>
                 </a>
             </li>
+            <li class="menu-item">
+                <a href="#" class="menu-link" data-section="admins">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Manage Admins</span>
+                </a>
+            </li>
         </ul>
 
         <div class="sidebar-footer" style="padding: 20px; border-top: 1px solid var(--glass-border);">
@@ -278,6 +284,56 @@
             </div>
         </div>
 
+        <!-- MANAGE ADMINS SECTION -->
+        <div id="admins" class="dashboard-section">
+            <div class="section-header">
+                <h2>Manage Admins</h2>
+                <div class="actions" style="display: flex; gap: 15px; align-items: center;">
+                    <div style="position: relative;">
+                        <i class="fas fa-search"
+                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0;"></i>
+                        <input type="text" id="search-admins" placeholder="Search Admins..."
+                            onkeyup="filterTable('search-admins', 'table-admins')"
+                            style="padding: 10px 15px 10px 35px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; width: 250px;">
+                    </div>
+                    <button class="btn btn-primary btn-sm" style="padding: 8px 16px;"
+                        onclick="openModal('adminModal')">
+                        <i class="fas fa-user-plus"></i> Add Admin
+                    </button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="table-admins">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dummy Data for Frontend Design -->
+                        <tr>
+                            <td>admin_john</td>
+                            <td><span class="status-badge status-active" style="background:#e0e7ff;color:#4338ca;">Admin</span></td>
+                            <td class="actions">
+                                <button class="btn-icon btn-edit" title="Edit" onclick="openModal('adminModal')"><i class="fas fa-edit"></i></button>
+                                <a href="#" class="btn-icon btn-delete" title="Delete" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>admin_sarah</td>
+                            <td><span class="status-badge status-active" style="background:#e0e7ff;color:#4338ca;">Admin</span></td>
+                            <td class="actions">
+                                <button class="btn-icon btn-edit" title="Edit" onclick="openModal('adminModal')"><i class="fas fa-edit"></i></button>
+                                <a href="#" class="btn-icon btn-delete" title="Delete" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </main>
 
     <!-- MODALS -->
@@ -460,6 +516,31 @@
         </div>
     </div>
 
+    <!-- Admin Modal -->
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="adminModalTitle">Add New Admin</h2>
+                <button class="close-modal" onclick="closeModal('adminModal')">&times;</button>
+            </div>
+            <form id="adminForm" action="#" method="POST" onsubmit="event.preventDefault(); alert('Admin saved successfully! (Frontend Only)'); closeModal('adminModal');">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="admin_username" class="form-input" placeholder="Enter Username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="admin_password" class="form-input" placeholder="Set Password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('adminModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         const sidebar = document.getElementById('sidebar');
         const toggleBtn = document.getElementById('toggleBtn');
@@ -482,7 +563,8 @@
             if (section === 'schools') openModal('schoolModal');
             else if (section === 'series') openModal('bookModal');
             else if (section === 'purchases') openModal('assignBookModal');
-            else alert('Select a section (Book Series or Schools) to add items.');
+            else if (section === 'admins') openModal('adminModal');
+            else alert('Select a section (Book Series, Schools, Admins) to add items.');
         });
 
         // Modal Functions
@@ -524,6 +606,9 @@
                     document.getElementById('bookModalTitle').innerText = "Add New Book";
                     form.action = "{% url 'add_book' %}";
                     form.querySelector('input[name="book_id"]').readOnly = false;
+                }
+                if (modalId === 'adminModal') {
+                    document.getElementById('adminModalTitle').innerText = "Add New Admin";
                 }
             }
         }
@@ -613,6 +698,10 @@
                 case 'purchases':
                     sectionTitle.innerText = "Purchases Management";
                     globalAddBtnText.innerText = "Assign Books";
+                    break;
+                case 'admins':
+                    sectionTitle.innerText = "Manage Admins";
+                    globalAddBtnText.innerText = "Add Admin";
                     break;
                 default:
                     sectionTitle.innerText = "Super Admin Console";
