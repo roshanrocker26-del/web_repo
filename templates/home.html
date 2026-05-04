@@ -1809,38 +1809,271 @@
 
         </p>
 
-        <div class="boards-grid">
-            <div class="board-card reveal-up delay-100">
-                <img src="{% static 'images/MCC new.png' %}" alt="School 1">
-                <p>Madras Christian College Higher Secondary School </p>
-            </div>
-            <div class="board-card reveal-up delay-200">
-                <img src="{% static 'images/sch2.png' %}" alt="School 2">
-                <p>Bethel Matriculation Higher Secondary School</p>
-            </div>
-            <div class="board-card reveal-up delay-300">
-                <img src="{% static 'images/MES R.png' %}" alt="School 3">
-                <p>M.E.S. Razeena Matriculation Higher Secondary School</p>
-            </div>
-            <div class="board-card reveal-up delay-400">
-                <img src="{% static 'images/sch4.png' %}" alt="School 4">
-                <p>DAV School</p>
-            </div>
-            <div class="board-card reveal-up delay-100">
-                <img src="{% static 'images/Equitas.png' %}" alt="School 5">
-                <p>EQUITAS Group of Schools</p>
-            </div>
-            <div class="board-card reveal-up delay-200">
-                <img src="{% static 'images/Seetha-removebg-preview.png' %}" alt="School 6">
-                <p>Seetha Kingston House Matriculation Higher Secondary School</p>
-            </div>
-            <div class="board-card reveal-up delay-300">
-                <img src="{% static 'images/jaya Group.png' %}" alt="School 7">
-                <p> JAYA GROUP OF SCHOOLS</p>
-            </div>
-            <div class="board-card reveal-up delay-400">
-                <img src="{% static 'images/ECI Group.png' %}" alt="School 8">
-                <p>ECI Group of Schools</p>
+        <style>
+            .schools-slider-container {
+                width: 100%;
+                overflow: hidden;
+                position: relative;
+                padding: 1rem 0;
+                display: flex;
+            }
+
+            .schools-slider-container::before,
+            .schools-slider-container::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 15%;
+                z-index: 2;
+                pointer-events: none;
+            }
+
+            .schools-slider-container::before {
+                left: 0;
+                background: linear-gradient(90deg, #ffffff 0%, transparent 100%);
+            }
+
+            .schools-slider-container::after {
+                right: 0;
+                background: linear-gradient(-90deg, #ffffff 0%, transparent 100%);
+            }
+
+            .schools-track {
+                display: flex;
+                width: max-content;
+                animation: scrollSchools 40s linear infinite;
+            }
+
+            .schools-track:hover {
+                animation-play-state: paused;
+            }
+
+            .school-set {
+                display: flex;
+                gap: 2.5rem;
+                padding-right: 2.5rem;
+                align-items: stretch;
+            }
+
+            .school-set .board-card {
+                width: 280px;
+                flex-shrink: 0;
+                margin: 0;
+            }
+
+            @keyframes scrollSchools {
+                0% {
+                    transform: translateX(0);
+                }
+
+                100% {
+                    transform: translateX(-50%);
+                }
+            }
+        </style>
+
+        <div class="schools-slider-container">
+            <div class="schools-track">
+                <!-- Set 1 -->
+                <div class="school-set">
+                    <div class="board-card reveal-up delay-100">
+                        <img src="{% static 'images/MCC new.png' %}" alt="School 1">
+                        <p>Madras Christian College Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-200">
+                        <img src="{% static 'images/sch2.png' %}" alt="School 2">
+                        <p>Bethel Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/MES R.png' %}" alt="School 3">
+                        <p>M.E.S. Razeena Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/sch4.png' %}" alt="School 4">
+                        <p>DAV School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-100">
+                        <img src="{% static 'images/Equitas.png' %}" alt="School 5">
+                        <p>EQUITAS Group of Schools</p>
+                    </div>
+                    <div class="board-card reveal-up delay-200">
+                        <img src="{% static 'images/BMHSS-Logo.png' %}" alt="School 6">
+                        <p>Bharathiyar Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/jaya Group.png' %}" alt="School 7">
+                        <p>JAYA GROUP OF SCHOOLS</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/JDMHSS-logo.png' %}" alt="School 8">
+                        <p>John Dewey Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/laks-logo.png' %}" alt="School 9">
+                        <p>Lakshmi E.M.HS</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/ALM-logo.jpeg' %}" alt="School 10">
+                        <p>ALM Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/IVL-logo.jpeg' %}" alt="School 11">
+                        <p>IVL Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/JV-logo.jpeg' %}" alt="School 12">
+                        <p>Jothi Vallalar Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/MT.ST-logo.jpeg' %}" alt="School 13">
+                        <p>Mt.St.Joseph’s Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/SRGDS-logo.jpeg' %}" alt="School 14">
+                        <p>SRGDS Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/SRIVIVE-logo.jpeg' %}" alt="School 15">
+                        <p>Sri Vivekanandha Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/ST.J.A-logo.jpeg' %}" alt="School 16">
+                        <p>St.Joseph's Academy International School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/ST.MAR-logo.jpeg' %}" alt="School 17">
+                        <p>St.Mary's Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/SHAI-logo.jpeg' %}" alt="School 18">
+                        <p>Sacred Heart Convent Anglo Indian Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/JA SA-logo.jpeg' %}" alt="School 19">
+                        <p>Sri Jayeandra Saraswathy Vidyaalaya D.J.Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/JAISA-logo.jpeg' %}" alt="School 19">
+                        <p>Jai Saradha Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/KOVE-logo.jpeg' %}" alt="School 19">
+                        <p>Kongu VellalarMatriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/RAJ-logo.jpeg' %}" alt="School 19">
+                        <p>Raj Vidyalaya International Senior Secondary School (CBSE)</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/ROMAlogo.jpeg' %}" alt="School 19">
+                        <p>Rosemary School of Excellence</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/VEL-logo.jpeg' %}" alt="School 19">
+                        <p>Velavan Matriculation Higher Secondary School</p>
+                    </div>
+                </div>
+
+                <!-- Set 2 for seamless infinite loop -->
+                <div class="school-set">
+                    <div class="board-card reveal-up delay-100">
+                        <img src="{% static 'images/MCC new.png' %}" alt="School 1">
+                        <p>Madras Christian College Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-200">
+                        <img src="{% static 'images/sch2.png' %}" alt="School 2">
+                        <p>Bethel Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/MES R.png' %}" alt="School 3">
+                        <p>M.E.S. Razeena Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/sch4.png' %}" alt="School 4">
+                        <p>DAV School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-100">
+                        <img src="{% static 'images/Equitas.png' %}" alt="School 5">
+                        <p>EQUITAS Group of Schools</p>
+                    </div>
+                    <div class="board-card reveal-up delay-200">
+                        <img src="{% static 'images/BMHSS-Logo.png' %}" alt="School 6">
+                        <p>Bharathiyar Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/jaya Group.png' %}" alt="School 7">
+                        <p>JAYA GROUP OF SCHOOLS</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/JDMHSS-logo.png' %}" alt="School 8">
+                        <p>John Dewey Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/laks-logo.png' %}" alt="School 9">
+                        <p>Lakshmi E.M.HS</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/ALM-logo.jpeg' %}" alt="School 10">
+                        <p>ALM Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/IVL-logo.jpeg' %}" alt="School 11">
+                        <p>IVL Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/JV-logo.jpeg' %}" alt="School 12">
+                        <p>Jothi Vallalar Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/MT.ST-logo.jpeg' %}" alt="School 13">
+                        <p>Mt.St.Joseph’s Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/SRGDS-logo.jpeg' %}" alt="School 14">
+                        <p>SRGDS Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/SRIVIVE-logo.jpeg' %}" alt="School 15">
+                        <p>Sri Vivekanandha Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/ST.J.A-logo.jpeg' %}" alt="School 16">
+                        <p>St.Joseph's Academy International School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/ST.MAR-logo.jpeg' %}" alt="School 17">
+                        <p>St.Mary's Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-300">
+                        <img src="{% static 'images/SHAI-logo.jpeg' %}" alt="School 18">
+                        <p>Sacred Heart Convent Anglo Indian Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/JA SA-logo.jpeg' %}" alt="School 19">
+                        <p>Sri Jayeandra Saraswathy Vidyaalaya D.J.Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/JAISA-logo.jpeg' %}" alt="School 19">
+                        <p>Jai Saradha Matriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/KOVE-logo.jpeg' %}" alt="School 19">
+                        <p>Kongu VellalarMatriculation Higher Secondary School</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/RAJ-logo.jpeg' %}" alt="School 19">
+                        <p>Raj Vidyalaya International Senior Secondary School (CBSE)</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/ROMAlogo.jpeg' %}" alt="School 19">
+                        <p>Rosemary School of Excellence</p>
+                    </div>
+                    <div class="board-card reveal-up delay-400">
+                        <img src="{% static 'images/VEL-logo.jpeg' %}" alt="School 19">
+                        <p>Velavan Matriculation Higher Secondary School</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
