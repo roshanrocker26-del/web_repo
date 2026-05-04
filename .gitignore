@@ -26,3 +26,7 @@ media/
 
 # macOS
 .DS_Store
+
+# Database dumps
+*.sql
+*.json
