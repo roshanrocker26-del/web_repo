@@ -523,20 +523,15 @@
                 <h2 id="adminModalTitle">Add New Admin</h2>
                 <button class="close-modal" onclick="closeModal('adminModal')">&times;</button>
             </div>
-            <form id="adminForm" action="#" method="POST" onsubmit="event.preventDefault(); alert('Admin saved successfully! (Frontend Only)'); closeModal('adminModal');">
+            <form method="POST">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="admin_username" class="form-input" placeholder="Enter Username" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="admin_password" class="form-input" placeholder="Set Password" required>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('adminModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Admin</button>
-                </div>
+
+                <input type="text" name="username" placeholder="Username" required>
+
+                <input type="password" name="password" placeholder="Password" required>
+
+                <button type="submit">Create Admin</button>
+
             </form>
         </div>
     </div>
