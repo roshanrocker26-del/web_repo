@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from .models import School, Books, Purchase, PurchaseItems, Syllabus, SharedQuestionPaper, OtherDetails, TeacherLog
+from .models import School, Books, Purchase, PurchaseItems, Syllabus, SharedQuestionPaper, OtherDetails, TeacherLog, AdminUsers
 from datetime import datetime
 def home(request): return render(request, 'home.html')
 def about(request): return render(request, 'about.html')
@@ -117,13 +117,17 @@ def admin_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        if username == 'admin' and password == 'admin123':
+        admin_user = AdminUsers.objects.filter(username=username, password=password).first()
+        if admin_user:
             request.session['is_admin'] = True
             return redirect('admin_dashboard')
         else:
             return render(request, 'admin_login.html', {'error': 'Invalid username or password'})
     return render(request, 'admin_login.html')
 def admin_dashboard(request):
+    if not request.session.get('is_admin'):
+        return redirect('admin_login')
+        
     import json
     from collections import defaultdict
     from django.core.paginator import Paginator
@@ -194,8 +198,12 @@ def delete_teacher_log(request, pk):
         messages.success(request, 'Teacher log deleted successfully.')
     return redirect('admin_dashboard')
 def super_admin(request):
+    if not request.session.get('is_super_admin'):
+        return redirect('super_admin_login')
+        
     books = Books.objects.all()
     schools = School.objects.all()
+    admin_users = AdminUsers.objects.all()
     purchases_qs = PurchaseItems.objects.all().select_related('purchase', 'book', 'purchase__school')
     
     # Group by purchase_id
@@ -217,20 +225,27 @@ def super_admin(request):
     all_purchases = Purchase.objects.values_list('purchase_id', flat=True).distinct()
     
     return render(request, 'super_admin.html', {
-        'books': books, 'schools': schools, 'purchases': purchases, 'all_purchases': all_purchases
+        'books': books, 'schools': schools, 'purchases': purchases, 'all_purchases': all_purchases, 'admin_users': admin_users
     })
 def super_admin_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        if username == 'superadmin' and password == 'superadmin123':
+        if username == 'superadmin' and password == 'admin123':
             request.session['is_super_admin'] = True
             return redirect('super_admin')
         else:
             return render(request, 'super_admin_login.html', {'error': 'Invalid username or password'})
     return render(request, 'super_admin_login.html')
-def super_admin_logout(request): return render(request, 'super_admin_login.html')
-def admin_logout(request): return render(request, 'admin_login.html')
+def super_admin_logout(request):
+    if 'is_super_admin' in request.session:
+        del request.session['is_super_admin']
+    return redirect('super_admin_login')
+
+def admin_logout(request):
+    if 'is_admin' in request.session:
+        del request.session['is_admin']
+    return redirect('admin_login')
 def school_logout(request):
     if 'school_id' in request.session:
         del request.session['school_id']
@@ -291,6 +306,26 @@ def add_school(request):
                 defaults={'school': school, 'purchase_date': datetime.now().date()}
             )
         messages.success(request, f'School {school_id} added successfully with Purchase ID {purchase_id}.')
+    return redirect('super_admin')
+
+def add_admin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if username and password:
+            if AdminUsers.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists.')
+            else:
+                AdminUsers.objects.create(username=username, password=password)
+                messages.success(request, 'Admin added successfully.')
+        else:
+            messages.error(request, 'Username and password are required.')
+    return redirect('super_admin')
+
+def delete_admin(request, pk):
+    admin_user = get_object_or_404(AdminUsers, pk=pk)
+    admin_user.delete()
+    messages.success(request, 'Admin deleted successfully.')
     return redirect('super_admin')
 
 def edit_school(request, pk):
