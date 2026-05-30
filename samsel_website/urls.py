@@ -23,6 +23,9 @@ urlpatterns = [
     path('super-admin/school/add/', views.add_school, name='add_school'),
     path('super-admin/school/edit/<str:pk>/', views.edit_school, name='edit_school'),
     path('super-admin/school/delete/<str:pk>/', views.delete_school, name='delete_school'),
+    # Admin CRUD
+    path('super-admin/admin/add/', views.add_admin, name='add_admin'),
+    path('super-admin/admin/delete/<int:pk>/', views.delete_admin, name='delete_admin'),
     # Book CRUD
     path('super-admin/book/add/', views.add_book, name='add_book'),
     path('super-admin/book/edit/<str:pk>/', views.edit_book, name='edit_book'),

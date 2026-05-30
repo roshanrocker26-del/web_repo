@@ -93,3 +93,10 @@ class TeacherLog(models.Model):
 
     class Meta:
         db_table = 'teacher_log'
+
+class AdminUsers(models.Model):
+    username = models.CharField(unique=True, max_length=255)
+    password = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'admin_users'
